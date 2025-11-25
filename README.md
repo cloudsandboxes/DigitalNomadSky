@@ -1,6 +1,6 @@
 # Nomadsky Digital Sovereignty
 
-## Stay Digitally Sovereign. Move Your Workloads Anywhere You Want.
+## Stay Digitally Sovereign. Move Your Server Workloads Anywhere You Want.
 
 Take full control over where your applications run — in any cloud or infrastructure. No vendor lock-in. No friction. Complete oversight of location, costs, and compliance — from Azure to ZeroCloud and everything in between.
 
