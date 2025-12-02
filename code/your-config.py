@@ -1,4 +1,0 @@
-SOURCE_PLATFORM = "azure"
-DESTINATION_PLATFORM = "vmware"
-VM_NAME = "testvm"
-IMAGE_FORMAT = "vmdk"
