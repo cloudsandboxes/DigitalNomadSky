@@ -2,6 +2,10 @@ aimport os
 import subprocess
 import sys
 import json
+# import custom config variables
+import code/your-config/your-config
+
+
 
 # -------------------------------
 # 0) CONFIG / VARIABLES FILE
