@@ -110,7 +110,7 @@
 <body>
 <h1>Cloud VM Orchestrator</h1>
 <div class="form-container">
-    <form action="https://htmlpreview.github.io/?https://github.com/cloudsandboxes/nomadsky/blob/main/code/nomadsky-engine/UI/2)%20processing-page.html" method="GET">
+    <form id="myForm">
         <label for="source">Source Platform</label>
         <select id="source" name="source">
             <option value="azure">Azure</option>
@@ -128,6 +128,13 @@
         <button type="submit">Deploy VM</button>
         
     </form>
+    <script>
+        const form = document.getElementById('myForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // prevent default form submission
+            window.location.href = 'https://htmlpreview.github.io/?https://github.com/cloudsandboxes/nomadsky/blob/main/code/nomadsky-engine/UI/2)%20processing-page.html'; // redirect
+        });
+    </script>
 </div>
 </body>
 </html>
