@@ -390,10 +390,11 @@ function simulateMigration() {
             updateStep(step.id, 'running', 'Processing...');
             
             // Complete after duration
-            simulateVMNotFoundError(); // VM not found scenario
+            
             setTimeout(() => {
                 updateStep(step.id, 'completed', step.message);
                 currentStep++;
+            simulateVMNotFoundError(); // VM not found scenario
                 
                 // Show success banner after last step
                 if (currentStep === steps.length) {
