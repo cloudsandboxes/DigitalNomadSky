@@ -22,7 +22,7 @@ def find_iis_root():
     """Find the IIS wwwroot directory"""
     possible_paths = [
         r"C:\inetpub\wwwroot",
-        r"C:\inetpub\wwwroot\",
+        r"C:\inetpub\wwwroot\\",
         os.path.join(os.environ.get('SystemDrive', 'C:'), r"\inetpub\wwwroot")
     ]
     
