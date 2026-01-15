@@ -93,33 +93,148 @@ try {
     exit 1
 }
 
+
 # Install Git
-Write-Host "`n[2/3] Installing Git..." -ForegroundColor Cyan
+# PowerShell script to download and install Git for Windows
+# Run this script as Administrator
+
+param(
+    [string]$GitInstallPath = "C:\Program Files\Git"
+)
+
+# Configuration
+$TempDir = "$env:TEMP\GitInstall"
 $GitUrl = "https://github.com/git-for-windows/git/releases/download/v2.43.0.windows.1/Git-2.43.0-64-bit.exe"
 $GitInstaller = "$TempDir\git-installer.exe"
 
+Write-Host "`n[2/3] Git Installation Script ..." -ForegroundColor Cyan
+
+# Check if running as Administrator
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if (-not $isAdmin) {
+    Write-Host "WARNING: This script should be run as Administrator for proper installation" -ForegroundColor Yellow
+    $continue = Read-Host "Continue anyway? (y/n)"
+    if ($continue -ne 'y') {
+        exit
+    }
+}
+
+# Create temp directory
+Write-Host "`nCreating temporary directory..." -ForegroundColor Cyan
+New-Item -ItemType Directory -Force -Path $TempDir | Out-Null
+
+# Download Git
+Write-Host "`nDownloading Git for Windows..." -ForegroundColor Cyan
+Write-Host "URL: $GitUrl"
+Write-Host "Downloading to: $GitInstaller"
+
 try {
-    Write-Host "Downloading Git..."
     Invoke-WebRequest -Uri $GitUrl -OutFile $GitInstaller -UseBasicParsing
+    Write-Host "Download completed successfully!" -ForegroundColor Green
     
-    Write-Host "Installing Git to $GitInstallPath..."
-    Start-Process -FilePath $GitInstaller -ArgumentList @(
+    # Verify download
+    if (Test-Path $GitInstaller) {
+        $fileSize = (Get-Item $GitInstaller).Length / 1MB
+        Write-Host "Downloaded file size: $([math]::Round($fileSize, 2)) MB" -ForegroundColor Gray
+    }
+} catch {
+    Write-Host "Error downloading Git: $_" -ForegroundColor Red
+    exit 1
+}
+
+# Install Git
+Write-Host "`nInstalling Git..." -ForegroundColor Cyan
+Write-Host "Installation path: $GitInstallPath"
+
+try {
+    $installArgs = @(
         "/VERYSILENT",
         "/NORESTART",
+        "/NOCANCEL",
+        "/SP-",
+        "/CLOSEAPPLICATIONS",
+        "/RESTARTAPPLICATIONS",
         "/DIR=$GitInstallPath",
         "/COMPONENTS=icons,ext\shellhere,assoc,assoc_sh"
-    ) -Wait -NoNewWindow
+    )
     
-    Add-ToPath "$GitInstallPath\cmd"
+    Write-Host "Starting installation process..."
+    $process = Start-Process -FilePath $GitInstaller -ArgumentList $installArgs -Wait -PassThru -NoNewWindow
     
-    Write-Host "Git installed successfully!" -ForegroundColor Green
+    if ($process.ExitCode -eq 0) {
+        Write-Host "Git installed successfully!" -ForegroundColor Green
+    } else {
+        Write-Host "Installation completed with exit code: $($process.ExitCode)" -ForegroundColor Yellow
+    }
 } catch {
     Write-Host "Error installing Git: $_" -ForegroundColor Red
     exit 1
 }
 
-# Refresh environment variables in current session
-$env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
+# Verify installation
+Write-Host "`nVerifying installation..." -ForegroundColor Cyan
+Start-Sleep -Seconds 2
+
+if (Test-Path "C:\Program\git-cmd.exe") {
+    Write-Host "Git executable found at: C:\Program\git-cmd.exe" -ForegroundColor Green
+    
+    # Add to PATH
+    Write-Host "`nAdding Git to system PATH..." -ForegroundColor Cyan
+    try {
+        $currentPath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+        $gitCmdPath = "C:\Program\"
+        
+        if ($currentPath -notlike "*$gitCmdPath*") {
+            [Environment]::SetEnvironmentVariable(
+                "Path",
+                "$currentPath;$gitCmdPath",
+                "Machine"
+            )
+            Write-Host "Added $gitCmdPath to system PATH" -ForegroundColor Green
+            
+            # Refresh PATH for current session
+            $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
+        } else {
+            Write-Host "Git is already in system PATH" -ForegroundColor Gray
+        }
+    } catch {
+        Write-Host "Could not add Git to PATH automatically. You may need to add it manually: $gitCmdPath" -ForegroundColor Yellow
+    }
+    
+    # Test Git
+    Write-Host "`nTesting Git installation..." -ForegroundColor Cyan
+    try {
+        $gitVersion = git --version
+        Write-Host "Git version: $gitVersion" -ForegroundColor Green
+    } catch {
+        Write-Host "Git installed but could not get version. Try restarting PowerShell." -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "WARNING: Git executable not found at expected location!" -ForegroundColor Red
+    Write-Host "Expected location: C:\Program\git-cmd.exe" -ForegroundColor Red
+    Write-Host "Please check if Git was installed to a different location." -ForegroundColor Yellow
+}
+
+# Cleanup
+Write-Host "`nCleaning up temporary files..." -ForegroundColor Cyan
+try {
+    Remove-Item -Path $TempDir -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Host "Cleanup completed" -ForegroundColor Green
+} catch {
+    Write-Host "Could not remove temporary directory: $TempDir" -ForegroundColor Yellow
+}
+
+Write-Host "`n=== Installation Complete ===" -ForegroundColor Green
+Write-Host "Git installation path: C:\Program\git-cmd.exe"
+Write-Host "`nNote: You may need to restart your PowerShell session for PATH changes to take effect." -ForegroundColor Yellow
+Write-Host "To verify, open a new PowerShell window and run: git --version" -ForegroundColor Cyan
+
+
+
+
+
+
+
 
 # Clone GitHub repository
 Write-Host "`n[3/3] Cloning GitHub repository..." -ForegroundColor Cyan
