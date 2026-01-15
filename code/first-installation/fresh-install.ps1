@@ -93,6 +93,28 @@ try {
     exit 1
 }
 
+# Remove windows specific python settings
+try {
+    Write-Host "Remove windows default settings for Python"
+
+    $aliases = @(
+        "$env:LOCALAPPDATA\Microsoft\WindowsApps\python.exe",
+        "$env:LOCALAPPDATA\Microsoft\WindowsApps\python3.exe"
+    )
+
+    foreach ($alias in $aliases) {
+        if (Test-Path $alias) {
+            Remove-Item $alias -Force
+            Write-Host "Removed alias: $alias"
+        } else {
+            Write-Host "Alias not found: $alias"
+        }
+    }
+}catch {
+    Write-Host "Error deinstalling windows settings for Python: $_" -ForegroundColor Red
+    exit 1
+}
+
 
 # Install Git
 # PowerShell script to download and install Git for Windows
