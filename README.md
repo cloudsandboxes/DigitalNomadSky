@@ -3,7 +3,7 @@
 ## Stay Digitally Sovereign. Move Your Server Workloads to Anywhere.
 
 Take full control over where your applications run in any cloud or infrastructure. No vendor lock-in. No friction. Complete oversight of location, costs, and compliance — from Azure to ZeroCloud and everything in between.
-Check our demo, [here](https://htmlpreview.github.io/?https://github.com/cloudsandboxes/nomadsky/blob/main/code/nomadsky-engine/UI/interface.html)
+Check our demo, [here](https://htmlpreview.github.io/?https://github.com/cloudsandboxes/nomadsky/blob/main/code/nomadsky-engine/UI/demo/interface.html)
 
 ### Key Benefits
 
