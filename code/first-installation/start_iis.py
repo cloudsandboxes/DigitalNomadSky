@@ -5,8 +5,12 @@ This script must be run with Administrator privileges
 
 prompt:now i need a python script that starts the IIS role.
 python start_iis.py
+
+second prompt: make def for making IIS path the git instead of enetpub 
 """
 
+import os
+import shutil
 import subprocess
 import sys
 import ctypes
@@ -167,6 +171,52 @@ def main():
     print("Script completed!")
     print("="*50)
 
+    update_iis_junction()
+
+
+def update_iis_junction(
+    iis_path=r"C:\inetpub\wwwroot",
+    repo_path=r"C:\Projects\nomadsky\code\nomadsky-engine\UI"
+):
+    """
+    Replace an IIS wwwroot folder with a directory junction pointing to a Git repo.
+    Must be run as Administrator on Windows.
+    """
+
+    if not os.path.exists(repo_path):
+        raise FileNotFoundError(f"Repo path does not exist: {repo_path}")
+
+    # Remove existing IIS folder / junction
+    if os.path.exists(iis_path):
+        if os.path.islink(iis_path):
+            os.unlink(iis_path)
+        else:
+            shutil.rmtree(iis_path)
+
+    # Create junction using mklink
+    cmd = [
+        "cmd",
+        "/c",
+        "mklink",
+        "/J",
+        iis_path,
+        repo_path
+    ]
+
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True,
+        shell=False
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"Failed to create junction:\n{result.stderr}"
+        )
+
+    return f"Junction created: {iis_path} -> {repo_path}"
+
 if __name__ == "__main__":
     try:
         main()
@@ -176,3 +226,7 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n✗ Unexpected error: {e}")
         sys.exit(1)
+
+
+if __name__ == "__main__":
+    print(update_iis_junction())
