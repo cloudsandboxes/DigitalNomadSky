@@ -132,7 +132,21 @@
         const form = document.getElementById('myForm');
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // prevent default form submission
-            window.location.href = '2)%20processing-page.html'; // redirect
+            
+            // Get form values
+            const source = document.getElementById('source').value;
+            const destination = document.getElementById('destination').value;
+            const vmname = document.getElementById('vmname').value;
+            
+            // Create URL with query parameters
+            const params = new URLSearchParams({
+                source: source,
+                destination: destination,
+                vmname: vmname
+            });
+            
+            // Redirect with form data
+            window.location.href = '2)%20processing-page.html?' + params.toString();
         });
     </script>
 </div>
