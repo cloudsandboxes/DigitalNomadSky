@@ -175,5 +175,5 @@ html = '''
 '''
 
 api = Api()
-webview.create_window('VM Migration Tool', html=html, js_api=api, width=400, height=500)
+webview.create_window('VM Migration Tool', html=html, js_api=api, width=1366, height=768)
 webview.start()
