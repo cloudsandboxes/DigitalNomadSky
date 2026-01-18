@@ -28,7 +28,7 @@ class Api:
         return {'done': True, 'output': result.stdout}
 
 # Load form HTML from file
-with open('C:/projects/nomadsky/code/nomadsky-engine/interface.html', 'r') as f:
+with open('C:/projects/nomadsky/code/nomadsky-engine/UI/frontend.html', 'r') as f:
     form_html = f.read()
 
 # Create window
