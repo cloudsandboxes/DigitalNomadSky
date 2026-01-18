@@ -129,14 +129,12 @@
 </form>
 <div id="result"></div>
     <script>
-        async function migrate() {
+        function migrate() {
             const source = document.getElementById('source').value;
             const destination = document.getElementById('destination').value;
             const vmname = document.getElementById('vmname').value;
-            
-            document.getElementById('result').textContent = 'Running migration...';
             pywebview.api.show_processing_page(source, destination, vmname);
-            }
+        }
     </script>     
 }
 
