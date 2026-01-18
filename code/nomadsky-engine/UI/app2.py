@@ -40,10 +40,14 @@ with open('C:/projects/nomadsky/code/nomadsky-engine/UI/frontend.html', 'r') as 
     form_html = f.read()
 
 # Create window
-window = webview.create_window('VM Migration Tool', html=form_html)
+class Api:
+    def navigate(self, source, destination, vmname):
+        global form_data
+        form_data = {'source': source, 'destination': destination, 'vmname': vmname}
+        show_processing_page()
 
-# Listen for navigation events
-window.events.loaded += lambda: print("Page loaded")
+api = Api()
+window = webview.create_window('VM Migration Tool', html=form_html, js_api=api)
 
 # Start webview
 webview.start()
