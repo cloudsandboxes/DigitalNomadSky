@@ -10,6 +10,7 @@ class API:
         html = html.replace('{{vmname}}', vmname)
         
         window.load_html(html)
+        return True
 
 # Read the form HTML
 with open('C:/projects/nomadsky/code/nomadsky-engine/UI/frontend.html', 'r') as f:
