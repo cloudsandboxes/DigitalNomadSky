@@ -135,15 +135,12 @@
             const vmname = document.getElementById('vmname').value;
             
             document.getElementById('result').textContent = 'Running migration...';
-            
-            const result = await pywebview.api.migrate_vm(source, destination, vmname);
-            
-            if (result.done) {
-                document.getElementById('result').textContent = 'Finished! ' + result.output;
+            await pywebview.api.show_processing_page(source, destination, vmname);
             }
-        }
-    </script>
+    </script>     
+}
 
+    
 
 </div>
 </body>
