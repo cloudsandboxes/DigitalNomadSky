@@ -8,13 +8,17 @@ class API:
         self.vmname = vmname
         
         # Load the processing page
-        window.load_url('C:/projects/nomadsky/code/nomadsky-engine/UI/2)processing-page.html')
+        try:
+            window.load_url('C:/projects/nomadsky/code/nomadsky-engine/UI/2)processing-page.html')
+        except:
+            pass
+        return None
     
     def get_values(self):
         return {
-            'source': self.source,
-            'destination': self.destination,
-            'vmname': self.vmname
+            'source': getattr(self, 'source', 'Unknown'),
+            'destination': getattr(self, 'destination', 'Unknown'),
+            'vmname': getattr(self, 'vmname', 'Unknown')
         }
 
 # Read the form HTML
