@@ -174,12 +174,10 @@ def main():
 
 def add_git_to_iis(site, name, path, pool=None):
     """Add git repo to IIS as application."""
-    cmd = f'appcmd add app /site.name:"{site}" /path:/{name} /physicalPath:"{path}"'
+    cmd = f'C:\\Windows\\System32\\inetsrv\\appcmd.exe add app /site.name:"{site}" /path:/{name} /physicalPath:"{path}"'
     if pool:
         cmd += f' /applicationPool:{pool}'
     subprocess.run(cmd, shell=True, check=True)
-
-
 
 
 
