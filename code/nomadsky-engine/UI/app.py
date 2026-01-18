@@ -19,55 +19,157 @@ class Api:
 # HTML with form
 html = '''
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        label { display: block; margin-top: 10px; }
-        select, input { width: 200px; padding: 5px; margin-top: 5px; }
-        button { margin-top: 20px; padding: 10px 20px; }
-        #result { margin-top: 20px; font-weight: bold; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud VM Orchestrator</title>
+<style>
+    /* Global styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1e3a5f, #2d5a7b, #3d7a9c);
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0 20px;
+    }
+    h1 {
+        font-size: 2.5em;
+        margin-top: 50px;
+        font-weight: 300;
+        letter-spacing: 1px;
+        color: #ffffff;
+        text-align: center;
+    }
+    .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(45, 90, 123, 0.3);
+        padding: 40px;
+        border-radius: 12px;
+        margin-top: 50px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    input, select {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 25px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        background: #ffffff;
+        color: #2c3e50;
+        font-size: 1em;
+        outline: none;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        box-sizing: border-box;
+    }
+    input:focus, select:focus {
+        border-color: #3d7a9c;
+        box-shadow: 0 0 0 3px rgba(61, 122, 156, 0.1);
+    }
+    input::placeholder {
+        color: #95a5a6;
+    }
+    select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 20px;
+        padding-right: 40px;
+    }
+    button {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 6px;
+        background: linear-gradient(135deg, #2d5a7b, #3d7a9c);
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1em;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    button:hover {
+        background: linear-gradient(135deg, #3d7a9c, #4d8aac);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(45, 90, 123, 0.4);
+    }
+    button:active {
+        transform: translateY(0);
+    }
+    @media (max-width: 480px) {
+        .form-container {
+            padding: 30px 25px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-top: 30px;
+        }
+    }
+</style>
 </head>
 <body>
-    <h1>VM Migration</h1>
-    
-    <label>Source Platform</label>
-    <select id="source">
-        <option value="azure">Azure</option>
-        <option value="aws">AWS</option>
-        <option value="gcp">GCP</option>
-    </select>
-    
-    <label>Destination Platform</label>
-    <select id="destination">
-        <option value="aws">AWS</option>
-        <option value="azure">Azure</option>
-        <option value="gcp">GCP</option>
-    </select>
-    
-    <label>VM Name</label>
-    <input type="text" id="vmname" value="production-server-1">
-    
-    <br>
-    <button onclick="migrate()">Migrate VM</button>
-    <div id="result"></div>
-
+<h1>Cloud VM Orchestrator</h1>
+<div class="form-container">
+    <form id="myForm">
+        <label for="source">Source Platform</label>
+        <select id="source" name="source">
+            <option value="azure">Azure</option>
+            <option value="aws">AWS</option>
+            <option value="gcp">GCP</option>
+        </select>
+        <label for="destination">Destination Platform</label>
+        <select id="destination" name="destination">
+            <option value="aws">AWS</option>
+            <option value="azure">Azure</option>
+            <option value="gcp">GCP</option>
+        </select>
+        <label for="vmname">VM Name</label>
+        <input type="text" id="vmname" name="vmname" placeholder="Enter VM Name" value="Production-server-1">
+        <button type="submit">Migrate VM</button>
+        
+    </form>
     <script>
-        async function migrate() {
+        const form = document.getElementById('myForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // prevent default form submission
+            
+            // Get form values
             const source = document.getElementById('source').value;
             const destination = document.getElementById('destination').value;
             const vmname = document.getElementById('vmname').value;
             
-            document.getElementById('result').textContent = 'Running migration...';
+            // Create URL with query parameters
+            const params = new URLSearchParams({
+                source: source,
+                destination: destination,
+                vmname: vmname
+            });
             
-            const result = await pywebview.api.migrate_vm(source, destination, vmname);
-            
-            if (result.done) {
-                document.getElementById('result').textContent = 'Finished! ' + result.output;
-            }
-        }
+            // Redirect with form data
+            window.location.href = '2)%20processing-page.html?' + params.toString();
+        });
     </script>
+</div>
 </body>
 </html>
 '''
