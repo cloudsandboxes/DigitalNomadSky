@@ -38,11 +38,16 @@ def deallocate_vm(resource_id):
     # print(f"Deallocating VM '{vm_name}' in resource group '{resource_group}'...")
     async_vm_deallocate = compute_client.virtual_machines.begin_deallocate(resource_group, vm_name)
     async_vm_deallocate.wait()  # Wait until deallocation is complete
-    print(f"VM '{vm_name}' has been deallocated successfully!")
+    # print(f"VM '{vm_name}' has been deallocated successfully!")
 
 if __name__ == "__main__":
     deallocate_vm(vm_resource_id)
-    
+    result = {
+      'message': f"VM '{vm_name}' has been deallocated successfully!"!",
+      'resource_id': resource_id,
+    }
+
+print(json.dumps(result))
 
 
 
