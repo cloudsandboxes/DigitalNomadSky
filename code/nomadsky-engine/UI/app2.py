@@ -48,7 +48,7 @@ def run_script():
 
 def run_flask():
     """Run Flask in background thread"""
-    app.run(port=5000, debug=True, use_reloader=False)
+    app.run(port=5000, debug=False, use_reloader=False)
 
 def show_processing_page():
     """Load the processing page with form data"""
@@ -89,11 +89,3 @@ window = webview.create_window('VM Migration Tool', html=form_html, js_api=api)
 
 # Start webview (this blocks until window closes)
 webview.start()
-
-import requests
-
-try:
-    r = requests.get("http://localhost:5000/api/ping")
-    print(r.status_code, r.json())
-except requests.RequestException as e:
-    print("Request failed:", e)
