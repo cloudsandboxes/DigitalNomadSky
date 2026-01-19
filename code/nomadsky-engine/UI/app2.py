@@ -7,7 +7,7 @@ import threading
 
 # Flask setup
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}))
 
 # Global variables to store form data
 form_data = {}
