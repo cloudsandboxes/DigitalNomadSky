@@ -431,6 +431,29 @@ function simulateVMNotFoundError() {
     });
 }
 
+async function runMigrationScript() {
+    const response = await fetch('http://localhost:5000/api/run-script', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            script: 'migrate.py',  // your script name
+            source: '{{source}}',
+            destination: '{{destination}}',
+            vmname: '{{vmname}}'
+        })
+    });
+    
+    const result = await response.json();
+    if (result.success) {
+        console.log('Script output:', result.output);
+    } else {
+        console.error('Script error:', result.error);
+    }
+}
+
+// Call it when page loads
+window.onload = runMigrationScript;
+    
 // Example: Simulate generic error
 function simulateGenericError(stepId) {
     updateStep(stepId, 'error', 'An error occurred during this step', {
