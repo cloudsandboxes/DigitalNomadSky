@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import subprocess
 import threading
+import json
 
 # Flask setup
 app = Flask(__name__)
@@ -24,6 +25,15 @@ def run_script():
     
     # Path to your scripts
     script_path = f'C:/projects/nomadsky/code/nomadsky-engine/scripts/{script_name}'
+
+outputs = json.loads(completed.stdout)
+return jsonify({
+    "script": script_name,
+    "status": "success",
+    "output1": outputs["output1"],
+    "output2": outputs["output2"]
+})
+
     
     try:
         result = subprocess.run(
@@ -32,9 +42,11 @@ def run_script():
             text=True,
             check=True
         )
+        outputs = json.loads(completed.stdout)
         return jsonify({
             'success': True,
-            'output': result.stdout
+            'output1': outputs["output1"],
+            'output2': outputs["output2"]
         })
     except subprocess.CalledProcessError as e:
         return jsonify({
