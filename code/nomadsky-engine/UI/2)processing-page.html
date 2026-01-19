@@ -373,10 +373,8 @@ async function runScript(stepId, scriptName, successMessage) {
     updateStep(stepId, 'running', 'Processing...');
     
     try {
-       const response = await fetch('http://localhost:5000/api/ping', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'},
-       });
+       const response = await fetch('http://localhost:5000/api/ping');
+       const result = await response.json();
         
         ''' const response = await fetch('http://localhost:5000/api/run-script', {
             method: 'POST',
@@ -390,7 +388,7 @@ async function runScript(stepId, scriptName, successMessage) {
         });
         '''
             
-        const result = await response.json();
+
         
         if (result.success) {
             updateStep(stepId, 'completed', successMessage || result.output);
