@@ -383,7 +383,7 @@ async function runScript(stepId, scriptName, successMessage) {
                 vmname: vmname
             })
         });
-        asf = scriptName + source + destionation + vmname
+        
         const result = await response.json();
         
         if (result.success) {
@@ -397,7 +397,7 @@ async function runScript(stepId, scriptName, successMessage) {
             return false;
         }
     } catch (error) {
-        updateStep(stepId, 'error', asf, {
+        updateStep(stepId, 'error', vmname, {
             type: 'error',
             message: error.message
         });
