@@ -70,7 +70,7 @@ else:
     # way to export multiple values
     # print(json.dumps({"output1": f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}", "output2": subscription_id}))
     result = {
-      'message': f"VM '{vmname}' found successfully in {source}!"),
+      'message': f"VM '{vmname}' found successfully in {source}!",
       'vm_size': vm_size,
       'resource_id': resource_id,
       'power_state': powerstate}
