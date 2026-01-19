@@ -4,7 +4,7 @@ import json
 # Get arguments
 source = sys.argv[1]
 destination = sys.argv[2]
-vmname = sys.argv[3]
+vmname = sys.argv[3].lower()
 
 # Your logic here to fetch VM from source platform
 # Example: connect to Azure/AWS/GCP API and search for the VM
@@ -44,13 +44,12 @@ for sub in subscription_client.subscriptions.list():
             resource_client = ResourceManagementClient(credential, subscription_ids)
             vms = compute_client.virtual_machines.list_all()
             for vm in vms:
-                if vm.name == vmname:
+                if vm.name.lower() == vmname:
                      # print(f"VM '{vmname}' found!")
                      # VM found
                      vm_found = True
              
                      # VM basic info
-                     vm_name = vm.name
                      resource_group  = vm.id.split("/")[4]
                      full_vm = compute_client.virtual_machines.get(resource_group, vm_name, expand="instanceView")
                      vm_size = vm.hardware_profile.vm_size
@@ -73,6 +72,7 @@ else:
       'message': f"VM '{vmname}' found successfully in {source}!",
       'vm_size': vm_size,
       'resource_id': resource_id,
+      'resource_group': resource_group,
     }
 
 print(json.dumps(result))
