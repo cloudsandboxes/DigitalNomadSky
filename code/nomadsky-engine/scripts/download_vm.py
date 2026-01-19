@@ -5,6 +5,18 @@ source = sys.argv[1]
 destination = sys.argv[2]
 vmname = sys.argv[3]
 
+
+
+    result = {
+      'message': f"VM '{vmname}' has been deallocated successfully!",
+      'resource_id': vm_resource_id
+    }
+    print(json.dumps(result))
+
+
+
+
+
 # Your logic here to fetch VM from source platform
 # Example: connect to Azure/AWS/GCP API and search for the VM
 # placeholder for actual implementation
