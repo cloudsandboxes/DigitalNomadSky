@@ -397,7 +397,7 @@ async function runScript(stepId, scriptName, successMessage) {
             return false;
         }
     } catch (error) {
-        updateStep(stepId, 'error', 'Connection failed', {
+        updateStep(stepId, 'error', scriptName, {
             type: 'error',
             message: error.message
         });
