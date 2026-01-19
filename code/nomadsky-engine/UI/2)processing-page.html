@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ss<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -369,7 +369,7 @@ function updateStep(stepId, status, customMessage = null, extraData = null) {
 }
 
 // Run a single script via Flask
-async function runScript(stepId, scriptName, successMessage) {
+async function runScript(stepId, scriptName, successMessage, parameters = null) {
     updateStep(stepId, 'running', 'Processing...');
     
     try {     
@@ -404,7 +404,8 @@ async function runScript(stepId, scriptName, successMessage) {
     }
 }
 // successMessage ||
-
+//store the output of these scripts
+const results = []; // store all outputs
     
 // Run all migration steps
 async function runMigration() {
