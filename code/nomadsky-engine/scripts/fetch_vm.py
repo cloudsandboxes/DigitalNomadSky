@@ -24,6 +24,11 @@ from azure.identity import InteractiveBrowserCredential
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.resource import SubscriptionClient
+from azure.core.exceptions import HttpResponseError
+
+
+
+
 
 
 
@@ -38,43 +43,30 @@ subscription_client = SubscriptionClient(credential)
 vm_found = False
 
 for sub in subscription_client.subscriptions.list():
-    subscription_ids = sub.subscription_id
-    compute_client = ComputeManagementClient(credential, subscription_ids)
-    resource_client = ResourceManagementClient(credential, subscription_ids)
-    
-    vms = compute_client.virtual_machines.list_all()
-    for vm in vms:
-         if vm.name == vmname:
-             print(f"VM '{vmname}' found!")
-             # VM found
-             vm_found = True
+    for sub in subscriptions:
+        try:
+            subscription_ids = sub.subscription_id
+            compute_client = ComputeManagementClient(credential, subscription_ids)
+            resource_client = ResourceManagementClient(credential, subscription_ids)
+            vms = compute_client.virtual_machines.list_all()
+            for vm in vms:
+                if vm.name == vmname:
+                     print(f"VM '{vmname}' found!")
+                     # VM found
+                     vm_found = True
              
-             # VM basic info
-             vm_name = vm.name
-             resource_group  = vm.id.split("/")[4]
-             full_vm = compute_client.virtual_machines.get(resource_group, vm_name, expand="instanceView")
-             vm_size = vm.hardware_profile.vm_size
-             os_type = full_vm.storage_profile.os_disk.os_type
-             resource_id = vm.id
-             subscription_id = subscription_ids
-             power_state  = full_vm.instance_view.statuses
-
-
-
-# Example: connect to Azure subscription
-# List resource groups as a test
-# from azure.identity import DefaultAzureCredential
-# from azure.mgmt.compute import ComputeManagementClient
-
-# credential = DefaultAzureCredential()
-# compute_client = ComputeManagementClient(credential, subscription_id)
-
-# Search for VM
-# vms = compute_client.virtual_machines.list_all()
-#for vm in vms:
-#    if vm.name == vmname:
- #       print(f"VM '{vmname}' found!")
-
+                     # VM basic info
+                     vm_name = vm.name
+                     resource_group  = vm.id.split("/")[4]
+                     full_vm = compute_client.virtual_machines.get(resource_group, vm_name, expand="instanceView")
+                     vm_size = vm.hardware_profile.vm_size
+                     os_type = full_vm.storage_profile.os_disk.os_type
+                     resource_id = vm.id
+                     subscription_id = subscription_ids
+                     power_state  = full_vm.instance_view.statuses    
+        except HttpResponseError as e:
+            print(f"Skipping subscription {sub.subscription_id}: {e.message}")
+            continue
 
 # Output success message (Flask will capture this)
 print(f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}")
