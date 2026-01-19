@@ -88,7 +88,7 @@ flask_thread.start()
 
 # Create pywebview window
 api = Api()
-window = webview.create_window('VM Migration Tool', html=form_html, js_api=api)
+window = webview.create_window('VM Migration Tool', html=form_html, js_api=api, height=800)
 
 # Start webview (this blocks until window closes)
 webview.start()
