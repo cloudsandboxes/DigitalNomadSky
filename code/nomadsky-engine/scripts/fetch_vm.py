@@ -1,4 +1,5 @@
 import sys
+import json
 
 # Get arguments
 source = sys.argv[1]
@@ -62,7 +63,9 @@ for sub in subscription_client.subscriptions.list():
             continue
 
 if not vm_found:
-    print(f"VM '{vmname}' not found in {source}!")
+    raise Exception(f"VM '{vmname}' not found in {source}")
 else:
     # Output success message (Flask will capture this)
-    print(f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}")
+    #print(f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}")
+    # way to export multiple values
+    print(json.dumps({"output1": f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}", "output2": power_state}))
