@@ -373,7 +373,12 @@ async function runScript(stepId, scriptName, successMessage) {
     updateStep(stepId, 'running', 'Processing...');
     
     try {
-        const response = await fetch('http://localhost:5000/api/run-script', {
+       const response = await fetch('http://localhost:5000/api/ping', {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+       });
+        
+        ''' const response = await fetch('http://localhost:5000/api/run-script', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -383,7 +388,8 @@ async function runScript(stepId, scriptName, successMessage) {
                 vmname: vmname
             })
         });
-        
+        '''
+            
         const result = await response.json();
         
         if (result.success) {
