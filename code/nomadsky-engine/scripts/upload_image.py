@@ -16,7 +16,6 @@ vm_resource_id = shared_data.get('resource_id', '')
 
 try:
     subscription_id = vm_resource_id
-    resource_group = parts[3]
 except IndexError:
         raise Exception(f" Invalid resource ID format: '{vm_resource_id}' ")
         
