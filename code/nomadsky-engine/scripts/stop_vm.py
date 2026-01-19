@@ -26,7 +26,6 @@ def deallocate_vm(resource_id):
     try:
         subscription_id = parts[1]
         resource_group = parts[3]
-        vm_name = parts[7]
     except IndexError:
         raise Exception(f" Invalid resource ID format: '{resource_id}' ")
         return
@@ -39,15 +38,15 @@ def deallocate_vm(resource_id):
     compute_client = ComputeManagementClient(credential, subscription_id)
 
     # Deallocate the VM
-    # print(f"Deallocating VM '{vm_name}' in resource group '{resource_group}'...")
-    async_vm_deallocate = compute_client.virtual_machines.begin_deallocate(resource_group, vm_name)
+    # print(f"Deallocating VM '{vmname}' in resource group '{resource_group}'...")
+    async_vm_deallocate = compute_client.virtual_machines.begin_deallocate(resource_group, vmname)
     async_vm_deallocate.wait()  # Wait until deallocation is complete
-    # print(f"VM '{vm_name}' has been deallocated successfully!")
+    # print(f"VM '{vmname}' has been deallocated successfully!")
 
 if __name__ == "__main__":
     deallocate_vm(vm_resource_id)
     result = {
-      'message': f"VM '{vm_name}' has been deallocated successfully!",
+      'message': f"VM '{vmname}' has been deallocated successfully!",
       'resource_id': resource_id
     }
     print(json.dumps(result))
