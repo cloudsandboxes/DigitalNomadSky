@@ -369,7 +369,7 @@ function updateStep(stepId, status, customMessage = null, extraData = null) {
 }
 
 // Run a single script via Flask
-async function runScript(stepId, scriptName, successMessage, parameters = null) {
+async function runScript(stepId, scriptName, successMessage, sharedData) {
     updateStep(stepId, 'running', 'Processing...');
     
     const bodyObj = {
@@ -377,7 +377,7 @@ async function runScript(stepId, scriptName, successMessage, parameters = null) 
         source: source,
         destination: destination,
         vmname: vmname,
-        extraValue: parameters
+        extraValue: sharedData
     };
     const body = JSON.stringify(bodyObj);  
     try {     
@@ -413,23 +413,26 @@ async function runScript(stepId, scriptName, successMessage, parameters = null) 
 // Run all migration steps
 async function runMigration() {
     const steps = [
-        { id: 'step1', script: 'fetch_vm.py', message: 'VM found successfully!', parameters: 'empty' },  
-        { id: 'step2', script: 'stop_vm.py', message: 'VM stopped successfully', parameters:'/subscriptions/41aff5e1-41c9-4509-9fcb-d761d7f33740/resourceGroups/test/providers/Microsoft.Compute/virtualMachines/helpmij' },
-        { id: 'step3', script: 'download_vm.py', message: 'Download completed', parameters: 'empty' },
-        { id: 'step4', script: 'transform_vm.py', message: 'Format conversion completed', parameters: 'empty' },
-        { id: 'step5', script: 'create_network.py', message: 'Network resources created', parameters: 'empty' },
-        { id: 'step6', script: 'upload_image.py', message: 'Upload completed successfully', parameters: 'empty' },
-        { id: 'step7', script: 'start_vm.py', message: 'VM is now running!', parameters: 'empty' }
+        { id: 'step1', script: 'fetch_vm.py', message: 'VM found successfully!'},  
+        { id: 'step2', script: 'stop_vm.py', message: 'VM stopped successfully' },
+        { id: 'step3', script: 'download_vm.py', message: 'Download completed' },
+        { id: 'step4', script: 'transform_vm.py', message: 'Format conversion completed'},
+        { id: 'step5', script: 'create_network.py', message: 'Network resources created' },
+        { id: 'step6', script: 'upload_image.py', message: 'Upload completed successfully' },
+        { id: 'step7', script: 'start_vm.py', message: 'VM is now running!' }
     ];
-    let parameters = 'empty';
+
+    let sharedData = {}; // Store data from previous steps
+    
     for (const step of steps) {
-        
-        const success = await runScript(step.id, step.script, step.message, parameters);
+        const success = await runScript(step.id, step.script, step.message, sharedData);
         if (!success.success) {
             return; // Stop on error
-        } else {const data = JSON.parse(success.output); 
-            parameters = data.resource_id;}
-            
+        }
+        // Parse output and add to shared data
+        const data = JSON.parse(success.output);
+        sharedData = { ...sharedData, ...data }; // Merge new data
+        
         await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between steps
     }
     
