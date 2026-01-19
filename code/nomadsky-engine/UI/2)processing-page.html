@@ -426,7 +426,7 @@ async function runMigration() {
     ];
     
     for (const step of steps) {
-        const success = await runScript(step.id, step.script, step.message, step.parameters);
+        const success = await runScript(step.id, step.script, step.message);
         
         if (!success) {
             return; // Stop on error
