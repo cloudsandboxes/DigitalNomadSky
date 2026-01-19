@@ -298,7 +298,7 @@ if (Test-Path $repoPath) {
                 exit 0
             } catch {
                 Write-Host "ERROR: Failed to pull changes: $_" -ForegroundColor Red
-                exit 1
+                exit 0
             }
         }
         'd' {
@@ -308,7 +308,7 @@ if (Test-Path $repoPath) {
                 Write-Host "Deleted successfully" -ForegroundColor Green
             } catch {
                 Write-Host "ERROR: Could not delete existing repository: $_" -ForegroundColor Red
-                exit 1
+                exit 0
             }
         }
         default {
@@ -320,14 +320,14 @@ if (Test-Path $repoPath) {
 
 # Clone the repository
 Write-Host "`nCloning repository..." -ForegroundColor Cyan
-Write-Host "From: $RepoUrl" -ForegroundColor Gray
+Write-Host "From: $GitHubRepoUrl" -ForegroundColor Gray
 Write-Host "To: $repoPath" -ForegroundColor Gray
 
 try {
     Set-Location $CloneDirectory
     
     # Execute git clone
-    & $gitExe clone $RepoUrl 2>&1 | ForEach-Object {
+    & $gitExe clone $GithubRepoUrl 2>&1 | ForEach-Object {
         Write-Host $_ -ForegroundColor Gray
     }
     
@@ -348,7 +348,7 @@ try {
     }
 } catch {
     Write-Host "ERROR: Failed to clone repository: $_" -ForegroundColor Red
-    exit 1
+    exit 0
 }
 
 Write-Host "`nDone!" -ForegroundColor Green
