@@ -47,16 +47,21 @@ def run_flask():
     app.run(port=5000, debug=True, use_reloader=False)
 
 def show_processing_page():
-    """Load the processing page with form data"""
     with open('C:/projects/nomadsky/code/nomadsky-engine/UI/2)processing-page.html', 'r') as f:
         html = f.read()
     
-    # Replace placeholders
     html = html.replace('{{source}}', form_data.get('source', ''))
     html = html.replace('{{destination}}', form_data.get('destination', ''))
     html = html.replace('{{vmname}}', form_data.get('vmname', ''))
     
-    window.load_html(html)
+    # Save to temp file
+    temp_path = 'C:/projects/nomadsky/code/nomadsky-engine/UI/temp_processing.html'
+    with open(temp_path, 'w') as f:
+        f.write(html)
+    
+    # Load as URL instead
+    window.load_url(temp_path)
+    
 
 # Pywebview API
 class Api:
