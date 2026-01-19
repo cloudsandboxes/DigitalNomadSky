@@ -22,6 +22,11 @@ vmname = sys.argv[3]
 
 from azure.identity import InteractiveBrowserCredential
 from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.compute import ComputeManagementClient
+from azure.mgmt.network import NetworkManagementClient
+from azure.mgmt.resource import SubscriptionClient
+
+
 
 # Use interactive browser login
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
