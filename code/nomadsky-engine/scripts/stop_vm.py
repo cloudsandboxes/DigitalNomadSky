@@ -7,7 +7,10 @@ import sys
 source = sys.argv[1]
 destination = sys.argv[2]
 vmname = sys.argv[3]
-vm_resource_id = sys.argv[4]
+shared_data_json = sys.argv[4]  # 4th argument
+shared_data = json.loads(shared_data_json)
+# Extract specific value
+vm_resource_id = shared_data.get('resource_id', '')
 
 
 def deallocate_vm(resource_id):
