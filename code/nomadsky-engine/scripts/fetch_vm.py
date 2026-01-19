@@ -20,6 +20,18 @@ vmname = sys.argv[3]
 # if vm_not_found:
 #    raise Exception(f"VM '{vmname}' not found in {source}")
 
+from azure.identity import DefaultAzureCredential
+from azure.mgmt.compute import ComputeManagementClient
+
+credential = DefaultAzureCredential()
+compute_client = ComputeManagementClient(credential, subscription_id)
+
+# Search for VM
+vms = compute_client.virtual_machines.list_all()
+for vm in vms:
+    if vm.name == vmname:
+        print(f"VM '{vmname}' found!")
+
 
 # Output success message (Flask will capture this)
 print(f"VM '{vmname}' found successfully in {source}!")
