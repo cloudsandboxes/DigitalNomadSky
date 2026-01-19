@@ -61,7 +61,8 @@ for sub in subscription_client.subscriptions.list():
             print(f"Skipping subscription {sub.subscription_id}: {e.message}")
             continue
 
-if vm_found = False
-
-# Output success message (Flask will capture this)
-print(f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}")
+if not vm_found:
+    print(f"VM '{vmname}' not found in {source}!)
+else:
+    # Output success message (Flask will capture this)
+    print(f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}")
