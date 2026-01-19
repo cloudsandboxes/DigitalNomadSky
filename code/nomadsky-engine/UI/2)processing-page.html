@@ -409,7 +409,7 @@ async function runScript(stepId, scriptName, successMessage) {
 // Run all migration steps
 async function runMigration() {
     const steps = [
-        { id: 'step1', script: 'fetch_vm.py', message: 'VM found successfully!" },  
+        { id: 'step1', script: 'fetch_vm.py', message: 'VM found successfully!' },  
         { id: 'step2', script: 'stop_vm.py', message: 'VM stopped successfully' },
         { id: 'step3', script: 'download_vm.py', message: 'Download completed' },
         { id: 'step4', script: 'transform_vm.py', message: 'Format conversion completed' },
