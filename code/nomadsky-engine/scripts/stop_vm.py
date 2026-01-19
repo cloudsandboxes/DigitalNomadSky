@@ -7,6 +7,7 @@ import sys
 source = sys.argv[1]
 destination = sys.argv[2]
 vmname = sys.argv[3]
+vm_resource_id = sys.argv[4]
 
 
 def deallocate_vm(resource_id):
@@ -39,12 +40,8 @@ def deallocate_vm(resource_id):
     print(f"VM '{vm_name}' has been deallocated successfully!")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python deallocate_vm.py <vm_resource_id>")
-        sys.exit(1)
-
-    vm_resource_id = sys.argv[1]
     deallocate_vm(vm_resource_id)
+    
 
 
 
@@ -65,4 +62,4 @@ if __name__ == "__main__":
 
 
 # Output success message (Flask will capture this)
-print(f"VM '{vmname}' deallocated successfully in {source}!")
+# print(f"VM '{vmname}' deallocated successfully in {source}!")
