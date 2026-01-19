@@ -1,9 +1,10 @@
 // Get form values and display them
-const source = '{{source}}';
+// const source = '{{source}}';
 const destination = '{{destination}}';
 const vmname = '{{vmname}}';
 
-document.getElementById('source-platform').textContent = source;
+const source = document.getElementById('source-platform').value;
+// document.getElementById('source-platform').textContent = source;
 document.getElementById('dest-platform').textContent = destination;
 document.getElementById('vm-name').textContent = vmname;
 
