@@ -24,7 +24,8 @@ from azure.identity import InteractiveBrowserCredential
 from azure.mgmt.resource import ResourceManagementClient
 
 # Use interactive browser login
-credential = InteractiveBrowserCredential()
+tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
+credential = InteractiveBrowserCredential(tenant_id=tenant_id)
 
 # Example: connect to Azure subscription
 subscription_id = "41aff5e1-41c9-4509-9fcb-d761d7f33740"
