@@ -20,17 +20,31 @@ vmname = sys.argv[3]
 # if vm_not_found:
 #    raise Exception(f"VM '{vmname}' not found in {source}")
 
-from azure.identity import DefaultAzureCredential
-from azure.mgmt.compute import ComputeManagementClient
+from azure.identity import InteractiveBrowserCredential
+from azure.mgmt.resource import ResourceManagementClient
 
-credential = DefaultAzureCredential()
-compute_client = ComputeManagementClient(credential, subscription_id)
+# Use interactive browser login
+credential = InteractiveBrowserCredential()
+
+# Example: connect to Azure subscription
+subscription_id = "41aff5e1-41c9-4509-9fcb-d761d7f33740"
+client = ResourceManagementClient(credential, subscription_id)
+
+# List resource groups as a test
+for rg in client.resource_groups.list():
+    print(rg.name)
+
+# from azure.identity import DefaultAzureCredential
+# from azure.mgmt.compute import ComputeManagementClient
+
+# credential = DefaultAzureCredential()
+# compute_client = ComputeManagementClient(credential, subscription_id)
 
 # Search for VM
-vms = compute_client.virtual_machines.list_all()
-for vm in vms:
-    if vm.name == vmname:
-        print(f"VM '{vmname}' found!")
+# vms = compute_client.virtual_machines.list_all()
+#for vm in vms:
+#    if vm.name == vmname:
+ #       print(f"VM '{vmname}' found!")
 
 
 # Output success message (Flask will capture this)
