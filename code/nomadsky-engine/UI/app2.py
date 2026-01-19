@@ -19,6 +19,14 @@ form_data = {}
 def ping():
     return {"pong": True}, 200
 
+import requests
+
+try:
+    r = requests.get("http://localhost:5000/api/ping")
+    print(r.status_code, r.json())
+except requests.RequestException as e:
+    print("Request failed:", e)
+
 def run_script():
     data = request.json
     script_name = data.get('script')
