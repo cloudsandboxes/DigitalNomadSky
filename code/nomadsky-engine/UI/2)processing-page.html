@@ -376,12 +376,9 @@ async function runScript(stepId, scriptName, successMessage, parameters = null) 
         script: scriptName,
         source: source,
         destination: destination,
-        vmname: vmname
+        vmname: vmname,
+        extraValue: parameters
     };
-    // Add parameter only if it exists
-    if (parameters) {
-        bodyObj.extraValue = parameters;
-    }
     const body = JSON.stringify(bodyObj);  
     try {     
             const response = await fetch('http://localhost:5000/api/run-script', {
@@ -393,7 +390,7 @@ async function runScript(stepId, scriptName, successMessage, parameters = null) 
         
         if (result.success) {
             updateStep(stepId, 'completed',  result.output);
-            return true;
+            return result;
         } else {
             updateStep(stepId, 'error', 'Script failed', {
                 type: 'error',
@@ -427,9 +424,9 @@ async function runMigration() {
     for (const step of steps) {
         
         const success = await runScript(step.id, step.script, step.message, parameters);
-        if (!success) {
+        if (!success.success) {
             return; // Stop on error
-        } else { parameters = '/subscriptions/41aff5e1-41c9-4509-9fcb-d761d7f33740/resourceGroups/test/providers/Microsoft.Compute/virtualMachines/helpmij';}
+        } else { parameters = success.output;}
             
         await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between steps
     }
