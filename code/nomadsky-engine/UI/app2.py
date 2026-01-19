@@ -48,7 +48,7 @@ def run_script():
 
 def run_flask():
     """Run Flask in background thread"""
-    app.run(port=5000, debug=False, use_reloader=False)
+    app.run(port=5000, debug=True, use_reloader=False)
 
 def show_processing_page():
     """Load the processing page with form data"""
