@@ -371,17 +371,26 @@ function updateStep(stepId, status, customMessage = null, extraData = null) {
 // Run a single script via Flask
 async function runScript(stepId, scriptName, successMessage, parameters = null) {
     updateStep(stepId, 'running', 'Processing...');
+
+
+    const bodyObj = {
+        script: scriptName,
+        source: source,
+        destination: destination,
+        vmname: vmname
+    };
+
+    // Add parameter only if it exists
+    if (parameters) {
+        bodyObj.extra-value = parameters;
+    }
+    const body = JSON.stringify(bodyObj);  
     
     try {     
             const response = await fetch('http://localhost:5000/api/run-script', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                script: scriptName,
-                source: source,
-                destination: destination,
-                vmname: vmname
-            })
+            body: body 
         });
         const result = await response.json();
         
