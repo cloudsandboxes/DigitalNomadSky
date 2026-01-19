@@ -426,11 +426,13 @@ async function runMigration() {
     ];
     
     for (const step of steps) {
-        const success = await runScript(step.id, step.script, step.message, step.parameters);
+        const parameters = 'empty'
+        const success = await runScript(step.id, step.script, step.message, parameters);
         
         if (!success) {
             return; // Stop on error
-        }
+        }// else { const parameters = result.output}
+            
         await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between steps
     }
     
