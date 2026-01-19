@@ -24,17 +24,7 @@ def run_script():
     vmname = data.get('vmname')
     
     # Path to your scripts
-    script_path = f'C:/projects/nomadsky/code/nomadsky-engine/scripts/{script_name}'
-
-outputs = json.loads(completed.stdout)
-return jsonify({
-    "script": script_name,
-    "status": "success",
-    "output1": outputs["output1"],
-    "output2": outputs["output2"]
-})
-
-    
+    script_path = f'C:/projects/nomadsky/code/nomadsky-engine/scripts/{script_name}'  
     try:
         result = subprocess.run(
             ['python', script_path, source, destination, vmname],
