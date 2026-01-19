@@ -7,17 +7,13 @@ import threading
 
 # Flask setup
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Global variables to store form data
 form_data = {}
 
 # Flask API endpoint to run scripts
 @app.route('/api/run-script', methods=['POST'])
-
-# @app.route("/api/ping", methods=["GET"])
-# def ping():
-#   return {"pong": True}, 200
 
 def run_script():
     data = request.json
