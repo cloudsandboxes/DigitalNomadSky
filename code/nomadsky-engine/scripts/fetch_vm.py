@@ -26,12 +26,6 @@ from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.resource import SubscriptionClient
 from azure.core.exceptions import HttpResponseError
 
-
-
-
-
-
-
 # Use interactive browser login
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
 credential = InteractiveBrowserCredential(tenant_id=tenant_id)
@@ -43,7 +37,6 @@ subscription_client = SubscriptionClient(credential)
 vm_found = False
 
 for sub in subscription_client.subscriptions.list():
-    for sub in subscriptions:
         try:
             subscription_ids = sub.subscription_id
             compute_client = ComputeManagementClient(credential, subscription_ids)
