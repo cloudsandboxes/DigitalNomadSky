@@ -56,7 +56,8 @@ for sub in subscription_client.subscriptions.list():
                      os_type = full_vm.storage_profile.os_disk.os_type
                      resource_id = vm.id
                      subscription_id = subscription_ids
-                     power_state  = full_vm.instance_view.statuses    
+                     power_state  = full_vm.instance_view.statuses
+                     os_disk_id = vm.storage_profile.os_disk.managed_disk.id
         except HttpResponseError as e:
             # print(f"Skipping subscription {sub.subscription_id}: {e.message}")
             continue
@@ -73,7 +74,8 @@ else:
       'vm_size': vm_size,
       'resource_id': resource_id,
       'resource_group': resource_group,
-      'subscription_id': subscription_id
+      'subscription_id': subscription_id,
+      'os_disk_id' : os_disk_id
     }
 
 print(json.dumps(result))
