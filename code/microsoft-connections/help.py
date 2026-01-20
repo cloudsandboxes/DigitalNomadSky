@@ -65,132 +65,45 @@ print(sas_url)
 
 from time import sleep
 
-chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
-max_retries = 5
 
-# Resume if file exists
-start_byte = os.path.getsize(output_vhd_path) if os.path.exists(output_vhd_path) else 0
 
-while True:
-    headers = {"Range": f"bytes={start_byte}-"}
-    try:
-        with requests.get(sas_url, headers=headers, stream=True, timeout=60) as r:
-            r.raise_for_status()
-            mode = "ab" if start_byte > 0 else "wb"
-            with open(output_vhd_path, mode) as f:
-                for chunk in r.iter_content(chunk_size=chunk_size):
-                    if chunk:
-                        f.write(chunk)
-                        start_byte += len(chunk)
-                        print(f"Downloaded {start_byte / (1024*1024):.1f} MB", end="\r")
-        break  # finished successfully
-    except (requests.ConnectionError, requests.ChunkedEncodingError) as e:
-        print(f"\nConnection error, retrying... ({e})")
-        sleep(5)  # wait a few seconds
-        max_retries -= 1
-        if max_retries <= 0:
-            raise Exception("Max retries exceeded")
-            
+def download(output_vhd_path, sas_url):
+   chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
+   max_retries = 5
 
-result = {
+   # Resume if file exists
+   start_byte = os.path.getsize(output_vhd_path) if os.path.exists(output_vhd_path) else 0
+
+   while True:
+       headers = {"Range": f"bytes={start_byte}-"}
+       try:
+           with requests.get(sas_url, headers=headers, stream=True, timeout=60) as r:
+               r.raise_for_status()
+               mode = "ab" if start_byte > 0 else "wb"
+               with open(output_vhd_path, mode) as f:
+                   for chunk in r.iter_content(chunk_size=chunk_size):
+                       if chunk:
+                           f.write(chunk)
+                           start_byte += len(chunk)
+                           #print(f"Downloaded {start_byte / (1024*1024):.1f} MB", end="\r")
+           break  # finished successfully
+       except (requests.ConnectionError, requests.ChunkedEncodingError) as e:
+           #print(f"\nConnection error, retrying... ({e})")
+           sleep(5)  # wait a few seconds
+           max_retries -= 1
+           if max_retries <= 0:
+               raise Exception("Max retries exceeded")
+
+file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
+if file_size_gb > 1:
+   result = {
       'message': f"VM '{vmname}' successfully downloaded from {source}!",
-    }
-
-print(json.dumps(result))
-
-"""
-
-
-
-
-from azure.storage.blob import BlobClient
-
-
-
-
-
-blob = BlobClient.from_blob_url(sas_url)
-
-with open(output_vhd_path, "wb") as f:
-    download_stream = blob.download_blob()
-    download_stream.readinto(f)
-
-
-print("Download complete!")
-
-result = {
-      'message': f"VM '{vmname}' successfully downloaded from {source}!",
-    }
-
-print(json.dumps(result))
-
-
-
-    
-    #print(f"\nDownloading OS disk to {output_vhd_path}...")
-    #print("This may take a while depending on disk size...")
-    
-    # Create directory if it doesn't exist
-    os.makedirs(os.path.dirname(output_vhd_path), exist_ok=True)
-    
-    vhd_resp = requests.get(sas_url, stream=True)
-    vhd_resp.raise_for_status()
-    
-    # Get file size if available
-    total_size = int(vhd_resp.headers.get('content-length', 0))
-    downloaded = 0
-    
-    with open(output_vhd_path, "wb") as f:
-        for chunk in vhd_resp.iter_content(chunk_size=1024*1024):  # 1MB chunks
-            if chunk:
-                f.write(chunk)
-                downloaded += len(chunk)
-                if total_size > 0:
-                    percent = (downloaded / total_size) * 100
-                    #print(f"\rProgress: {percent:.1f}% ({downloaded / (1024**3):.2f} GB)", end="")
-    
-    #print(f"\n\n✓ Download complete: {output_vhd_path}")
-    
-    # Get file size
-    file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
-    #print(f"File size: {file_size_gb:.2f} GB")
-    
-    # -------------------------------
-    # 5) REVOKE ACCESS (OPTIONAL)
-    # -------------------------------
-    #print("\nRevoking disk access...")
-    revoke_uri = f"https://management.azure.com{os_disk_id}/endGetAccess?api-version=2023-04-02"
-    headers = get_headers(credential)
-    revoke_resp = requests.post(revoke_uri, headers=headers)
-    if revoke_resp.status_code in [200, 202]:
-        #print("Disk access revoked.")
-    
-    #print("\n✓ All operations completed successfully!")
-    #print(f"\nNote: VM '{vm_name}' is deallocated. Start it again when needed.")
-
-except requests.exceptions.RequestException as e:
-    print(f"\n✗ HTTP Error: {e}")
-    if hasattr(e, 'response') and e.response is not None:
-        print(f"Response: {e.response.text}")
-except Exception as e:
-    print(f"\n✗ Error: {e}")
-    import traceback
-    traceback.print_exc()
-
-sas_url= "happy"
-if not sas_url:
-    raise Exception(f"VM '{vmname}' not found in {source}")
-else:
-    # Output success message (Flask will capture this)
-    # print(f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}")
-    # way to export multiple values
-    # print(json.dumps({"output1": f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}", "output2": subscription_id}))
+   }
+   print(json.dumps(result))
+else: 
+    download(output_vhd_path, sas_url)
     result = {
-      'message': f"VM '{vmname}' successfully downloaded from {source}!",
-    }
+         'message': f"VM '{vmname}' successfully downloaded from {source}!",
+       }
 
-print(json.dumps(result))
-
-# 'output_vdh': output_vhd_path,
-#      'filesize' : file_size_gb
-"""
+    print(json.dumps(result))
