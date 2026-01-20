@@ -12,7 +12,7 @@ vmname = sys.argv[3].lower()
 if source == 'azure':
       # Azure SDK code to find VM
       result = subprocess.run(
-        ['python', 'C:/Projects/nomadsky/code/microsoft-connections/fetch_vm.py', source, destination, vmname],
+        ['python', 'C:/Projects/nomadsky/code/microsoft-connections/fetch-vm.py', source, destination, vmname],
         capture_output=True,
         text=True,
         check=True
