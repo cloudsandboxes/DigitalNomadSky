@@ -73,6 +73,7 @@ else:
       'vm_size': vm_size,
       'resource_id': resource_id,
       'resource_group': resource_group,
+      'subscription_id': subscription_id
     }
 
 print(json.dumps(result))
