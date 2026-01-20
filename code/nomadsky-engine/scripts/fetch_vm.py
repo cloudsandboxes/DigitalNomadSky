@@ -14,12 +14,10 @@ if source == 'azure':
       capture_output=True,
       text=True,
       check=True
-    )
-
-    output = result.stdout
-    print(result)
-
-# Get the output
+      )
+      output = result.stdout
+      print(result)
+      # Get the output
 elif source == 'aws':
    a='empty'
    #     # AWS boto3 code to find VM
