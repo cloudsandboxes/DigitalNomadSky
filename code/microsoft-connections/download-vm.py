@@ -27,7 +27,7 @@ from azure.mgmt.network import NetworkManagementClient
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
 credential = InteractiveBrowserCredential(tenant_id=tenant_id)
 
-
+"""
 # -------------------------------
 # 2) GET OS DISK INFO
 # -------------------------------
@@ -135,8 +135,9 @@ except Exception as e:
     print(f"\n✗ Error: {e}")
     import traceback
     traceback.print_exc()
+"""
 
-
+sas_url= "happy"
 if not sas_url:
     raise Exception(f"VM '{vmname}' not found in {source}")
 else:
@@ -145,12 +146,10 @@ else:
     # way to export multiple values
     # print(json.dumps({"output1": f"VM '{vmname}' found successfully in {source}! with resource_id = {resource_id}", "output2": subscription_id}))
     result = {
-      'message': f"VM '{vmname}' found successfully in {source}!",
-      'vm_size': vm_size,
-      'resource_id': resource_id,
-      'resource_group': resource_group,
-      'output_vdh': output_vhd_path,
-      'filesize' : file_size_gb
+      'message': f"VM '{vmname}' successfully downloaded from {source}!",
     }
 
 print(json.dumps(result))
+
+# 'output_vdh': output_vhd_path,
+#      'filesize' : file_size_gb
