@@ -1,3 +1,13 @@
+# Simulate fetching VM
+# TODO: Add actual API calls to source platform here
+# if source == 'azure':
+#     # Azure SDK code to find VM
+# elif source == 'aws':
+#     # AWS boto3 code to find VM
+# etc.
+
+
+
 import sys
 import json
 
