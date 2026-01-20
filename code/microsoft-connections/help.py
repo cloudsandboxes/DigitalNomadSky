@@ -15,6 +15,13 @@ resource_group = 'test'
 os_disk_id = '/subscriptions/41aff5e1-41c9-4509-9fcb-d761d7f33740/resourceGroups/test/providers/Microsoft.Compute/disks/helpmij_OsDisk_1_f5fd3ccab7494e1ab6409d83ce4b68df'
 output_vhd_path = r"C:\Temp\osdisk.vhd"
 file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
+print(file_size_gb))
+if file_size_gb > 1:
+   result = {
+      'message': f"VM '{vmname}' successfully downloaded from {source}!",
+   }
+   print(json.dumps(result))
+
 
 
 from azure.identity import InteractiveBrowserCredential
