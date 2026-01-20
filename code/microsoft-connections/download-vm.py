@@ -2,9 +2,9 @@ import sys
 import json
 import os
 import time
+from time import sleep
 import requests
 from datetime import datetime, timedelta, timezone
-#from urllib.parse import urlparse
 
 # Get arguments
 source = sys.argv[1]
@@ -26,7 +26,6 @@ from azure.mgmt.resource import SubscriptionClient
 from azure.core.exceptions import HttpResponseError
 
 
-#from azure.mgmt.network import NetworkManagementClient
 # Use interactive browser login
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
 credential = InteractiveBrowserCredential(tenant_id=tenant_id)
@@ -54,7 +53,6 @@ sas_url = sas.access_sas
 # 4) DOWNLOAD THE VHD
 # -------------------------------
 
-from time import sleep
 
 chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
 max_retries = 5
