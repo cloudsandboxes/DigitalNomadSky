@@ -48,6 +48,24 @@ sas = compute_client.disks.begin_grant_access(
 ).result()
 sas_url = sas.access_sas
 print(sas_url)
+
+    
+    
+# -------------------------------
+# 4) DOWNLOAD THE VHD
+# -------------------------------
+
+from azure.storage.blob import BlobClient
+
+
+blob = BlobClient.from_blob_url(sas_url)
+
+with open(output_vhd_path, "wb") as f:
+    download_stream = blob.download_blob()
+    download_stream.readinto(f)
+
+print("Download complete!")
+
 result = {
       'message': f"VM '{vmname}' successfully downloaded from {source}!",
     }
@@ -55,11 +73,8 @@ result = {
 print(json.dumps(result))
 
 """
+
     
-    
-    # -------------------------------
-    # 4) DOWNLOAD THE VHD
-    # -------------------------------
     #print(f"\nDownloading OS disk to {output_vhd_path}...")
     #print("This may take a while depending on disk size...")
     
