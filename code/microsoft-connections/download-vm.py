@@ -12,9 +12,10 @@ vmname = sys.argv[3].lower()
 shared_data_json = sys.argv[4]  # 4th argument
 shared_data = json.loads(shared_data_json)
 # Extract specific value
-vm_resource_id = shared_data.get('resource_id', '')
-os_disk_id = 
-output_vhd_path
+subscription_id = shared_data.get('subscription_id', '')
+resource_group = shared_data.get('resource_group', '')
+output_vhd_path =
+
 
 from azure.identity import InteractiveBrowserCredential
 from azure.mgmt.resource import ResourceManagementClient
@@ -25,6 +26,26 @@ from azure.mgmt.network import NetworkManagementClient
 # Use interactive browser login
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
 credential = InteractiveBrowserCredential(tenant_id=tenant_id)
+
+
+# -------------------------------
+# 2) GET OS DISK INFO
+# -------------------------------
+# print("\nGetting OS disk information...")
+get_vm_uri = (
+        f"https://management.azure.com/subscriptions/{subscription_id}"
+        f"/resourceGroups/{resource_group}/providers/Microsoft.Compute"
+        f"/virtualMachines/{vmname}?api-version=2023-03-01"
+  )
+   
+headers = get_headers(credential)
+vm_resp = requests.get(get_vm_uri, headers=headers)
+vm_resp.raise_for_status()
+vm = vm_resp.json()
+    
+os_disk_id = vm["properties"]["storageProfile"]["osDisk"]["managedDisk"]["id"]
+disk_name = os_disk_id.split("/")[-1]
+
 
 # -------------------------------
 # 3) REQUEST DISK EXPORT (ASYNC)
