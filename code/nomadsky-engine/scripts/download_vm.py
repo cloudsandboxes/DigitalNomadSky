@@ -12,7 +12,7 @@ shareddata_json = sys.argv[4]
 if source == 'azure':
       # Azure SDK code to find VM
       result = subprocess.run(
-        ['python', 'C:/Projects/nomadsky/code/microsoft-connections/dowonload-vm.py', source, destination, vmname, shareddata_json],
+        ['python', 'C:/Projects/nomadsky/code/microsoft-connections/download-vm.py', source, destination, vmname, shareddata_json],
         capture_output=True,
         text=True,
         check=True
