@@ -33,20 +33,14 @@ credential = InteractiveBrowserCredential(tenant_id=tenant_id)
 # -------------------------------
 # 2) GET OS DISK INFO
 # -------------------------------
-# print("\nGetting OS disk information...")
-get_vm_uri = (
-        f"https://management.azure.com/subscriptions/{subscription_id}"
-        f"/resourceGroups/{resource_group}/providers/Microsoft.Compute"
-        f"/virtualMachines/{vmname}?api-version=2023-03-01"
-  )
-   
-headers = get_headers(credential)
-vm_resp = requests.get(get_vm_uri, headers=headers)
-vm_resp.raise_for_status()
-vm = vm_resp.json()
-    
-os_disk_id = vm["properties"]["storageProfile"]["osDisk"]["managedDisk"]["id"]
-disk_name = os_disk_id.split("/")[-1]
+
+# Authentication
+credential = InteractiveBrowserCredential()
+compute_client = ComputeManagementClient(credential, subscription_id)
+
+
+vm = compute_client.virtual_machines.get(resource_group, vmname)
+os_disk_id = vm.storage_profile.os_disk.managed_disk.id
 
 result = {
       'message': f"VM '{vmname}' successfully downloaded from {source}!",
