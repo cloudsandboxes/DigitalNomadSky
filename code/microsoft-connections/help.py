@@ -55,7 +55,31 @@ print(sas_url)
 # 4) DOWNLOAD THE VHD
 # -------------------------------
 
+
+with requests.get(sas_url, stream=True) as r:
+    r.raise_for_status()
+    with open(output_vhd_path, "wb") as f:
+        for chunk in r.iter_content(chunk_size=10_000_000):
+            if chunk:
+                f.write(chunk)
+
+print("Download complete!")
+
+result = {
+      'message': f"VM '{vmname}' successfully downloaded from {source}!",
+    }
+
+print(json.dumps(result))
+
+"""
+
+
+
+
 from azure.storage.blob import BlobClient
+
+
+
 
 
 blob = BlobClient.from_blob_url(sas_url)
@@ -63,6 +87,7 @@ blob = BlobClient.from_blob_url(sas_url)
 with open(output_vhd_path, "wb") as f:
     download_stream = blob.download_blob()
     download_stream.readinto(f)
+
 
 print("Download complete!")
 
