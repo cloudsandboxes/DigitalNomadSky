@@ -3,6 +3,7 @@ import json
 import os
 import time
 import requests
+from datetime import datetime, timedelta, timezone
 #from urllib.parse import urlparse
 
 # Get arguments
@@ -23,15 +24,12 @@ from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.resource import SubscriptionClient
 from azure.core.exceptions import HttpResponseError
-from datetime import datetime, timedelta
+
 
 #from azure.mgmt.network import NetworkManagementClient
 # Use interactive browser login
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
 credential = InteractiveBrowserCredential(tenant_id=tenant_id)
-
-
-
 
 # -------------------------------
 # 3) REQUEST DISK EXPORT (ASYNC)
@@ -39,22 +37,24 @@ credential = InteractiveBrowserCredential(tenant_id=tenant_id)
 compute_client = ComputeManagementClient(credential, subscription_id)
 
 # Generate SAS URL
-expiry_time = datetime.utcnow() + timedelta(hours=1)  # valid for 1 hour
+# current UTC time, timezone-aware
+now_utc = datetime.now(timezone.utc)
+# example: 1 hour later
+expiry_time = now_utc + timedelta(hours=1)
+
 sas = compute_client.disks.begin_grant_access(
     resource_group_name=resource_group,
     disk_name=os_disk_id.split('/')[-1],
     grant_access_data={"access": "Read", "duration_in_seconds": 3600}
-).result().access_sas
-
-#sas_url = sas.access_sas
-#print("OS Disk SAS URL:", sas_url)
-
-
+).result()
+sas_url = sas.access_sas
+#print(sas_url)
 result = {
       'message': f"VM '{vmname}' successfully downloaded from {source}!",
     }
 
 print(json.dumps(result))
+
 
 """
 
