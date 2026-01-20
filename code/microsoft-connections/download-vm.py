@@ -1,8 +1,8 @@
 import sys
 import json
-#import os
-#import time
-#import requests
+import os
+import time
+import requests
 #from urllib.parse import urlparse
 
 # Get arguments
