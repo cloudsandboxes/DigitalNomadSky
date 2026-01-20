@@ -49,6 +49,40 @@ sas = compute_client.disks.begin_grant_access(
 ).result()
 sas_url = sas.access_sas
 #print(sas_url)
+
+# -------------------------------
+# 4) DOWNLOAD THE VHD
+# -------------------------------
+
+from time import sleep
+
+chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
+max_retries = 5
+
+# Resume if file exists
+start_byte = os.path.getsize(output_vhd_path) if os.path.exists(output_vhd_path) else 0
+
+while True:
+    headers = {"Range": f"bytes={start_byte}-"}
+    try:
+        with requests.get(sas_url, headers=headers, stream=True, timeout=60) as r:
+            r.raise_for_status()
+            mode = "ab" if start_byte > 0 else "wb"
+            with open(output_vhd_path, mode) as f:
+                for chunk in r.iter_content(chunk_size=chunk_size):
+                    if chunk:
+                        f.write(chunk)
+                        start_byte += len(chunk)
+                        #print(f"Downloaded {start_byte / (1024*1024):.1f} MB", end="\r")
+        break  # finished successfully
+    except (requests.ConnectionError, requests.ChunkedEncodingError) as e:
+        #print(f"\nConnection error, retrying... ({e})")
+        sleep(5)  # wait a few seconds
+        max_retries -= 1
+        if max_retries <= 0:
+            raise Exception("Max retries exceeded")
+            
+
 result = {
       'message': f"VM '{vmname}' successfully downloaded from {source}!",
     }
@@ -56,73 +90,12 @@ result = {
 print(json.dumps(result))
 
 
-"""
 
 
-
-# print("\nRequesting disk export access...")
-export_uri = f"https://management.azure.com{os_disk_id}/beginGetAccess?api-version=2023-04-02"
-export_body = {
-      "access": "Read",
-      "durationInSeconds": 3600
-    }
-    
-headers = get_headers(credential)
-export_resp = requests.post(export_uri, headers=headers, json=export_body)
-export_resp.raise_for_status()
-    
-    # Get the async operation URL from Location or Azure-AsyncOperation header
-    if "Location" in export_resp.headers:
-        operation_url = export_resp.headers["Location"]
-    elif "Azure-AsyncOperation" in export_resp.headers:
-        operation_url = export_resp.headers["Azure-AsyncOperation"]
-    else:
-        raise Exception("No async operation URL found in response headers")
-    
-    #print(f"Polling for SAS URL generation...")
-    result = poll_async_operation(operation_url, credential, timeout=300)
-    
-    # The SAS URL should be in the result
-    sas_url = result.get("properties", {}).get("output", {}).get("accessSAS")
-    if not sas_url:
-        # Try alternative location
-        sas_url = result.get("accessSAS")
-    
-    if not sas_url:
-        raise Exception(f"Could not find SAS URL in response: {result}")
-    
-    #print("SAS URL obtained successfully.")
-    
-    # -------------------------------
-    # 4) DOWNLOAD THE VHD
-    # -------------------------------
-    #print(f"\nDownloading OS disk to {output_vhd_path}...")
-    #print("This may take a while depending on disk size...")
-    
-    # Create directory if it doesn't exist
-    os.makedirs(os.path.dirname(output_vhd_path), exist_ok=True)
-    
-    vhd_resp = requests.get(sas_url, stream=True)
-    vhd_resp.raise_for_status()
-    
-    # Get file size if available
-    total_size = int(vhd_resp.headers.get('content-length', 0))
-    downloaded = 0
-    
-    with open(output_vhd_path, "wb") as f:
-        for chunk in vhd_resp.iter_content(chunk_size=1024*1024):  # 1MB chunks
-            if chunk:
-                f.write(chunk)
-                downloaded += len(chunk)
-                if total_size > 0:
-                    percent = (downloaded / total_size) * 100
-                    #print(f"\rProgress: {percent:.1f}% ({downloaded / (1024**3):.2f} GB)", end="")
-    
-    #print(f"\n\n✓ Download complete: {output_vhd_path}")
-    
-    # Get file size
+"""    
     file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
-    #print(f"File size: {file_size_gb:.2f} GB")
+
+#print(f"File size: {file_size_gb:.2f} GB")
     
     # -------------------------------
     # 5) REVOKE ACCESS (OPTIONAL)
