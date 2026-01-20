@@ -14,7 +14,7 @@ shared_data = json.loads(shared_data_json)
 # Extract specific value
 subscription_id = shared_data.get('subscription_id', '')
 resource_group = shared_data.get('resource_group', '')
-output_vhd_path =
+output_vhd_path = r"C:\Temp\osdisk.vhd"
 
 
 from azure.identity import InteractiveBrowserCredential
