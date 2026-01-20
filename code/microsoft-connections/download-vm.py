@@ -25,14 +25,7 @@ from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.resource import SubscriptionClient
 from azure.core.exceptions import HttpResponseError
-
-file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
-if file_size_gb > 1:
-   result = {
-      'message': f"VM '{vmname}' successfully downloaded from {source}!",
-   }
-   print(json.dumps(result))
-    
+  
 
 # Use interactive browser login
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
@@ -62,38 +55,49 @@ sas_url = sas.access_sas
 # -------------------------------
 
 
-chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
-max_retries = 5
+def download(output_vhd_path, sas_url):
+   chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
+   max_retries = 5
 
-# Resume if file exists
-start_byte = os.path.getsize(output_vhd_path) if os.path.exists(output_vhd_path) else 0
+   # Resume if file exists
+   start_byte = os.path.getsize(output_vhd_path) if os.path.exists(output_vhd_path) else 0
 
-while True:
-    headers = {"Range": f"bytes={start_byte}-"}
-    try:
-        with requests.get(sas_url, headers=headers, stream=True, timeout=60) as r:
-            r.raise_for_status()
-            mode = "ab" if start_byte > 0 else "wb"
-            with open(output_vhd_path, mode) as f:
-                for chunk in r.iter_content(chunk_size=chunk_size):
-                    if chunk:
-                        f.write(chunk)
-                        start_byte += len(chunk)
-                        #print(f"Downloaded {start_byte / (1024*1024):.1f} MB", end="\r")
-        break  # finished successfully
-    except (requests.ConnectionError, requests.ChunkedEncodingError) as e:
-        #print(f"\nConnection error, retrying... ({e})")
-        sleep(5)  # wait a few seconds
-        max_retries -= 1
-        if max_retries <= 0:
-            raise Exception("Max retries exceeded")
-            
+   while True:
+       headers = {"Range": f"bytes={start_byte}-"}
+       try:
+           with requests.get(sas_url, headers=headers, stream=True, timeout=60) as r:
+               r.raise_for_status()
+               mode = "ab" if start_byte > 0 else "wb"
+               with open(output_vhd_path, mode) as f:
+                   for chunk in r.iter_content(chunk_size=chunk_size):
+                       if chunk:
+                           f.write(chunk)
+                           start_byte += len(chunk)
+                           #print(f"Downloaded {start_byte / (1024*1024):.1f} MB", end="\r")
+           break  # finished successfully
+       except (requests.ConnectionError, requests.ChunkedEncodingError) as e:
+           #print(f"\nConnection error, retrying... ({e})")
+           sleep(5)  # wait a few seconds
+           max_retries -= 1
+           if max_retries <= 0:
+               raise Exception("Max retries exceeded")
 
-result = {
+file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
+if file_size_gb > 1:
+   result = {
       'message': f"VM '{vmname}' successfully downloaded from {source}!",
-    }
+   }
+   print(json.dumps(result))
+else: 
+    download(output_vhd_path, sas_url)
+    result = {
+         'message': f"VM '{vmname}' successfully downloaded from {source}!",
+       }
 
-print(json.dumps(result))
+    print(json.dumps(result))
+
+
+
 
 
 
