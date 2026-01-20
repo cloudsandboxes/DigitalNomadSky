@@ -18,7 +18,7 @@ if source == 'azure':
         check=True
       )
       output = result.stdout
-      print(result)
+      print(result.stdout)
       # Get the output
 elif source == 'aws':
    a='empty'
