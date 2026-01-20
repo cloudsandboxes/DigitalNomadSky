@@ -1,4 +1,3 @@
-import sys
 from azure.identity import InteractiveBrowserCredential
 from azure.mgmt.compute import ComputeManagementClient
 import sys
