@@ -19,12 +19,20 @@ os_disk_id = shared_data.get('os_disk_id', '')
 output_vhd_path = r"C:\Temp\osdisk.vhd"
 
 
+
 from azure.identity import InteractiveBrowserCredential
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.resource import SubscriptionClient
 from azure.core.exceptions import HttpResponseError
 
+file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
+if file_size_gb > 1:
+   result = {
+      'message': f"VM '{vmname}' successfully downloaded from {source}!",
+    }
+    print(json.dumps(result))
+    sys.exit(0)
 
 # Use interactive browser login
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
