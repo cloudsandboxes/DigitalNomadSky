@@ -9,21 +9,12 @@ from urllib.parse import urlparse
 source = sys.argv[1]
 destination = sys.argv[2]
 vmname = sys.argv[3].lower()
-
-# Your logic here to fetch VM from source platform
-# Example: connect to Azure/AWS/GCP API and search for the VM
-# placeholder for actual implementation
-
-# Simulate fetching VM
-# TODO: Add actual API calls to source platform here
-# if source == 'azure':
-#     # Azure SDK code to find VM
-# elif source == 'aws':
-#     # AWS boto3 code to find VM
-# etc.
-
-# if vm_not_found:
-#    raise Exception(f"VM '{vmname}' not found in {source}")
+shared_data_json = sys.argv[4]  # 4th argument
+shared_data = json.loads(shared_data_json)
+# Extract specific value
+vm_resource_id = shared_data.get('resource_id', '')
+os_disk_id = 
+output_vhd_path
 
 from azure.identity import InteractiveBrowserCredential
 from azure.mgmt.resource import ResourceManagementClient
@@ -35,20 +26,19 @@ from azure.mgmt.network import NetworkManagementClient
 tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
 credential = InteractiveBrowserCredential(tenant_id=tenant_id)
 
-   
-    # -------------------------------
-    # 3) REQUEST DISK EXPORT (ASYNC)
-    # -------------------------------
-    # print("\nRequesting disk export access...")
-    export_uri = f"https://management.azure.com{os_disk_id}/beginGetAccess?api-version=2023-04-02"
-    export_body = {
-        "access": "Read",
-        "durationInSeconds": 3600
+# -------------------------------
+# 3) REQUEST DISK EXPORT (ASYNC)
+# -------------------------------
+# print("\nRequesting disk export access...")
+export_uri = f"https://management.azure.com{os_disk_id}/beginGetAccess?api-version=2023-04-02"
+export_body = {
+      "access": "Read",
+      "durationInSeconds": 3600
     }
     
-    headers = get_headers(credential)
-    export_resp = requests.post(export_uri, headers=headers, json=export_body)
-    export_resp.raise_for_status()
+headers = get_headers(credential)
+export_resp = requests.post(export_uri, headers=headers, json=export_body)
+export_resp.raise_for_status()
     
     # Get the async operation URL from Location or Azure-AsyncOperation header
     if "Location" in export_resp.headers:
@@ -58,7 +48,7 @@ credential = InteractiveBrowserCredential(tenant_id=tenant_id)
     else:
         raise Exception("No async operation URL found in response headers")
     
-    print(f"Polling for SAS URL generation...")
+    #print(f"Polling for SAS URL generation...")
     result = poll_async_operation(operation_url, credential, timeout=300)
     
     # The SAS URL should be in the result
@@ -70,13 +60,13 @@ credential = InteractiveBrowserCredential(tenant_id=tenant_id)
     if not sas_url:
         raise Exception(f"Could not find SAS URL in response: {result}")
     
-    print("SAS URL obtained successfully.")
+    #print("SAS URL obtained successfully.")
     
     # -------------------------------
     # 4) DOWNLOAD THE VHD
     # -------------------------------
-    print(f"\nDownloading OS disk to {output_vhd_path}...")
-    print("This may take a while depending on disk size...")
+    #print(f"\nDownloading OS disk to {output_vhd_path}...")
+    #print("This may take a while depending on disk size...")
     
     # Create directory if it doesn't exist
     os.makedirs(os.path.dirname(output_vhd_path), exist_ok=True)
@@ -95,26 +85,26 @@ credential = InteractiveBrowserCredential(tenant_id=tenant_id)
                 downloaded += len(chunk)
                 if total_size > 0:
                     percent = (downloaded / total_size) * 100
-                    print(f"\rProgress: {percent:.1f}% ({downloaded / (1024**3):.2f} GB)", end="")
+                    #print(f"\rProgress: {percent:.1f}% ({downloaded / (1024**3):.2f} GB)", end="")
     
-    print(f"\n\n✓ Download complete: {output_vhd_path}")
+    #print(f"\n\n✓ Download complete: {output_vhd_path}")
     
     # Get file size
     file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
-    print(f"File size: {file_size_gb:.2f} GB")
+    #print(f"File size: {file_size_gb:.2f} GB")
     
     # -------------------------------
     # 5) REVOKE ACCESS (OPTIONAL)
     # -------------------------------
-    print("\nRevoking disk access...")
+    #print("\nRevoking disk access...")
     revoke_uri = f"https://management.azure.com{os_disk_id}/endGetAccess?api-version=2023-04-02"
     headers = get_headers(credential)
     revoke_resp = requests.post(revoke_uri, headers=headers)
     if revoke_resp.status_code in [200, 202]:
-        print("Disk access revoked.")
+        #print("Disk access revoked.")
     
-    print("\n✓ All operations completed successfully!")
-    print(f"\nNote: VM '{vm_name}' is deallocated. Start it again when needed.")
+    #print("\n✓ All operations completed successfully!")
+    #print(f"\nNote: VM '{vm_name}' is deallocated. Start it again when needed.")
 
 except requests.exceptions.RequestException as e:
     print(f"\n✗ HTTP Error: {e}")
@@ -126,7 +116,7 @@ except Exception as e:
     traceback.print_exc()
 
 
-if not vm_found:
+if not sas_url:
     raise Exception(f"VM '{vmname}' not found in {source}")
 else:
     # Output success message (Flask will capture this)
