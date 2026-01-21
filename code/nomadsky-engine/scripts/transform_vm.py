@@ -1,41 +1,33 @@
 import sys
-from azure.identity import InteractiveBrowserCredential
-from azure.mgmt.compute import ComputeManagementClient
-import sys
-import json
+import subprocess
+import config
+print(config.PARAM1)
+
+# Simulate fetching VM
+# TODO: Add actual API calls to source platform here
 
 # Get arguments
 source = sys.argv[1]
 destination = sys.argv[2]
-vmname = sys.argv[3]
+vmname = sys.argv[3].lower()
+shareddata_json = sys.argv[4]
 
-# Extract specific value from previous files
-shared_data_json = sys.argv[4]  # 4th argument
-shared_data = json.loads(shared_data_json)
-vm_resource_id = shared_data.get('resource_id', '')
-
-try:
-    subscription_id = vm_resource_id
-
-except IndexError:
-        raise Exception(f" Invalid resource ID format: '{vm_resource_id}' ")
-        
-# Authenticate interactively
-tenant_id = "78ba35ee-470e-4a16-ba92-ad53510ad7f6"
-#credential = InteractiveBrowserCredential(tenant_id=tenant_id)
-
-
-
-#add logic
+if source == 'azure':
+      # Azure SDK code to find VM
+      result = subprocess.run(
+        ['python', 'C:/Projects/nomadsky/code/microsoft-connections/download-vm.py', source, destination, vmname, shareddata_json],
+        capture_output=True,
+        text=True,
+        check=True
+      )
+      output = result.stdout
+      print(result.stdout)
+      # Get the output
+elif source == 'aws':
+   a='empty'
+   #     # AWS boto3 code to find VM
+   # etc.
 
 
-
-result = {
-   'message': f"VM '{vmname}' has been changed the osdiskformat successfully!",
-   'resource_id': vm_resource_id
-    }
-print(json.dumps(result))
-
-
-
-
+#from helpers import my_function
+#result = my_function(5)
