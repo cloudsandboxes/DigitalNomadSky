@@ -1,3 +1,4 @@
 tenantid = "value"
-osdisktype = "vhd"
+exportdisktype = "vhd"
+importdisktype = "vhd"
 number = 10
