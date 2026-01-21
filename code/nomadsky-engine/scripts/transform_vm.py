@@ -10,6 +10,7 @@ source = sys.argv[1]
 destination = sys.argv[2]
 vmname = sys.argv[3].lower()
 shareddata_json = sys.argv[4]
+shared_data = json.loads(shared_data_json)
 exportdisktype = shared_data.get('exportdisktype', '')
 
 if destination == 'azure':
