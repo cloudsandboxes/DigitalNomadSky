@@ -1,8 +1,19 @@
 def start_vm ():
+  import sys
   from azure.identity import DefaultAzureCredential
   from azure.mgmt.compute import ComputeManagementClient
   from azure.mgmt.network import NetworkManagementClient
   from azure.mgmt.resource import ResourceManagementClient
+  import tkinter as tk
+  from tkinter import simpledialog
+
+  root = tk.Tk()
+  root.withdraw()  # hide main window
+
+  username = simpledialog.askstring("Credentials", "Enter username:")
+  password = simpledialog.askstring("Credentials", "Enter password:", show="*")
+
+  #print(f"Username: {username}, Password: {password}")
 
   subscription_id = "YOUR_SUBSCRIPTION_ID"
   resource_group = "YOUR_RESOURCE_GROUP"
