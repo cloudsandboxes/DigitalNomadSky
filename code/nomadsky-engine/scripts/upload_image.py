@@ -15,9 +15,10 @@ if destination == 'azure':
       from upload_disk import upload_disk
           
       try:
-            upload_disk(shared_data)
+            url = upload_disk(shared_data)
             result = {
-             'message': f"the diskfile type is already '{config.importdisktype}' so no need to transform type!",
+             'message': f"the diskfile is succesfully transfered to '{destination}' at the '{url}'",
+             'disk_url' : url
              }
             print(json.dumps(result))
       except IndexError:
@@ -32,7 +33,7 @@ elif destination == 'aws':
 #from helpers import my_function
 #result = my_function(5)
 #exportdisktype = shared_data.get('exportdisktype', '')
-
+#a, b = my_function(10)
 
 
 
