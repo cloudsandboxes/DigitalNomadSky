@@ -48,6 +48,7 @@ def upload_disk(shared_data):
         account_url=f"https://{storage_account_name}.blob.core.windows.net",
         credential=storage_key
     )
+    container_client = blob_service.get_container_client(container_name)
     try:
         container_client.get_container_properties()
         #print("Container already exists")
