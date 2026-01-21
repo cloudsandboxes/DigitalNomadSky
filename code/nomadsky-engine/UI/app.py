@@ -4,3 +4,4 @@
 #pi -m pip install azure-mgmt-resource
 #py -m pip install requests
 #pi -m pip install azure-storage-blob
+#pi -m pip install azure-mgmt-storage
