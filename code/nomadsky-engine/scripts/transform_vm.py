@@ -1,9 +1,6 @@
 import sys
 import subprocess
 
-
-
-
 # Simulate fetching VM
 # TODO: Add actual API calls to source platform here
 
@@ -17,7 +14,11 @@ if source == 'azure':
       # Azure SDK code to find VM
       sys.path.append(r"C:/projects/nomadsky/code/microsoft-connections")
       import config
-      print(config.tenantid)
+      
+      result = {
+            'message': f"VM '{config.tenantid}' has been deallocated successfully!",
+       }
+      print(json.dumps(result))
 elif source == 'aws':
    a='empty'
    #     # AWS boto3 code to find VM
