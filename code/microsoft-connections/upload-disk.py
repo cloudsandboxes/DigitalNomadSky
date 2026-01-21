@@ -1,4 +1,4 @@
-def upload_disk()
+def upload_disk():
     
     from azure.identity import DefaultAzureCredential
     from azure.mgmt.storage import StorageManagementClient
