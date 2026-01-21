@@ -50,5 +50,5 @@ def upload_disk(shared_data):
     blob_client = blob_service.get_blob_client(container=container_name, blob=blob_name)
     with open(vhd_path, "rb") as data:
         blob_client.upload_blob(data, blob_type="PageBlob", overwrite=False)
-
+    return account_url
     
