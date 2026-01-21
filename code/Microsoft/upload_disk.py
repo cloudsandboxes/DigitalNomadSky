@@ -6,8 +6,6 @@ def upload_disk(shared_data):
     from azure.storage.blob import BlobServiceClient, BlobClient
     import os
     from azure.identity import InteractiveBrowserCredential
-    from azure.mgmt.compute import ComputeManagementClient
-    import json
     import config
 
 
@@ -25,15 +23,21 @@ def upload_disk(shared_data):
 
     # Create storage account
     storage_client = StorageManagementClient(credential, subscription_id)
-    storage_client.storage_accounts.begin_create(
-        resource_group,
-        storage_account_name,
-        {
-            "sku": {"name": "Standard_LRS"},
-            "kind": "StorageV2",
-            "location": location
-        }
-    ).result()
+    try:
+        storage_client.storage_accounts.get_properties(resource_group, storage_account_name)
+        #print("Storage account already exists")
+    except ResourceNotFoundError:
+        #print("Creating storage account...")
+        storage_client.storage_accounts.begin_create(
+            resource_group,
+            storage_account_name,
+            {
+                "sku": {"name": "Standard_LRS"},
+                "kind": "StorageV2",
+                "location": location
+            }
+        ).result()
+        #print("Storage account created")
 
     # Get storage account key
     keys = storage_client.storage_accounts.list_keys(resource_group, storage_account_name)
@@ -44,11 +48,23 @@ def upload_disk(shared_data):
         account_url=f"https://{storage_account_name}.blob.core.windows.net",
         credential=storage_key
     )
-    container_client = blob_service.create_container(container_name)
+    try:
+        container_client.get_container_properties()
+        #print("Container already exists")
+    except ResourceNotFoundError:
+        #print("Creating container...")
+        blob_service.create_container(container_name)
+        #print("Container created")
 
     # Upload VHD
     blob_client = blob_service.get_blob_client(container=container_name, blob=blob_name)
-    with open(vhd_path, "rb") as data:
-        blob_client.upload_blob(data, blob_type="PageBlob", overwrite=False)
+    try:
+        blob_client.get_blob_properties()
+        #print("Blob already exists")
+    except ResourceNotFoundError:
+        #print("Uploading VHD...")
+        with open(vhd_path, "rb") as data:
+            blob_client.upload_blob(data, blob_type="PageBlob", overwrite=False)
+        #print(f"VHD uploaded: {blob_client.url}")
     return account_url
     
