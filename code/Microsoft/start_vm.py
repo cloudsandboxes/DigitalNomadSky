@@ -35,12 +35,11 @@ def start_vm (shared_data):
 
   subscription_id = config.subscritpion_id
   resource_group = config.resource_group
-  vm_name = "MyVM"
+  vm_name = shared_data.get('vm_name', '')
   location = config.location
-  
-  vhd_url = "https://<storage_account>.blob.core.windows.net/<container>/<vhd_file>.vhd"
+  vhd_url = shared_data.get('vhd_url', '')
 
-  #credential = DefaultAzureCredential()
+  credential = DefaultAzureCredential()
   compute_client = ComputeManagementClient(credential, subscription_id)
   network_client = NetworkManagementClient(credential, subscription_id)
   resource_client = ResourceManagementClient(credential, subscription_id)
