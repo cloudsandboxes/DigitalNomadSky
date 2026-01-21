@@ -10,21 +10,21 @@ source = sys.argv[1]
 destination = sys.argv[2]
 vmname = sys.argv[3].lower()
 shareddata_json = sys.argv[4]
-exportfiletype = "vhd"
+exportdisktype = shared_data.get('exportdisktype', '')
 
 if destination == 'azure':
       # Azure SDK code to find VM
       sys.path.append(r"C:/projects/nomadsky/code/microsoft-connections")
       import config
-      filetype = config.importdiskfile
-      if (filetype == exportfiletype):
+      importdisktype = config.importdisktype
+      if (importdisktype == exportdisktype):
             result = {
-             'message': f"the diskfile type is already '{config.filetype}' so no need to transform type!",
+             'message': f"the diskfile type is already '{config.importdisktype}' so no need to transform type!",
              }
             print(json.dumps(result))
       else:
             result = {
-             'message': f"the diskfile type is different '{config.filetype}' to '{exportfiletype}' so need to transform!",
+             'message': f"the import diskfile type is different '{config.importdisktype}' to the export type '{exportfiletype}' so need to transform!",
              }
             print(json.dumps(result))
       
