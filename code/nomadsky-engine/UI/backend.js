@@ -101,7 +101,7 @@ async function runMigration() {
     ];
 
     let sharedData = {
-    whatastart: 'empthy'
+    message: 'empthy'
     }; // Store data from previous steps
     
     for (const step of steps) {
@@ -110,7 +110,7 @@ async function runMigration() {
             return; // Stop on error
         }
         // Parse output and add to shared data
-        const dataout = JSON.parse(success.output);
+        const dataout = JSON.parse(success.output); 
         sharedData_nomessage = sharedData.pop("message", None); 
         sharedData = { ...sharedData_nomessage, ...dataout }; // Merge new data
         
