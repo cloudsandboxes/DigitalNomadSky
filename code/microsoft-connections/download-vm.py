@@ -82,21 +82,19 @@ def download(output_vhd_path, sas_url):
            if max_retries <= 0:
                raise Exception("Max retries exceeded")
 
-#try
-#file_size_gb = os.path.getsize(output_vhd_path) / (1024**3)
-#if file_size_gb > 1:
-#   result = {
-#      'message': f"VM '{vmname}' successfully downloaded from {source}!",
-#   }
-#   print(json.dumps(result))
-#else: 
-    
-download(output_vhd_path, sas_url)
-result = {
+if os.path.exists(output_vhd_path):
+   file_size_gb = os.path.getsize(output_vhd_path) / (1024**3) 
+   result = {
+      'message': f"VM '{vmname}' already downloadeded from {source}!",
+   }
+   print(json.dumps(result))
+else: 
+   download(output_vhd_path, sas_url)
+   file_size_gb = os.path.getsize(output_vhd_path) / (1024**3) 
+   result = {
       'message': f"VM '{vmname}' successfully downloaded from {source}!",
      }
-
-print(json.dumps(result))
+   print(json.dumps(result))
 
 
 
