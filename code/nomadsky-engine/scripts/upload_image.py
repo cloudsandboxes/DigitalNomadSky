@@ -17,7 +17,7 @@ if destination == 'azure':
       # Azure SDK code to find VM
       sys.path.append(r"C:/projects/nomadsky/code/microsoft-connections")
       import config
-      from upload-image import upload_image
+      from upload-disk import upload_disk
       importdisktype = config.importdisktype
     
       try:
