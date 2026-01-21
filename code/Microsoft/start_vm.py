@@ -6,14 +6,30 @@ def start_vm (shared_data):
   from azure.mgmt.network import NetworkManagementClient
   from azure.mgmt.resource import ResourceManagementClient
   import tkinter as tk
-  from tkinter import simpledialog
+  from tkinter import simpledialog, messagebox
   import config
+  import re
 
   root = tk.Tk()
   root.withdraw()  # hide main window
 
   username = simpledialog.askstring("Credentials", "Enter username:")
-  password = simpledialog.askstring("Credentials", "Enter password:", show="*")
+  
+  while True:
+      password = simpledialog.askstring("Password", "Enter a password:", show="*")
+      if password is None:  # user cancelled
+          break
+
+      # Check rules: min 15 chars, at least 1 uppercase, 1 number, 1 special
+      if (len(password) >= 15 and
+          re.search(r"[A-Z]", password) and
+          re.search(r"[0-9]", password) and
+          re.search(r"[!@#$%^&*(),.?\":{}|<>]", password)):
+          messagebox.showinfo("Success", "Password accepted!")
+          break
+      else:
+          messagebox.showerror("Invalid", "Password must be at least 15 characters with uppercase, number, and special character.")
+  
 
   #print(f"Username: {username}, Password: {password}")
 
