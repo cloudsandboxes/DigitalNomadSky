@@ -15,7 +15,7 @@ exportdisktype = shared_data.get('exportdisktype', '')
 
 if destination == 'azure':
       # Azure SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/microsoft-connections")
+      sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
       import config
       from upload-disk import upload_disk
       importdisktype = config.importdisktype
