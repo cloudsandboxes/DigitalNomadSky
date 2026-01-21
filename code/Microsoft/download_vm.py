@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r"C:/projects/nomadsky/code/microsoft-connections")
+sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
 import json
 import os
 import time
