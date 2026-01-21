@@ -20,7 +20,7 @@ def upload_disk(shared_data):
     vhd_path = shared_data.get('output_vhd_path', '')
     blob_name = config.blob_name
 
-    tenant_id = config.destinationtenantid
+    tenant_id = config.destionationtenantid
     credential = InteractiveBrowserCredential(tenant_id=tenant_id)
 
     # Create storage account
