@@ -13,7 +13,7 @@ def start_vm (shared_data):
   resource_group = config.resource_group
   vm_name = shared_data.get('vm_name', '')
   location = config.location
-  account_url = shared_data.get('disk_url', '')
+  account_url = shared_data.get('account_url', '')
   vhd_url = account_url + "/" + config.container_name + "/" + config.blob_name
   nic_id = shared_data.get('nic_id', '')
   os_type = shared_data.get('os_type', '')
