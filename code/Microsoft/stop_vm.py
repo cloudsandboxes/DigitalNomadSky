@@ -6,7 +6,7 @@
 # -------------------------------
 
 
-def fetch_vm(shared_data):
+def stop_vm(shared_data):
         import sys
         import json
         sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
@@ -51,4 +51,5 @@ def fetch_vm(shared_data):
           'message': f"VM '{vmname}' has been deallocated successfully!",
           'resource_id': vm_resource_id
         }
-        print(json.dumps(result))
+        
+        return json.dumps(result)
