@@ -25,9 +25,18 @@ if source == 'azure':
         raise Exception(f" VM could not be downloaded: '{shared_data}' ")
    
 elif source == 'aws':
-   a='empty'
-   #     # AWS boto3 code to find VM
-   # etc.
+      # AWS SDK code to download VM
+      sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+      import config
+      from downloading_vm import  download_aws_osdisk
+      try:
+            result =  download_aws_osdisk(shared_data)
+            print(json.dumps(result))
+      except IndexError:
+        raise Exception(f" VM could not be downloaded: '{shared_data}' ")
+else:
+        raise Exception(f" the source platform is not yet supported")
+      
 
 # Setup logger
 logger = logging.getLogger(__name__)
