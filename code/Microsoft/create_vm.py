@@ -60,7 +60,7 @@ def start_vm (shared_data):
               "name": f"{vm_name}_OSDisk",
               "caching": "ReadWrite",
               "create_option": "FromImage",
-              "managed_disk": {"storage_account_type": "Standard_LRS"  # options: Standard_LRS, StandardSSD_LRS, Premium_LRS},
+              "managed_disk": {"storage_account_type": "Standard_LRS"},  # options: Standard_LRS, StandardSSD_LRS, Premium_LRS},
               "vhd": {
                   "uri": vhd_url
               }
