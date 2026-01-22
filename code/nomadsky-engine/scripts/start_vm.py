@@ -12,7 +12,7 @@ if destination == 'azure':
       # Azure SDK code to find VM
       sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
       import config
-      from start_vm import start_vm
+      from create_vm import start_vm
           
       try:
             nic = start_vm(shared_data)
