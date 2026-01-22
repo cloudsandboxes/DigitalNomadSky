@@ -42,6 +42,8 @@ def start_vm (shared_data):
   nic_id = shared_data.get('nic_id', '')
   os_type = shared_data.get('os_type', '')
   vm_size = shared_data.get('vm_size', '')
+
+  vhd_url = 'https://compliceert20.blob.core.windows.net/vhds/osdisk.vhd'
   
   tenant_id = config.destionationtenantid
   credential = InteractiveBrowserCredential(tenant_id=tenant_id)
