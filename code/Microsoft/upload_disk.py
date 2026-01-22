@@ -7,6 +7,7 @@ def upload_disk(shared_data):
     import os
     from azure.identity import InteractiveBrowserCredential
     import config
+    from azure.core.exceptions import ResourceNotFoundError
 
 
     # Variables
