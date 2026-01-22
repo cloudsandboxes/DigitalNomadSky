@@ -26,7 +26,7 @@ def upload_disk(shared_data):
     # Create storage account
     storage_client = StorageManagementClient(credential, subscription_id)
     try:
-        storage_client.storage_accounts.get_properties(resource_group, storage_account_name)
+        storage_account = storage_client.storage_accounts.get_properties(resource_group, storage_account_name)
         #print("Storage account already exists")
     except ResourceNotFoundError:
         #print("Creating storage account...")
@@ -39,8 +39,12 @@ def upload_disk(shared_data):
                 "location": location
             }
         ).result()
+        storage_account = storage_client.storage_accounts.get_properties(resource_group, storage_account_name)
         #print("Storage account created")
 
+ 
+
+    
     # Get storage account key
     keys = storage_client.storage_accounts.list_keys(resource_group, storage_account_name)
     storage_key = keys.keys[0].value
@@ -69,5 +73,6 @@ def upload_disk(shared_data):
         with open(vhd_path, "rb") as data:
             blob_client.upload_blob(data, blob_type="PageBlob", overwrite=False)
         #print(f"VHD uploaded: {blob_client.url}")
-    return account_url
+    return account_url,storage_account_id = storage_account.id
+
     
