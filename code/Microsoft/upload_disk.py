@@ -18,6 +18,7 @@ def upload_disk(shared_data):
     container_name = config.container_name
     vhd_path = shared_data.get('output_vhd_path', '')
     blob_name = config.blob_name
+    account_url = f"https://{storage_account_name}.blob.core.windows.net"
 
     tenant_id = config.destionationtenantid
     credential = InteractiveBrowserCredential(tenant_id=tenant_id)
@@ -49,7 +50,6 @@ def upload_disk(shared_data):
         account_url=f"https://{storage_account_name}.blob.core.windows.net",
         credential=storage_key
     )
-    account_url = f"https://{storage_account_name}.blob.core.windows.net"
     container_client = blob_service.get_container_client(container_name)
     try:
         container_client.get_container_properties()
