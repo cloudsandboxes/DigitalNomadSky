@@ -10,6 +10,7 @@ destination = sys.argv[2]
 vmname = sys.argv[3].lower()
 shareddata_json = sys.argv[4]
 shared_data = json.loads(shareddata_json)
+unique_id = sys.argv[5]
 
 if destination == 'azure':
       # Azure SDK code to find VM
