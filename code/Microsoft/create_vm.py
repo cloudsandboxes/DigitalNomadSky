@@ -16,7 +16,7 @@ def start_vm (shared_data):
   account_url = shared_data.get('disk_url', '')
   vhd_url = account_url + "/" + config.container_name + "/" + config.blob_name
   nic_id = shared_data.get('nic_id', '')
-  os_type = shared_data.get('os_type', '')
+  os_type = "Windows"   #shared_data.get('os_type', '')
   vm_size = shared_data.get('vm_size', '')
   disk_name = f"disk-name-mooi-{vm_name}"
   
@@ -38,7 +38,7 @@ def start_vm (shared_data):
           'source_uri': vhd_url,
           'storage_account_id': storage_id
         },
-      os_type= "Windows"
+      os_type= os_type
     )
     
   disk_creation = compute_client.disks.begin_create_or_update(
