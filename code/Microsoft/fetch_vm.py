@@ -3,10 +3,10 @@
 # -------------------------------
 
 
-def fetching_vm():
+def fetch_vm():
         import sys
         import json
-        #path
+        sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
         from azure.identity import InteractiveBrowserCredential
         from azure.mgmt.resource import ResourceManagementClient
         from azure.mgmt.compute import ComputeManagementClient
@@ -74,4 +74,4 @@ def fetching_vm():
             }
 
         print(json.dumps(result))
-fetching_vm()
+fetch_vm()
