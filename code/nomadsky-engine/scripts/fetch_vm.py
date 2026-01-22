@@ -28,10 +28,10 @@ elif source == 'aws':
       # Amazon SDK code to find VM
       sys.path.append(r"C:/projects/nomadsky/code/Amazon")
       import config
-      from fetching_vm import fetch_vm
+      from fetching_vm import search_ec2_instance
           
       try:
-            result = fetch_vm(vmname)
+            result = search_ec2_instance(vmname)
             print(json.dumps(result))
       except IndexError:
         raise Exception('something went wrong, the vm is not found in AWS!')  
