@@ -29,21 +29,20 @@ def stop_aws_vm():
     import config
     source = sys.argv[1]
     destination = sys.argv[2]
-    vmname = sys.argv[3].lower()
+    vm_name = sys.argv[3].lower()
     
     # Get parameters from config
-    vm_name = config.vm_name
-    region = config.region
-    vm_size = config.vm_size
-    resource_id = config.resource_id
-    
+    region = shared_data.get('region', '')
+    vm_size = shared_data.get('vm_size', '')
+    resource_id = shared_data.get('resource_id', '')
+        
     # Extract instance ID from resource_id if it's an ARN
     if resource_id.startswith('arn:'):
         instance_id = resource_id.split('/')[-1]
     else:
         instance_id = resource_id
     
-    print(f"Stopping VM '{vm_name}' (Instance: {instance_id}) in region {region}...")
+    #print(f"Stopping VM '{vm_name}' (Instance: {instance_id}) in region {region}...")
     
     # Interactive login via boto3
     session = boto3.Session()
