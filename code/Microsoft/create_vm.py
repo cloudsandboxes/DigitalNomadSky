@@ -29,13 +29,14 @@ def start_vm (shared_data):
   network_client = NetworkManagementClient(credential, subscription_id)
   resource_client = ResourceManagementClient(credential, subscription_id)
 
-  
+  storage_id = "/subscriptions/41aff5e1-41c9-4509-9fcb-d761d7f33740/resourceGroups/output/providers/Microsoft.Storage/storageAccounts/compliceert20" 
   # Create managed disk from VHD
   disk_params = Disk(
       location=location,
       creation_data={
           'create_option': DiskCreateOption.IMPORT,
-          'source_uri': vhd_url
+          'source_uri': vhd_url,
+          'storage_account_id': storage_id
         },
       os_type= "Windows"
     )
