@@ -54,6 +54,10 @@ def fetch_vm(vmname):
                              subscription_id = subscription_ids
                              power_state  = full_vm.instance_view.statuses
                              os_disk_id = vm.storage_profile.os_disk.managed_disk.id
+                             os_type = vm.storage_profile.os_disk.os_type  # 'Linux' of 'Windows'
+                             for status in full_vm.statuses:
+                                    if status.code.startswith('PowerState/'):
+                                        power_state = status.code.split('/')[-1]  # 'running', 'deallocated', 'stopped', etc.
                              break
                 except HttpResponseError as e:
                      #print(f"Skipping subscription {sub.subscription_id}: {e.message}")
@@ -73,7 +77,9 @@ def fetch_vm(vmname):
               'resource_group': resource_group,
               'subscription_id': subscription_id,
               'os_disk_id' : os_disk_id,
-              'vm_name' : vmname
+              'vm_name' : vmname,
+              'os_type' : os_type,
+              'power_state' : power_state
             }
             return result
 
