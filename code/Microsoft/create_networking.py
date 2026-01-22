@@ -4,7 +4,7 @@ def create_network(shared_data):
     from azure.identity import InteractiveBrowserCredential
     import config
     from azure.mgmt.network import NetworkManagementClient
-    from azure.core.exceptions import ResourceExistsError
+    from azure.core.exceptions import ResourceExistsError, HttpResponseError
 
     subscription_id = config.subscription_id
     resource_group = config.resource_group
@@ -33,17 +33,27 @@ def create_network(shared_data):
                 ],
             }
 
-            vnet = network_client.virtual_networks.begin_create_or_update(
-                resource_group, vnet_name, vnet_params
-            ).result()
-
-            subnet = network_client.subnets.get(
-                resource_group, vnet_name, subnet_name
-            )
-            break
-
-        except ResourceExistsError:
+            #vnet = network_client.virtual_networks.begin_create_or_update(
+            #    resource_group, vnet_name, vnet_params
+            #).result()
+            vnet = network_client.virtual_networks.get(resource_group, vnet_name)
             vnet_index += 1
+
+            #subnet = network_client.subnets.get(
+            #    resource_group, vnet_name, subnet_name
+            #)
+            #break
+
+        except HttpResponseError as e:
+            if e.status_code == 404:
+                 vnet = network_client.virtual_networks.begin_create_or_update(
+                   resource_group, vnet_name, vnet_params
+                    ).result()
+                 subnet = network_client.subnets.get(
+                   resource_group, vnet_name, subnet_name
+                 )
+             else:
+                raise
     # Create NIC
     nic_params = {
         "location": location,
