@@ -11,11 +11,6 @@ region = "eu-west-1"
 vm_size = "t3.medium"
 """
 
-import sys
-import boto3
-sys.path.append(r"C:/projects/nomadsky/code/Amazon")
-import config
-
 
 def stop_aws_vm():
     """
@@ -28,6 +23,13 @@ def stop_aws_vm():
     Raises:
         Exception: If stop operation fails
     """
+    import sys
+    import boto3
+    sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+    import config
+    source = sys.argv[1]
+    destination = sys.argv[2]
+    vmname = sys.argv[3].lower()
     
     # Get parameters from config
     vm_name = config.vm_name
