@@ -6,3 +6,5 @@ project_id = "your-project-id"
 region = "eu-west-0"  # or ap-southeast-1, etc.
 obs_bucket = "vm-export-bucket"
 download_path = "C:/temp"
+importdiskfile = "QCOW2"
+exportdiskfile = "QCOW2"
