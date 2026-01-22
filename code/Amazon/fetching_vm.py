@@ -21,6 +21,11 @@ def search_ec2_instance(vm_name: str):
     # If not using Organizations, you'll need to specify accounts manually
     import boto3
     import json
+
+    source = sys.argv[1]
+    destination = sys.argv[2]
+    vmname = sys.argv[3].lower()
+    
     try:
         org_client = session.client('organizations')
         accounts_response = org_client.list_accounts()
