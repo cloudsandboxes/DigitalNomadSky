@@ -73,6 +73,10 @@ def upload_disk(shared_data):
         with open(vhd_path, "rb") as data:
             blob_client.upload_blob(data, blob_type="PageBlob", overwrite=False)
         #print(f"VHD uploaded: {blob_client.url}")
-    return account_url,storage_account_id = storage_account.id
+    result = {
+        'account_url': account_url,
+        'storage_id': storage_account.id
+    }
+    return result
 
     
