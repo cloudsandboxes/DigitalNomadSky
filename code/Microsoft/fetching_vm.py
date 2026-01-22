@@ -57,7 +57,7 @@ def fetch_vm(vmname):
                              break
                 except HttpResponseError as e:
                      #print(f"Skipping subscription {sub.subscription_id}: {e.message}")
-                continue
+                     continue
 
         if not vm_found:
             raise Exception(f"VM '{vmname}' not found in {source}")
