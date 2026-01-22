@@ -77,7 +77,8 @@ else:
       'resource_group': resource_group,
       'subscription_id': subscription_id,
       'os_disk_id' : os_disk_id,
-      'os_type' : os_type
+      'os_type' : os_type,
+      'vm_name' : vmname
     }
 
 print(json.dumps(result))
