@@ -11,16 +11,6 @@ region = "eu-west-1"
 vm_size = "t3.medium"
 download_path = "C:/aws_disks"
 """
-
-import sys
-import os
-import boto3
-from datetime import datetime
-
-sys.path.append(r"C:/projects/nomadsky/code/Amazon")
-import config
-
-
 def download_aws_osdisk():
     """
     Download OS disk from a deallocated AWS EC2 instance.
@@ -32,6 +22,13 @@ def download_aws_osdisk():
     Raises:
         Exception: If download fails or VM not deallocated
     """
+    import sys
+    import os
+    import boto3
+    from datetime import datetime
+
+    sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+    import config
     
     # Get parameters from config
     vm_name = config.vm_name
