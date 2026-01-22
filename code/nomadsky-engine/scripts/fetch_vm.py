@@ -10,6 +10,7 @@ import logging
 source = sys.argv[1]
 destination = sys.argv[2]
 vmname = sys.argv[3].lower()
+unique_id = sys.argv[5]
 
 if source == 'azure':
       # Azure SDK code to find VM
