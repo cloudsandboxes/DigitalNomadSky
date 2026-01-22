@@ -18,7 +18,9 @@ def start_vm (shared_data):
   nic_id = shared_data.get('nic_id', '')
   os_type = shared_data.get('os_type', '')
   vm_size = shared_data.get('vm_size', '')
+  storage_id = shared_data.get('storage_id', '')
   disk_name = f"disk-name-mooi-{vm_name}"
+  
   
   
 
@@ -30,7 +32,7 @@ def start_vm (shared_data):
   network_client = NetworkManagementClient(credential, subscription_id)
   resource_client = ResourceManagementClient(credential, subscription_id)
 
-  storage_id = "/subscriptions/41aff5e1-41c9-4509-9fcb-d761d7f33740/resourceGroups/output/providers/Microsoft.Storage/storageAccounts/compliceert20" 
+  #storage_id = "/subscriptions/41aff5e1-41c9-4509-9fcb-d761d7f33740/resourceGroups/output/providers/Microsoft.Storage/storageAccounts/compliceert20" 
   # Create managed disk from VHD
   disk_params = Disk(
       location=location,
