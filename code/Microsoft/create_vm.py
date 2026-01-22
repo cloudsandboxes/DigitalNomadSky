@@ -18,6 +18,8 @@ def start_vm (shared_data):
   os_type = shared_data.get('os_type', '')
   vm_size = shared_data.get('vm_size', '')
 
+  
+
   #vhd_url = 'https://compliceert20.blob.core.windows.net/vhds/osdisk.vhd'
   
   tenant_id = config.destionationtenantid
@@ -25,7 +27,22 @@ def start_vm (shared_data):
   compute_client = ComputeManagementClient(credential, subscription_id)
   network_client = NetworkManagementClient(credential, subscription_id)
   resource_client = ResourceManagementClient(credential, subscription_id)
-  
+
+  disk_params = {
+    "location": location,
+    "creation_data": {
+        "create_option": "Import",
+        "source_uri": vhd_url
+    },
+    "sku": {"name": "Standard_LRS"}  # optional: Standard HDD/SSD
+  }
+
+  managed_disk = compute_client.disks.begin_create_or_update(
+    resource_group_name,
+    "MyManagedDisk",
+    disk_params
+  ).result()
+ 
   vm_params = {
       "location": location,
       "hardware_profile": {
@@ -37,9 +54,7 @@ def start_vm (shared_data):
               "name": f"{vm_name}_OSDisk",
               "caching": "ReadWrite",
               "create_option": "Attach",
-              "vhd": {
-                  "uri": vhd_url
-              }
+              "managed_disk": {"id": managed_disk.id},
           }
       },
       "network_profile": {
