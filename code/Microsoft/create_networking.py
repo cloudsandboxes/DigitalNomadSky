@@ -52,7 +52,7 @@ def create_network(shared_data):
                  subnet = network_client.subnets.get(
                    resource_group, vnet_name, subnet_name
                  )
-             else:
+            else:
                 raise
     # Create NIC
     nic_params = {
