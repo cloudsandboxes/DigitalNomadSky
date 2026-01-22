@@ -14,14 +14,10 @@ if destination == 'azure':
           
       try:
             results = fetch_vm(vmname)
-            results = {
-             'message': f"the VM '{vmname}' has started succesfully in '{destination}'!",
-             'vmname'; f      
-             }
             print(json.dumps(result))
       except IndexError:
-        raise Exception(f" something went wrong the vm is not created.")
-   
+        raise Exception(f" something went wrong the vm is not found in '{source}'!)   
+
 elif destination == 'aws':
    a='empty'
    #     # AWS boto3 code to find VM
