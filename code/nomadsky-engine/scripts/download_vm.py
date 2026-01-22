@@ -34,6 +34,17 @@ elif source == 'aws':
             print(json.dumps(result))
       except IndexError:
         raise Exception(f" VM could not be downloaded: '{shared_data}' ")
+elif source == 'huawei':
+      # huawei SDK code to download VM
+      sys.path.append(r"C:/projects/nomadsky/code/Huawei")
+      import config
+      from downloading_image import  download_huawei_vm
+      try:
+            result =  download_huawei_vm(shared_data)
+            print(json.dumps(result))
+      except IndexError:
+        raise Exception(f" VM could not be downloaded: '{shared_data}' ")
+
 else:
         raise Exception(f" the source platform is not yet supported")
       
