@@ -36,6 +36,17 @@ elif source == 'aws':
       except IndexError:
         raise Exception('something went wrong, the vm is not found in AWS!')  
 
+elif source == 'huawei':
+      # huawei SDK code to find VM
+      sys.path.append(r"C:/projects/nomadsky/code/Huawei")
+      import config
+      from fetching_vm import search_huawei_vm
+          
+      try:
+            result = search_huawei_vm(vmname)
+            print(json.dumps(result))
+      except IndexError:
+        raise Exception('something went wrong, the vm is not found in Huawei Cloud!')  
 else:
       raise Exception('something went wrong, the source cloud platform is not supported!')  
 
