@@ -1,9 +1,5 @@
-import boto3
-import json
-from typing import Dict, List
 
-
-def search_ec2_instance(vm_name: str) -> Dict:
+def search_ec2_instance(vm_name: str):
     """
     Search for an EC2 instance by name across all available AWS accounts.
     Uses interactive SSO login.
@@ -23,6 +19,8 @@ def search_ec2_instance(vm_name: str) -> Dict:
     
     # Get available accounts via Organizations (if you have access)
     # If not using Organizations, you'll need to specify accounts manually
+    import boto3
+    import json
     try:
         org_client = session.client('organizations')
         accounts_response = org_client.list_accounts()
