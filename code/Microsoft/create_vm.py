@@ -5,15 +5,7 @@ def start_vm (shared_data):
   from azure.mgmt.compute import ComputeManagementClient
   from azure.mgmt.network import NetworkManagementClient
   from azure.mgmt.resource import ResourceManagementClient
-  from azure.mgmt.compute.models import Disk, CreationData, DiskCreateOption,
-    VirtualMachine,
-    HardwareProfile,
-    StorageProfile,
-    OSDisk,
-    OSProfile,
-    NetworkProfile,
-    NetworkInterfaceReference,
-    ManagedDiskParameters
+  from azure.mgmt.compute.models import Disk, CreationData, DiskCreateOption, VirtualMachine, HardwareProfile, StorageProfile, OSDisk, OSProfile, NetworkProfile, NetworkInterfaceReference, ManagedDiskParameters
   import config
   import re
   
