@@ -5,7 +5,15 @@ def start_vm (shared_data):
   from azure.mgmt.compute import ComputeManagementClient
   from azure.mgmt.network import NetworkManagementClient
   from azure.mgmt.resource import ResourceManagementClient
-  from azure.mgmt.compute.models import Disk, CreationData, DiskCreateOption
+  from azure.mgmt.compute.models import Disk, CreationData, DiskCreateOption,
+    VirtualMachine,
+    HardwareProfile,
+    StorageProfile,
+    OSDisk,
+    OSProfile,
+    NetworkProfile,
+    NetworkInterfaceReference,
+    ManagedDiskParameters
   import config
   import re
   
@@ -18,7 +26,7 @@ def start_vm (shared_data):
   nic_id = shared_data.get('nic_id', '')
   os_type = shared_data.get('os_type', '')
   vm_size = shared_data.get('vm_size', '')
-
+  disk_name: "disk-name-mooi-{vm_name}",
   
 
   #vhd_url = 'https://compliceert20.blob.core.windows.net/vhds/osdisk.vhd'
@@ -29,64 +37,67 @@ def start_vm (shared_data):
   network_client = NetworkManagementClient(credential, subscription_id)
   resource_client = ResourceManagementClient(credential, subscription_id)
 
-  disk_name = "my_new_managed_disk"
-
-  # Define disk properties and source
-  disk_parameters = Disk(
-      location=location,
-      creation_data=CreationData(
-          create_option=DiskCreateOption.IMPORT,
-          source_uri=vhd_url
-        )
-      )
-
-  # Execute the creation command
-  poller = compute_client.disks.begin_create_or_update(
-    resource_group,
-    disk_name,
-    disk_parameters
-  )
-
-  #   Wait for completion
-  disk_result = poller.result()
-  print(f"Managed Disk created successfully: {disk_result.id}")
-
-  disk_params = {
-    "location": location,
-    "creation_data": {
-        "create_option": "Import",
-        "source_uri": vhd_url
-    },
-    "sku": {"name": "Standard_LRS"}  # optional: Standard HDD/SSD
-  }
-
-  #managed_disk = compute_client.disks.begin_create_or_update(
-   # resource_group,
-   # "MyManagedDisk",
-   # disk_params
-  #).result()
- 
-  vm_params = {
-      "location": location,
-      "hardware_profile": {
-          "vm_size": vm_size
-      },
-      "storage_profile": {
-          "os_disk": {
-              "os_type": "Windows", # os_type   "Windows" or "Linux"
-              "name": f"{vm_name}_OSDisk",
-              "caching": "ReadWrite",
-              "create_option": "Attach",
-              "managed_disk": {"id": managed_disk.id},
-          }
-      },
-      "network_profile": {
-          "network_interfaces": [
-              {"id": nic_id, "primary": True}
-          ]
-      }      
-  }
   
-  async_vm_creation = compute_client.virtual_machines.begin_create_or_update(resource_group, vm_name, vm_params)
-  async_vm_creation.wait()
-  #print(f"VM {vm_name} created from VHD!")
+  # Create managed disk from VHD
+  disk_params = Disk(
+      location=location,
+      creation_data={
+          'create_option': DiskCreateOption.IMPORT,
+          'source_uri': vhd_url
+        },
+      os_type= "Windows"
+    )
+    
+  disk_creation = compute_client.disks.begin_create_or_update(
+        resource_group,
+        disk_name,
+        disk_params
+    )
+
+  disk_creation.wait()
+  managed_disk = disk_creation.result()
+  #print(f"Managed disk created: {managed_disk.id}")
+  #print(f"Creating VM '{vm_name}'...")
+    
+  # Create VM from managed disk
+  vm_params = VirtualMachine(
+        location=location,
+        hardware_profile=HardwareProfile(
+            vm_size=vm_size
+        ),
+        storage_profile=StorageProfile(
+            os_disk=OSDisk(
+                os_type=os_type,
+                create_option=DiskCreateOption.ATTACH,
+                managed_disk=ManagedDiskParameters(
+                    id=managed_disk.id
+                )
+            )
+        ),
+        network_profile=NetworkProfile(
+            network_interfaces=[
+                NetworkInterfaceReference(
+                    id=nic_id,
+                    primary=True
+                )
+            ]
+        )
+    )
+    
+  vm_creation = compute_client.virtual_machines.begin_create_or_update(
+        resource_group,
+        vm_name,
+        vm_params
+    )
+  vm_creation.wait()
+    
+  vm = vm_creation.result()
+  #print(f"VM created successfully: {vm.id}")
+    
+  return {
+        'disk_id': managed_disk.id,
+        'vm_id': vm.id,
+        'vm_name': vm.name,
+        'disk_name': managed_disk.name
+    }
+  
