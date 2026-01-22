@@ -24,7 +24,7 @@ def start_vm (shared_data):
       if (len(password) >= 15 and
           re.search(r"[A-Z]", password) and
           re.search(r"[0-9]", password) and
-          re.search(r"[!@#$%^&*(),.?\":{}|<>]", password)):
+          re.search(r"[!@#$%^&*(),.=+-_?\":{}|<>]", password)):
           messagebox.showinfo("Success", "Password accepted!")
           break
       else:
@@ -33,7 +33,7 @@ def start_vm (shared_data):
 
   #print(f"Username: {username}, Password: {password}")
 
-  subscription_id = config.subscritpion_id
+  subscription_id = config.subscription_id
   resource_group = config.resource_group
   vm_name = shared_data.get('vm_name', '')
   location = config.location
