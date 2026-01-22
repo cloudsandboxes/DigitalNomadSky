@@ -77,4 +77,4 @@ def fetch_vm(vmname):
             }
             return result
 
-fetch_vm('helpmij')
+#fetch_vm('helpmij')
