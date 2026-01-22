@@ -43,7 +43,6 @@ def create_network(shared_data):
 
         except ResourceExistsError:
             vnet_index += 1
-
     # Create NIC
     nic_params = {
         "location": location,
@@ -59,5 +58,4 @@ def create_network(shared_data):
     nic = network_client.network_interfaces.begin_create_or_update(
         resource_group, nic_name, nic_params
     ).result()
-
     return nic.id
