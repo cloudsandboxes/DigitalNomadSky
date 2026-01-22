@@ -12,7 +12,7 @@ vm_size = "t3.medium"
 """
 
 
-def stop_aws_vm():
+def stop_aws_vm(shared_data):
     """
     Stop an AWS EC2 instance based on stored details from config.
     Uses interactive AWS login.
