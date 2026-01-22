@@ -5,6 +5,9 @@ from flask_cors import CORS
 import subprocess
 import threading
 import json
+from datetime import datetime
+
+unique_id = datetime.now().strftime("%Y%m%d%H%M%S%f")
 
 # Flask setup
 app = Flask(__name__)
@@ -28,7 +31,7 @@ def run_script():
     script_path = f'C:/projects/nomadsky/code/nomadsky-engine/scripts/{script_name}'  
     try:
         result = subprocess.run(
-            ['python', script_path, source, destination, vmname, json.dumps(extraValue)],
+            ['python', script_path, source, destination, vmname, json.dumps(extraValue),unique_id],
             capture_output=True,
             text=True,
             check=True
