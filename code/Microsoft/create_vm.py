@@ -38,7 +38,7 @@ def start_vm (shared_data):
   }
 
   managed_disk = compute_client.disks.begin_create_or_update(
-    resource_group_name,
+    resource_group,
     "MyManagedDisk",
     disk_params
   ).result()
