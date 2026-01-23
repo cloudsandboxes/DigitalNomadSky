@@ -73,5 +73,13 @@ preferred_type = {
     "gcp": {
         "import": ("vmdk", "vhd", "vhdx", "raw"),
         "export": ("vmdk", "raw")
+    },
+     "aliyun": {
+        "import": ("vhd", "vmdk", "qcow2", "raw", "vhdx", "qcow", "vdi", "qed", "zvhd", "zvhd2"),
+        "export": ("vhd", "vmdk", "qcow2", "raw")
+    }, 
+    "ecofed": {
+        "import": ("raw"),
+        "export": ("raw")
     }
 }
