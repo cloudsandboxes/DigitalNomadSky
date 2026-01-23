@@ -5,11 +5,11 @@ def start_vm (shared_data):
   from azure.mgmt.compute import ComputeManagementClient
   from azure.mgmt.network import NetworkManagementClient
   from azure.mgmt.resource import ResourceManagementClient
-  from azure.mgmt.compute.models import Disk, CreationData, DiskCreateOption, VirtualMachine, HardwareProfile, StorageProfile, OSDisk, OSProfile, NetworkProfile, NetworkInterfaceReference, ManagedDiskParameters, SecurityTypes, DiskSecurityProfile
+  from azure.mgmt.compute.models import Disk, CreationData, DiskCreateOption, SecurityProfile, UefiSettings, VirtualMachine, HardwareProfile, StorageProfile, OSDisk, OSProfile, NetworkProfile, NetworkInterfaceReference, ManagedDiskParameters, SecurityTypes, DiskSecurityProfile
   import config
   import re
-
     
+
   subscription_id = config.subscription_id
   resource_group = config.resource_group
   vm_name = shared_data.get('vm_name', '')
@@ -65,6 +65,13 @@ def start_vm (shared_data):
         hardware_profile=HardwareProfile(
             vm_size=vm_size
         ),
+        security_profile=SecurityProfile(
+          uefi_settings=UefiSettings(
+            secure_boot_enabled=True,
+            v_tpm_enabled=True
+          ),
+          security_type=SecurityTypes.TRUSTED_LAUNCH
+        )
         storage_profile=StorageProfile(
             os_disk=OSDisk(
                 os_type=os_type,
