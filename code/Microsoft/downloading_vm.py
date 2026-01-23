@@ -38,7 +38,7 @@ def download_vm(shared_data):
         resource_group = shared_data.get('resource_group', '')
         os_disk_id = shared_data.get('os_disk_id', '')
         output_vhd_path = fr"C:\Temp\osdisk-{vmname}.vhd"
-        exportdisktype = config.exportdisktype
+        exportdisktype = shared_data.get('exportdisktype', '')
 
         if os.path.exists(output_vhd_path):
                #file_size_gb = os.path.getsize(output_vhd_path) / (1024**3) 
