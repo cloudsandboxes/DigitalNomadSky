@@ -95,7 +95,7 @@ def download_vm(shared_data):
                                        start_byte += len(chunk)
                                        #print(f"Downloaded {start_byte / (1024*1024):.1f} MB", end="\r")
                        break  # finished successfully
-                    except (requests.ConnectionError) as e:
+                    except (requests.ConnectionError, requests.exceptions.ChunkedEncodingError) as e:
                        #print(f"\nConnection error, retrying... ({e})")
                        sleep(5)  # wait a few seconds
                        max_retries -= 1
