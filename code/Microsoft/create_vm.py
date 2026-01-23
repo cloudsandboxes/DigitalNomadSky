@@ -5,10 +5,11 @@ def start_vm (shared_data):
   from azure.mgmt.compute import ComputeManagementClient
   from azure.mgmt.network import NetworkManagementClient
   from azure.mgmt.resource import ResourceManagementClient
-  from azure.mgmt.compute.models import Disk, CreationData, DiskCreateOption, VirtualMachine, HardwareProfile, StorageProfile, OSDisk, OSProfile, NetworkProfile, NetworkInterfaceReference, ManagedDiskParameters
+  from azure.mgmt.compute.models import Disk, CreationData, DiskCreateOption, VirtualMachine, HardwareProfile, StorageProfile, OSDisk, OSProfile, NetworkProfile, NetworkInterfaceReference, ManagedDiskParameters, SecurityTypes, DiskSecurityProfile,
   import config
   import re
-  
+
+    
   subscription_id = config.subscription_id
   resource_group = config.resource_group
   vm_name = shared_data.get('vm_name', '')
