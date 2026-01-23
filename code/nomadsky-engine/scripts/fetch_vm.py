@@ -50,16 +50,9 @@ else:
 # -----
 #Find optimal disktypeformat
 # ------
-preferred_type = {
-    "azure": {
-        "import": ("vhd",),
-        "export": ("vhd",)
-    },
-    "aws": {
-        "import": ("vhd", "vmdk"),
-        "export": ("vhd", "vmdk")
-    }
-}
+
+sys.path.append(r"C:/projects/nomadsky/code/Vendor_agnostic")
+from comparison import preferred_type
 
 def find_best_format(source_platform, destination_platform):
     source_exports = preferred_type[source_platform]["export"]
