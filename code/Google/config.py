@@ -5,5 +5,5 @@ zone = "europe-west1-b"  # Optional: specify zone, or None to search all
 gcs_bucket = "vm-export-bucket"
 download_path = "C:/temp"
 credentials_path = "C:/path/to/service-account-key.json"
-importdisktype= "VMDK"
-exportdisktype= "VMDK"
+importdisktype= ("vmdk")
+exportdisktype= "vmdk"
