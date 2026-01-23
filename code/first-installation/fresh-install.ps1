@@ -328,9 +328,9 @@ try {
     
     # Execute git clone
     git clone $GithubRepoUrl $repoPath
-    #& $gitExe clone $GithubRepoUrl 2>&1 | ForEach-Object {
+    # & $gitExe clone $GithubRepoUrl 2>&1 | ForEach-Object {
     #    Write-Host $_ -ForegroundColor Gray
-    #}
+    # }
     
     if ($LASTEXITCODE -eq 0) {
         Write-Host "`n=== Clone Successful ===" -ForegroundColor Green
@@ -340,16 +340,16 @@ try {
         if (Test-Path $repoPath) {
             Set-Location $repoPath
             Write-Host "`nRepository information:" -ForegroundColor Cyan
-            & $gitExe remote -v
-            Write-Host ""
-            & $gitExe branch
+            # & $gitExe remote -v
+            # Write-Host ""
+            # & $gitExe branch
         }
     } else {
         Write-Host "`nERROR: Git clone failed with exit code $LASTEXITCODE" -ForegroundColor Red
     }
 } catch {
     Write-Host "ERROR: Failed to clone repository: $_" -ForegroundColor Red
-    #exit 0
+    # exit 0
 }
 
 Write-Host "`nDone!" -ForegroundColor Green
