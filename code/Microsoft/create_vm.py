@@ -71,7 +71,7 @@ def start_vm (shared_data):
             v_tpm_enabled=True
           ),
           security_type=SecurityTypes.TRUSTED_LAUNCH
-        )
+        ),
         storage_profile=StorageProfile(
             os_disk=OSDisk(
                 os_type=os_type,
