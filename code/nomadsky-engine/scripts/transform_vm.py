@@ -15,23 +15,31 @@ shared_data = json.loads(shareddata_json)
 exportdisktype = shared_data.get('exportdisktype', '')
 unique_id = sys.argv[5]
 
+# Using a set (fastest for membership testing)
+def check_value(value, allowed_values={1, 2, 3}):
+    return value in allowed_values
+
+
 if destination == 'azure':
       # Azure SDK code to find VM
       sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
       import config
       importdisktype = config.importdisktype
-      if (importdisktype == exportdisktype):
-            result = {
+      if exportdisktype in importdisktype:
+        result = {
              'message': f"the diskfile type is already '{config.importdisktype}' so no need to transform type!",
              }
-            print(json.dumps(result))
+        print(json.dumps(result))
       else:
+            importdisktype = importdisktype[0]
+            #do qemu to convert the current disk(export) to the outputformat (importdisktype).
+            #subprocess.run([qemu_path, "convert", "-O", output_format, os_disk_path, output_disk_path], check=True)
+            (result add = new_diskpath = output_disk_path)
             result = {
              'message': f"the import diskfile type is different '{config.importdisktype}' to the export type '{exportfiletype}' so need to transform!",
              }
             print(json.dumps(result))
-      
-      
+       
 elif destination == 'aws':
    a='empty'
    #     # AWS boto3 code to find VM
