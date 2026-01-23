@@ -4,13 +4,12 @@ from datetime import datetime, timezone
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 import logging
 
-
-
 # Get arguments
 source = sys.argv[1]
 destination = sys.argv[2]
 vmname = sys.argv[3].lower()
 unique_id = sys.argv[5]
+
 
 if source == 'azure':
       # Azure SDK code to find VM
@@ -51,23 +50,59 @@ else:
       raise Exception('something went wrong, the source cloud platform is not supported!')  
 
 
+# -----
+#Find optimal disktypeformat
+# ------
+preferred_type = {
+    "azure": {
+        "import": ("vhd",),
+        "export": ("vhd",)
+    },
+    "aws": {
+        "import": ("vhd", "vmdk"),
+        "export": ("vhd", "vmdk")
+    }
+}
 
+def find_best_format(source_platform, destination_platform):
+    source_exports = preferred_type[source_platform]["export"]
+    destination_imports = preferred_type[destination_platform]["import"]
+
+    # Try to find a matching format
+    for fmt in source_exports:
+        if fmt in destination_imports:
+            return fmt, fmt
+
+    # Fallback: first export + first import
+    return source_exports[0], destination_imports[0]
+
+exportdisktype,importdisktype = find_best_format(source,destination)
+
+results.append(exportdisktype=)
+
+
+
+#---------------------
+#logs for research purpose
+#----------------------
 # Setup logger
 logger = logging.getLogger(__name__)
 logger.addHandler(AzureLogHandler(connection_string="InstrumentationKey=bde21699-fbec-4be5-93ce-ee81109b211f"))
 logger.setLevel(logging.INFO)
 
 # Prepare JSON data
-times = datetime.now(timezone.utc)
 data = {
     "unique_id": unique_id,
     "step": "fetch-vm",
-    "time": times,
     "message": f"VM found in '{source}'"
 }
 
 # Send as custom log
 logger.info(data)
+
+
+
+
 
 
 
