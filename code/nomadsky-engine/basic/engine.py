@@ -1,27 +1,7 @@
-aimport os
+import os
 import subprocess
 import sys
 import json
-# import custom config variables
-import code/your-config/your-config
-
-
-
-# -------------------------------
-# 0) CONFIG / VARIABLES FILE
-# -------------------------------
-# Example JSON variables file:
-# {
-#     "source_platform": "azure",
-#     "destination_platform": "aws",
-#     "os_disk_path": "C:\\Temp\\osdisk.vhd",
-#     "output_format": "vmdk",  # or "vhd"
-#     "variables": {...}  # any cloud-specific variables
-# }
-variables_file = "variables.json"
-
-with open(variables_file, "r") as f:
-    config = json.load(f)
 
 source_platform = config["source_platform"].lower()
 destination_platform = config["destination_platform"].lower()
@@ -34,15 +14,7 @@ vars_dict = config.get("variables", {})
 # -------------------------------
 print("Installing required Python packages...")
 
-def install_packages(packages):
-    for pkg in packages:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
-
-platform_packages = {
-    "azure": ["azure-identity", "azure-storage-blob", "requests"],
-    "aws": ["boto3"],
-    "gcp": ["google-cloud-storage"]
-}
+run ....
 
 # Install packages for both source and destination
 install_packages(platform_packages.get(source_platform, []))
