@@ -38,6 +38,18 @@ elif destination == 'aws':
    # etc.
 
 
+
+# -------------------------------
+# 4) TRANSFORM OS DISK USING QEMU
+# -------------------------------
+#output_disk_path = os.path.splitext(os_disk_path)[0] + f".{output_format}"
+#print(f"Transforming {os_disk_path} -> {output_disk_path} ...")
+#subprocess.run([qemu_path, "convert", "-O", output_format, os_disk_path, output_disk_path], check=True)
+#print(f"Disk conversion complete: {output_disk_path}")
+
+
+
+
 #from helpers import my_function
 #result = my_function(5)
 
