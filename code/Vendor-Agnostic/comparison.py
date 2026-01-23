@@ -35,3 +35,4 @@ VM_SIZES = {
         "large": "ecs.r6.2xlarge"
     }
 }
+VM_SIZE["azure"]["small"]
