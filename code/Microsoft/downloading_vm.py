@@ -13,6 +13,7 @@ def download_vm(shared_data):
         import time
         from time import sleep
         import requests
+        from requests.exceptions import ConnectionError, ChunkedEncodingError
         from datetime import datetime, timedelta, timezone
         sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
         from azure.identity import InteractiveBrowserCredential
