@@ -77,7 +77,7 @@ def download_vm(shared_data):
               # -------------------------------
 
               chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
-              max_retries = 10
+              max_retries = 20
 
               # Resume if file exists
               start_byte = os.path.getsize(output_vhd_path) if os.path.exists(output_vhd_path) else 0
