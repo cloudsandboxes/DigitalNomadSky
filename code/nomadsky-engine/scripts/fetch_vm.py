@@ -52,7 +52,7 @@ else:
 # ------
 
 sys.path.append(r"C:/projects/nomadsky/code/Vendor_Agnostic")
-from comparison import preferred_type
+from general_parameters import preferred_type
 
 def find_best_format(source_platform, destination_platform):
     source_exports = preferred_type[source_platform]["export"]
