@@ -10,6 +10,7 @@ def export_os_disk(vm_name):
     import sys
     import webbrowser
     from novaclient import client as nova_client
+    from glanceclient import client
     from keystoneauth1 import session
     from keystoneauth1.identity import v3
     import getpass
