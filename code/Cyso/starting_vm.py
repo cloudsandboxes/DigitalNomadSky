@@ -30,6 +30,7 @@ def create_vm_from_image(shared_data):
     # Extract specific value
     image_id = shared_data.get('image_id', '')
     flavor = shared_data.get('flavor', '')
+    networks = shared_data.get('networks', '')
 
     from keystoneauth1.identity.v3 import ApplicationCredential
 
@@ -70,7 +71,7 @@ def create_vm_from_image(shared_data):
     nics = None
     network_name="public"
     network = nova.network.find_network("public")
-    nics = [{'net-id': network.id}]
+    nics = [{'net-id': networks.id}]
     
     # Create server
     server = nova.servers.create(
