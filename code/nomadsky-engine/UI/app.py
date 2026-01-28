@@ -26,3 +26,7 @@ py -m pip install huaweicloudsdkobs
 
 # running aws
 py -m pip install boto3
+
+# running openstack
+
+py -m pip install python-novaclient
