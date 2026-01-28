@@ -19,6 +19,8 @@ def fetch_vm ():
    https://core.fuga.cloud:5000/v3
    https://identity.api.ams.fuga.cloud:443/v3
    """
+   # Step 1: Get credentials
+   print("\n[1/4] Getting credentials...")
    # For app credentials, only need ID and secret
    creds = {
         'auth_url': os.environ.get('OS_AUTH_URL', 'https://core.fuga.cloud:5000/v3'),
@@ -26,24 +28,6 @@ def fetch_vm ():
         'application_credential_secret': os.environ.get('OS_APPLICATION_CREDENTIAL_SECRET') or getpass.getpass("Enter your app credntial secret: "),
     }
 
-   
-   #     'project_name': os.environ.get('OS_PROJECT_NAME'),
-   #     'user_domain_name': os.environ.get('OS_USER_DOMAIN_NAME', 'Default'),
-   #     'project_domain_name': os.environ.get('OS_PROJECT_DOMAIN_NAME', 'Default'),
-   # }
-   # Prompt for missing credentials
-   #if not credentials['application_credential_secret']:
-   #   credentials['application_credential_secret'] = input("Enter your OpenStack username: ")
-   #if not credentials['password']:
-   #   import getpass
-   #   credentials['password'] = getpass.getpass("Enter your OpenStack password: ")
-   #if not credentials['project_name']:
-   #  credentials['project_name'] = input("Enter your project name: ")
-
-   # Step 1: Get credentials
-   print("\n[1/4] Getting credentials...")
-
- 
    # Use ApplicationCredential instead of Password
    from keystoneauth1.identity.v3 import ApplicationCredential
     
@@ -57,18 +41,6 @@ def fetch_vm ():
     
    servers = nova.servers.list()
    return nova, len(servers)
-
-   #     project_name=credentials['project_name'],
-   #     user_domain_name=credentials['user_domain_name'],
-   #     project_domain_name=credentials['project_domain_name']
-   # )
-    
-   #print("\n[2/4] Authenticating to OpenStack...")
-   #try:
-   #     servers = nova.servers.list()
-   #     return True, f"Success! Found {len(servers)} VMs"
-   #except Exception as e:
-   #     return False, str(e)
 
 
 try:
