@@ -25,6 +25,7 @@ def export_os_disk(vm_name):
     destination = sys.argv[2]
     vm_name = sys.argv[3].lower()
     import config
+    output_path= r"C:/temp"
    
     # Step 1: Get credentials
     #print("\n[1/4] Getting credentials...")
@@ -89,31 +90,11 @@ def export_os_disk(vm_name):
             return False, f"Image creation failed"
         time.sleep(20)
 
-""""
-    
-def download_image(image_id, output_path, disk_format='qcow2', chunk_size=8192):
-    from keystoneauth1 import session
-    from keystoneauth1.identity.v3 import ApplicationCredential
-    from glanceclient import Client
-    import requests
-    import os
-    import time
-    
-    # Auth setup
-    auth = ApplicationCredential(
-        auth_url=os.environ.get('OS_AUTH_URL', 'https://core.fuga.cloud:5000/v3'),
-        application_credential_id=os.environ.get('OS_APPLICATION_CREDENTIAL_ID'),
-        application_credential_secret=os.environ.get('OS_APPLICATION_CREDENTIAL_SECRET')
-    )
-    sess = session.Session(auth=auth)
-    glance = Client('2', session=sess)
-    
-    # Get image download URL
     image = glance.images.get(image_id)
     download_url = glance.images.data(image_id, do_checksum=False)
     
     # Get direct URL from Glance endpoint
-    endpoint = sess.get_endpoint(service_type='image')
+    endpoint = sess2.get_endpoint(service_type='image')
     url = f"{endpoint}/v2/images/{image_id}/file"
     
     # Download with retry (max 5 attempts)
@@ -122,12 +103,11 @@ def download_image(image_id, output_path, disk_format='qcow2', chunk_size=8192):
             # Resume from where we left off
             resume_pos = os.path.getsize(output_path) if os.path.exists(output_path) else 0
             headers = {'Range': f'bytes={resume_pos}-'} if resume_pos > 0 else {}
-            headers['X-Auth-Token'] = sess.get_token()
+            headers['X-Auth-Token'] = sess2.get_token()
             
             response = requests.get(url, headers=headers, stream=True, timeout=30)
             response.raise_for_status()
 
-            
             mode = 'ab' if resume_pos > 0 else 'wb'
             with open(output_path, mode) as f:
                 for chunk in response.iter_content(chunk_size=chunk_size):
