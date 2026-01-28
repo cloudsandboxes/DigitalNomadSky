@@ -31,7 +31,7 @@ def run_script():
     script_path = f'C:/projects/nomadsky/code/nomadsky-engine/scripts/{script_name}'  
     try:
         result = subprocess.run(
-            ['python', script_path, source, destination, vmname, json.dumps(extraValue),unique_id],
+            ['python', script_path, source, destination, vmname, json.dumps(extraValue), unique_id],
             capture_output=True,
             text=True,
             check=True
