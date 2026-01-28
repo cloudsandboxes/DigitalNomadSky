@@ -4,25 +4,6 @@ Cyso.cloud OpenStack VM Access Script
 This script authenticates to Cyso.cloud OpenStack and provides VNC console access to VMs
 """
 
-import os
-import sys
-import webbrowser
-from novaclient import client as nova_client
-from keystoneauth1 import session
-from keystoneauth1.identity import v3
-import getpass
-import json
-sys.path.append(r"C:/projects/nomadsky/code/Cyso")
-import tkinter as tk
-from tkinter import simpledialog
-
-
-# Get arguments
-#source = sys.argv[1]
-#destination = sys.argv[2]
-#vmname = sys.argv[3].lower()
-import config
-vm_name='ubuntu'
 def fetch_vm ():
    """
    Get OpenStack credentials from environment variables or user input.
@@ -30,6 +11,25 @@ def fetch_vm ():
    https://core.fuga.cloud:5000/v3
    https://identity.api.ams.fuga.cloud:443/v3
    """
+   import os
+   import sys
+   import webbrowser
+   from novaclient import client as nova_client
+   from keystoneauth1 import session
+   from keystoneauth1.identity import v3
+   import getpass
+   import json
+   sys.path.append(r"C:/projects/nomadsky/code/Cyso")
+   import tkinter as tk
+   from tkinter import simpledialog
+
+
+   # Get arguments
+   source = sys.argv[1]
+   destination = sys.argv[2]
+   vm_name = sys.argv[3].lower()
+   import config
+   
    # Step 1: Get credentials
    print("\n[1/4] Getting credentials...")
    # Use ApplicationCredential instead of Password
