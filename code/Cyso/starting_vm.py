@@ -64,6 +64,7 @@ def create_vm_from_image(shared_data):
     nova = nova_client.Client("2.1", session=sess)
         
     # Get flavor by name
+    flavors = nova.flavors.list()
     flavor_name = "s5.small"
     flavor = next((f for f in flavors if f.name == flavor_name), None)
     if not flavor:
