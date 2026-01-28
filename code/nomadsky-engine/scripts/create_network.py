@@ -29,15 +29,16 @@ if destination == 'azure':
             print(json.dumps(result))
       except IndexError:
         raise Exception(f" the vnet and/nic are not created.")
-   
+
+elif destination == 'cyso':
+         result = {
+             'message': "no need to create anything"  }
+         print(json.dumps(result))
+       
 elif destination == 'aws':
    a='empty'
    #     # AWS boto3 code to find VM
    # etc.
-
-
-
-# UTC-aware datetime (recommended)
 
 
 # Setup logger
