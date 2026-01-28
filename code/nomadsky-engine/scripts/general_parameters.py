@@ -39,8 +39,8 @@ VM_SIZES = {
 
 preferred_type = {
     "azure": {
-        "import": ("vhd"),
-        "export": ("vhd")
+        "import": ("vhd", "azurein"),
+        "export": ("vhd", "azureuit")
     },
     "aws": {
         "import": ("vhd", "vmdk", "raw"),
@@ -84,6 +84,6 @@ preferred_type = {
     },
     "cyso": {
         "import": ("qcow2", "iso" ,"ova", "raw", "vmdk", "vdi", "vhd", "ami", "ari", "aki", "docker"),
-        "export": ("qcow2")
+        "export": ("qcow2", "cysouit")
     }
 }
