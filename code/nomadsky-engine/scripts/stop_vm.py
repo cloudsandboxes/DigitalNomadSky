@@ -20,7 +20,7 @@ if source == 'azure':
       from stopping_vm import stop_vm
           
       try:
-            result = stop_vm(shared_data)
+            result = stop_vm()
             print(json.dumps(result))
       except IndexError:
         raise Exception(f" Invalid resource ID format: '{shared_data}' ")
