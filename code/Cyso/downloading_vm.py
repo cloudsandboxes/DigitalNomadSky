@@ -32,7 +32,7 @@ def export_os_disk(vm_name):
 
     if os.path.exists(output_path):
                result = {
-                  'message': f"VM {vmname} already downloaded from {source}!",
+                  'message': f"VM {vm_name} already downloaded from {source}!",
                   'output_path' : output_path
                  }
                return result
