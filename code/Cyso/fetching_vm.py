@@ -13,6 +13,10 @@ from keystoneauth1.identity import v3
 import getpass
 import json
 sys.path.append(r"C:/projects/nomadsky/code/Cyso")
+import tkinter as tk
+from tkinter import simpledialog
+
+
 # Get arguments
 #source = sys.argv[1]
 #destination = sys.argv[2]
@@ -30,6 +34,25 @@ def fetch_vm ():
    print("\n[1/4] Getting credentials...")
    # Use ApplicationCredential instead of Password
    from keystoneauth1.identity.v3 import ApplicationCredential
+
+   root = tk.Tk()
+   root.title("Password required")
+   root.geometry("300x120")
+
+   tk.Label(root, text="Enter password:").pack(pady=10)
+
+   password_entry = tk.Entry(root, show="*")
+   password_entry.pack()
+
+   def on_submit():
+    password = password_entry.get()
+    print("Password entered (not shown for security reasons)")
+    root.destroy()
+
+   tk.Button(root, text="OK", command=on_submit).pack(pady=10)
+
+   root.mainloop()
+
     
    auth = ApplicationCredential(
     auth_url=os.environ.get('OS_AUTH_URL', 'https://core.fuga.cloud:5000/v3'),
