@@ -89,7 +89,8 @@ def uploading_disk(vm_name):
     for _ in range(360):
         img = glance.images.get(image.id)
         if img.status == 'active':
-            return {'message' : f"Image {image_name} uploaded (ID: {image.id})"}
+            return {'message' : f"Image {image_name} uploaded (ID: {image.id})",
+                   'image_id' : image.id}
         elif img.status == 'error':
             return False, f"Upload failed"
         time.sleep(20)
