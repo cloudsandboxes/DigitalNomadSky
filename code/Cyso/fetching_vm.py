@@ -82,8 +82,8 @@ def fetch_vm ():
         'id': server.id,
         'name': server.name,
         'status': server.status,
-        'flavor': server.flavor,
-        'image': server.image
+        'flavor': server.flavor.id,
+        'image': server.image.id
     }
    #'networks': server.networks
    #'created': server.created
