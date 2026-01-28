@@ -77,9 +77,9 @@ def find_best_format(source_platform, destination_platform):
     # Fallback: first export + first import
     return source_exports[0], destination_imports[0]
 
-#exportdisktype,importdisktype = find_best_format(source,destination)
-#result["exportdisktype"]= exportdisktype
-#result["importdisktype"]= importdisktype
+exportdisktype,importdisktype = find_best_format(source,destination)
+result["exportdisktype"]= exportdisktype
+result["importdisktype"]= importdisktype
 print(json.dumps(result)) 
 
 #---------------------
