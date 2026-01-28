@@ -34,7 +34,8 @@ def uploading_disk(vm_name):
     shared_data = json.loads(shared_data_json)
     # Extract specific value
     disktype = shared_data.get('importdisktype', '')
-    output_path= fr"C:\Temp\osdisk-{vm_name}.{disktype}"
+    output_path = shared_data.get('output_path', '')
+    
 
 
     from keystoneauth1.identity.v3 import ApplicationCredential
