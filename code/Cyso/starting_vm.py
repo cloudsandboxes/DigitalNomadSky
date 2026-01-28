@@ -70,7 +70,6 @@ def create_vm_from_image(shared_data):
     # Get network (optional)
     nics = None
     network_name="public"
-    network = nova.network.find_network("public")
     nics = [{'net-id': networks.id}]
     
     # Create server
