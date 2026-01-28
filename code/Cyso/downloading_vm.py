@@ -118,7 +118,6 @@ def download_image(image_id, output_path, disk_format='qcow2', chunk_size=8192):
             response = requests.get(url, headers=headers, stream=True, timeout=30)
             response.raise_for_status()
 
-            """
             
             mode = 'ab' if resume_pos > 0 else 'wb'
             with open(output_path, mode) as f:
@@ -133,3 +132,4 @@ def download_image(image_id, output_path, disk_format='qcow2', chunk_size=8192):
                 time.sleep(2 ** attempt)  # Exponential backoff
                 continue
             return False, f"Download failed after 5 attempts: {e}"
+"""
