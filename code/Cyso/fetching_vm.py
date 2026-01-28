@@ -78,11 +78,3 @@ def fetch_vm ():
         'created': server.created,
     }
 
-try:
-     number = fetch_vm()
-     print("✓ Authentication successful!")
-     print (f"Success! Found {number} VMs")
-except Exception as e:
-        print(f"✗ Authentication failed: {e}")
-        print("\nPlease check your credentials and try again.")
-        sys.exit(1)
