@@ -20,15 +20,21 @@ def uploading_disk(vm_name):
     import time
     import requests
     from requests.exceptions import ConnectionError, ChunkedEncodingError
+    
 
     # Get arguments
     source = sys.argv[1]
     destination = sys.argv[2]
     vm_name = sys.argv[3].lower()
     import config
-    output_path= fr"C:\Temp\osdisk-{vm_name}.vhd"
+    
     chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
     file_path=output_path
+    shared_data_json = sys.argv[4]  # 4th argument
+    shared_data = json.loads(shared_data_json)
+    # Extract specific value
+    disktype = shared_data.get('importdisktype', '')
+    output_path= fr"C:\Temp\osdisk-{vm_name}.{disktype}"
 
 
     from keystoneauth1.identity.v3 import ApplicationCredential
@@ -65,7 +71,7 @@ def uploading_disk(vm_name):
     glance = glance_client.Client("2", session=sess)
 
     image_name= f"osdisk-{vm_name}"
-    disk_format='vhd'
+    disk_format=disktype
     container_format='bare'
  
     # Create image metadata
