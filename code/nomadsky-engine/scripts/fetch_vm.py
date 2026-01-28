@@ -30,9 +30,9 @@ elif source == 'cyso':
           
       try:
             result = fetch_vm()
-            raise Exception('something went wrong, {result} the vm is not found in Cyso Cloud!')
+            raise Exception(f'something went wrong, {result} the vm is not found in Cyso Cloud!')
       except IndexError:
-        raise Exception(f'something went wrong, the vm is not found in Cyso Cloud!')  
+        raise Exception('something went wrong, the vm is not found in Cyso Cloud!')  
 
 elif source == 'aws':
       # Amazon SDK code to find VM
