@@ -71,7 +71,7 @@ def export_os_disk(vm_name):
 
     #login to other provider
     auth2 = ApplicationCredential(
-     auth_url=os.environ.get('OS_AUTH_URL', 'https://core.fuga.cloud:9292'),
+     auth_url=os.environ.get('OS_AUTH_URL', 'https://core.fuga.cloud:5000/v3'),
      application_credential_id=config.OS_APPLICATION_CREDENTIAL_ID,
      application_credential_secret= password
     )
