@@ -20,7 +20,7 @@ def fetch_vm ():
    https://identity.api.ams.fuga.cloud:443/v3
    """
    # For app credentials, only need ID and secret
-   credentials = {
+   creds = {
         'auth_url': os.environ.get('OS_AUTH_URL', 'https://core.fuga.cloud:5000/v3'),
         'application_credential_id': os.environ.get('OS_APPLICATION_CREDENTIAL_ID', '33730d2e61274dd584f0d7b2fa846fba'),
         'application_credential_secret': os.environ.get('OS_APPLICATION_CREDENTIAL_SECRET') or getpass.getpass("Enter your app credntial secret: "),
