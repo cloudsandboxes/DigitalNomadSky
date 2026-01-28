@@ -31,7 +31,7 @@ def fetch_vm (vmname):
    import config
    
    # Step 1: Get credentials
-   print("\n[1/4] Getting credentials...")
+   #print("\n[1/4] Getting credentials...")
    # Use ApplicationCredential instead of Password
    from keystoneauth1.identity.v3 import ApplicationCredential
 
@@ -79,8 +79,9 @@ def fetch_vm (vmname):
    # Get all properties
    result = {
         'message': f"VM '{vm_name}' found successfully in {source}!",
-        'vmname' : vm_name,
-        'whatups': vm_name
+        'id': server.id,
+        'name': server.name,
+        'status': server.status
             }
    #'networks': server.networks
    #'created': server.created
