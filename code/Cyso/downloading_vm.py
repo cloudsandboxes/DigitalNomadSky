@@ -30,6 +30,12 @@ def export_os_disk(vm_name):
     output_path= fr"C:\Temp\osdisk-{vm_name}.qcow2"
     chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
 
+    if os.path.exists(output_path):
+               result = {
+                  'message': f"VM {vmname} already downloaded from {source}!",
+                  'output_path' : output_path
+                 }
+               return result
    
     # Step 1: Get credentials
     #print("\n[1/4] Getting credentials...")
