@@ -74,12 +74,13 @@ def uploading_disk(vm_name):
         container_format=container_format,
         visibility='private'
     )
+
     
     # Upload in chunks
     chunk_size = 8192
     file_size = os.path.getsize(file_path)
     uploaded = 0
-    
+    file_path=output_path
     with open(file_path, 'rb') as f:
         glance.images.upload(image.id, f)
     
