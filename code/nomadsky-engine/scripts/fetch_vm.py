@@ -102,7 +102,7 @@ data = {
 logger.info(data)
 
 
-
+ raise Exception(f'something went wrong, {result}!') 
 
 
 
