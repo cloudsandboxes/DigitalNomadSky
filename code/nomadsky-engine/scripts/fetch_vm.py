@@ -80,8 +80,7 @@ def find_best_format(source_platform, destination_platform):
 
 exportdisktype,importdisktype = find_best_format(source,destination)
 result["exportdisktype"]= exportdisktype
-result["importdisktype"]= importdisktype
-raise Exception(f'something went wrong, {result}!')  
+result["importdisktype"]= importdisktype 
 print(json.dumps(result)) 
 
 #---------------------
