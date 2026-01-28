@@ -85,7 +85,7 @@ def export_os_disk(vm_name):
     for _ in range(360):
         image = glance.images.get(image_id)
         if image.status == 'active':
-            return {'message': f"Image {image_name} ready (ID: {image_id})"}
+            break 
         elif image.status == 'error':
             return False, f"Image creation failed"
         time.sleep(20)
@@ -114,7 +114,7 @@ def export_os_disk(vm_name):
                     if chunk:
                         f.write(chunk)
             
-            return True, f"Downloaded to {output_path}"
+            return {'message': f"Image {image_name} ready (ID: {image_id}) and downloaded to {output_path}"}
             
         except (requests.exceptions.RequestException, IOError) as e:
             if attempt < 4:
