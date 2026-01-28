@@ -68,7 +68,7 @@ def stop_vm():
         return False, "VM not found"
     
     server = servers[0]
-    #server.stop()  # Graceful shutdown
+    #server.suspend()  # Graceful shutdown
 
     for _ in range(30):
         server = nova.servers.get(server.id)
