@@ -29,6 +29,7 @@ def create_vm_from_image(shared_data):
     shared_data = json.loads(shared_data_json)
     # Extract specific value
     image_id = shared_data.get('image_id', '')
+    flavor = shared_data.get('flavor', '')
 
     from keystoneauth1.identity.v3 import ApplicationCredential
 
@@ -64,11 +65,6 @@ def create_vm_from_image(shared_data):
     nova = nova_client.Client("2.1", session=sess)
         
     # Get flavor by name
-    flavors = nova.flavors.list()
-    flavor_name = "s5.small"
-    flavor = next((f for f in flavors if f.name == flavor_name), None)
-    if not flavor:
-        return False, f"Flavor {flavor_name} not found"
     
     # Get network (optional)
     nics = None
@@ -80,7 +76,7 @@ def create_vm_from_image(shared_data):
     server = nova.servers.create(
         name=vm_name,
         image=image_id,
-        flavor=flavor.id,
+        flavor=flavor,
         nics=nics
     )
     
