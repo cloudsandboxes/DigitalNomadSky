@@ -26,7 +26,7 @@ def uploading_disk(vm_name):
     destination = sys.argv[2]
     vm_name = sys.argv[3].lower()
     import config
-    output_path= fr"C:\Temp\osdisk-{vm_name}.qcow2"
+    output_path= fr"C:\Temp\osdisk-{vm_name}.vhd"
     chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
     file_path=output_path
 
