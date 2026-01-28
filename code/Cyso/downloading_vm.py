@@ -25,7 +25,7 @@ def export_os_disk(vm_name):
     destination = sys.argv[2]
     vm_name = sys.argv[3].lower()
     import config
-    output_path= r"C:/temp"
+    output_path= fr"C:\Temp\osdisk-{vm_name}.qcow2"
    
     # Step 1: Get credentials
     #print("\n[1/4] Getting credentials...")
@@ -121,4 +121,3 @@ def export_os_disk(vm_name):
                 time.sleep(2 ** attempt)  # Exponential backoff
                 continue
             return False, f"Download failed after 5 attempts: {e}"
-"""
