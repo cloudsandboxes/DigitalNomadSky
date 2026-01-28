@@ -81,5 +81,9 @@ preferred_type = {
     "ecofed": {
         "import": ("raw"),
         "export": ("raw")
+    },
+    "cyso": {
+        "import": ("qcow2", "raw", "vmdk", "vdi"),
+        "export": ("qcow2", "raw")
     }
 }
