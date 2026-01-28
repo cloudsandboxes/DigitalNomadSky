@@ -4,7 +4,7 @@ Cyso.cloud OpenStack VM Access Script
 This script authenticates to Cyso.cloud OpenStack and provides VNC console access to VMs
 """
 
-def fetch_vm ():
+def fetch_vm (vmname):
    """
    Get OpenStack credentials from environment variables or user input.
    You can download your OpenStack RC file from Cyso.cloud dashboard.
