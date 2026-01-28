@@ -20,6 +20,7 @@ def export_os_disk(vm_name):
     from tkinter import simpledialog
     import time
     import requests
+    from requests.exceptions import ConnectionError, ChunkedEncodingError, IOError
 
     # Get arguments
     source = sys.argv[1]
