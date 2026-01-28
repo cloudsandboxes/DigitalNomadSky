@@ -28,6 +28,8 @@ def export_os_disk(vm_name):
     vm_name = sys.argv[3].lower()
     import config
     output_path= fr"C:\Temp\osdisk-{vm_name}.qcow2"
+    chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
+
    
     # Step 1: Get credentials
     #print("\n[1/4] Getting credentials...")
