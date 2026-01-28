@@ -69,7 +69,7 @@ def create_vm_from_image(shared_data):
     # Get flavor by name
     
     # Get network (optional)
-    nics = [{"uuid": "496c99b9-4ae0-4cde-b648-d7412832b81b"}]
+    nics = [{"net-id": "496c99b9-4ae0-4cde-b648-d7412832b81b"}]
     network_name="public"
     
     # Create server
