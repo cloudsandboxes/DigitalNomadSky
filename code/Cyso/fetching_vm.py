@@ -54,6 +54,13 @@ def fetch_vm ():
 
 
    print("\n[2/4] Authenticating to OpenStack...")
+   try:
+        servers = nova.servers.list()
+        return True, f"Success! Found {len(servers)} VMs"
+   except Exception as e:
+        return False, str(e)
+
+
 try:
      nova = fetch_vm()
      print("✓ Authentication successful!")
