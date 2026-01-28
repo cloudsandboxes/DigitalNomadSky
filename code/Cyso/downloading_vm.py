@@ -69,8 +69,64 @@ def export_os_disk(nova, vm_name, image_name=None):
     server = servers[0]
     
     # Create snapshot/image of the VM
-    if not image_name:
-        image_name = f"{vm_name}_snapshot_{int(__import__('time').time())}"
-    
+    image_name = f"{vm_name}_snapshot_{int(__import__('time').time())}"
     image_id = server.create_image(image_name)
-    return True, f"Creating image {image_name} (ID: {image_id})"
+    for _ in range(360):
+        image = glance.images.get(image_id)
+        if image.status == 'active':
+            return {'message': f"Image {image_name} ready (ID: {image_id})"}
+        elif image.status == 'error':
+            return False, f"Image creation failed"
+        time.sleep(20)
+
+
+    
+def download_image(image_id, output_path, disk_format='qcow2', chunk_size=8192):
+    from keystoneauth1 import session
+    from keystoneauth1.identity.v3 import ApplicationCredential
+    from glanceclient import Client
+    import requests
+    import os
+    import time
+    
+    # Auth setup
+    auth = ApplicationCredential(
+        auth_url=os.environ.get('OS_AUTH_URL', 'https://core.fuga.cloud:5000/v3'),
+        application_credential_id=os.environ.get('OS_APPLICATION_CREDENTIAL_ID'),
+        application_credential_secret=os.environ.get('OS_APPLICATION_CREDENTIAL_SECRET')
+    )
+    sess = session.Session(auth=auth)
+    glance = Client('2', session=sess)
+    
+    # Get image download URL
+    image = glance.images.get(image_id)
+    download_url = glance.images.data(image_id, do_checksum=False)
+    
+    # Get direct URL from Glance endpoint
+    endpoint = sess.get_endpoint(service_type='image')
+    url = f"{endpoint}/v2/images/{image_id}/file"
+    
+    # Download with retry (max 5 attempts)
+    for attempt in range(5):
+        try:
+            # Resume from where we left off
+            resume_pos = os.path.getsize(output_path) if os.path.exists(output_path) else 0
+            headers = {'Range': f'bytes={resume_pos}-'} if resume_pos > 0 else {}
+            headers['X-Auth-Token'] = sess.get_token()
+            
+            response = requests.get(url, headers=headers, stream=True, timeout=30)
+            response.raise_for_status()
+            
+            mode = 'ab' if resume_pos > 0 else 'wb'
+            with open(output_path, mode) as f:
+                for chunk in response.iter_content(chunk_size=chunk_size):
+                    if chunk:
+                        f.write(chunk)
+            
+            return True, f"Downloaded to {output_path}"
+            
+        except (requests.exceptions.RequestException, IOError) as e:
+            if attempt < 4:
+                time.sleep(2 ** attempt)  # Exponential backoff
+                continue
+            return False, f"Download failed after 5 attempts: {e}"
