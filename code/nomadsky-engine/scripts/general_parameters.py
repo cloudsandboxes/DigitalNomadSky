@@ -83,7 +83,7 @@ preferred_type = {
         "export": ("raw")
     },
     "cyso": {
-        "import": ("qcow2", "raw", "vmdk", "vdi"),
-        "export": ("qcow2", "raw")
+        "import": ("qcow2", "iso" ,"ova", "qcow2", "raw", "vmdk", "vdi", "vhd", "ami", "ari", "aki", "docker" ),
+        "export": ("qcow2")
     }
 }
