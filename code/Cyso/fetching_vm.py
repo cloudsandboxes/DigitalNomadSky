@@ -78,7 +78,9 @@ def fetch_vm ():
     
    # Get all properties
    result = {
-        'message': f"VM '{vm_name}' found successfully in {source}!"
+        'message': f"VM '{vm_name}' found successfully in {source}!",
+        'vmname' : vm_name,
+        'whatups': vm_name
             }
    #'networks': server.networks
    #'created': server.created
