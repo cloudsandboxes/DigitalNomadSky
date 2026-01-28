@@ -26,7 +26,7 @@ else:
             #subprocess.run([qemu_path, "convert", "-O", output_format, os_disk_path, output_disk_path], check=True)
             #(result add = new_diskpath = output_disk_path)
             result = {
-             'message': f"the import diskfile type is different '{importdisktype}' to the export type '{exportdisktype}' so need to transform!",
+             'message': f"the import diskfile type is different '{importdisktype}' to the export type '{exportdisktype}', so need to transform!",
              }
 print(json.dumps(result))
 
