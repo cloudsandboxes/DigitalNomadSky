@@ -72,4 +72,4 @@ def stop_vm():
     conn.compute.stop_server(server)
     conn.compute.wait_for_server(server, status='SHUTOFF')
     
-    return {'message' = f"VM {vm_name} stopped"
+    return {'message' = f"VM {vm_name} stopped"}
