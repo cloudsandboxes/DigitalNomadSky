@@ -29,7 +29,7 @@ if not credentials['username']:
       credentials['username'] = input("Enter your OpenStack username: ")
 if not credentials['password']:
       import getpass
-    credentials['password'] = getpass.getpass("Enter your OpenStack password: ")
+      credentials['password'] = getpass.getpass("Enter your OpenStack password: ")
 if not credentials['project_name']:
      credentials['project_name'] = input("Enter your project name: ")
     
