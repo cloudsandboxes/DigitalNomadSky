@@ -26,7 +26,6 @@ def fetch_vm(vmname):
         # Use interactive browser login
         tenant_id = config.tenantid
         credential = InteractiveBrowserCredential(tenant_id=tenant_id)
-        credential.wait()
 
         # -------------------------------
         # Find VM name in the entire environment
