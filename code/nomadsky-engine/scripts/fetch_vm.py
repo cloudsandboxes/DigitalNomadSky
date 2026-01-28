@@ -29,7 +29,7 @@ elif source == 'cyso':
       from fetching_vm import fetch_vm
       try:
             result = fetch_vm(vmname)
-             raise Exception(f'something went not wrong, {result}!') 
+            raise Exception(f'something went not wrong, {result}!') 
             
       except IndexError:
         raise Exception('something went wrong, the vm is not found in Cyso Cloud!')  
