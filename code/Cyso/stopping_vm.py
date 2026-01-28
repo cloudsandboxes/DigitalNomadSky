@@ -68,10 +68,12 @@ def stop_vm():
         return False, "VM not found"
     
     server = servers[0]
-    server.suspend()  # Graceful shutdown
-
-    for _ in range(30):
-        server = nova.servers.get(server.id)
-        if server.status == 'SHUTOFF':
-            return {'message' : f"VM {vm_name} stopped"}
-        time.sleep(15)
+    if server.status != "SUSPENDED"
+        server.suspend()  # Graceful shutdown
+        for _ in range(30):
+            server = nova.servers.get(server.id)
+            if server.status == 'SUSPENDED':
+                return {'message' : f"VM {vm_name} stopped"}
+            time.sleep(15)
+    else         
+        return {'message' : f"VM {vm_name} was already stopped"}
