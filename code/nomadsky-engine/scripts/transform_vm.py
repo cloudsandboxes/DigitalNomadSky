@@ -14,8 +14,10 @@ shareddata_json = sys.argv[4]
 shared_data = json.loads(shareddata_json)
 exportdisktype = shared_data.get('exportdisktype', '')
 importdisktype = shared_data.get('importdisktype', '')
+input_path = shared_data.get('output_path', '')
 unique_id = sys.argv[5]
-output_disk_path= r"C:\temp\output"
+qemu_path = r"C:\Program Files\qemu\qemu-img.exe"
+output_path = fr"C:\temp\osdisk-{vmname}.{importdisktype}"
 
 if exportdisktype == importdisktype:
         result = {
@@ -23,10 +25,14 @@ if exportdisktype == importdisktype:
              }
 else:
             #do qemu to convert the current disk(export) to the outputformat (importdisktype).
-            #subprocess.run([qemu_path, "convert", "-O", output_format, os_disk_path, output_disk_path], check=True)
+            
+            subprocess.run([qemu_path, "convert", "-O", importdisktype, input_path, output_path], check=True)
+
+            #subprocess.run([qemu_path, "convert", "-O", importdisktype, output_path, output_disk_path], check=True)
             #(result add = new_diskpath = output_disk_path)
             result = {
              'message': f"the import diskfile type is different '{importdisktype}' to the export type '{exportdisktype}', so need to transform!",
+             'output_path' : output_path
              }
 print(json.dumps(result))
 
@@ -57,11 +63,9 @@ logger.addHandler(AzureLogHandler(connection_string="InstrumentationKey=bde21699
 logger.setLevel(logging.INFO)
 
 # Prepare JSON data
-times = datetime.now(timezone.utc)
 data = {
     "unique_id": unique_id,
     "step": "transform",
-    "time": times,
     "message": f"VM disk transformed to format from '{destination}'"
 }
 
