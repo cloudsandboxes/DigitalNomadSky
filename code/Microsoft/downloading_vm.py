@@ -38,7 +38,7 @@ def download_vm(shared_data):
         subscription_id = shared_data.get('subscription_id', '')
         resource_group = shared_data.get('resource_group', '')
         os_disk_id = shared_data.get('os_disk_id', '')
-        output_vhd_path = fr"C:\Temp\osdisk-{vmname}.vhd"
+        output_path = fr"C:\Temp\osdisk-{vmname}.vhd"
         exportdisktype = shared_data.get('exportdisktype', '')
 
         if os.path.exists(output_vhd_path):
@@ -46,7 +46,7 @@ def download_vm(shared_data):
                result = {
                   'message': f"VM {vmname} already downloaded from {source}!",
                   'exportdisktype' : exportdisktype,
-                  'output_path' : output_vhd_path
+                  'output_path' : output_path
                  }
                return result
         
@@ -88,7 +88,7 @@ def download_vm(shared_data):
                        with requests.get(sas_url, headers=headers, stream=True, timeout=60) as r:
                            r.raise_for_status()
                            mode = "ab" if start_byte > 0 else "wb"
-                           with open(output_vhd_path, mode) as f:
+                           with open(output_path, mode) as f:
                                for chunk in r.iter_content(chunk_size=chunk_size):
                                    if chunk:
                                        f.write(chunk)
@@ -102,11 +102,11 @@ def download_vm(shared_data):
                        if max_retries <= 0:
                            raise Exception("Max retries exceeded")
 
-              file_size_gb = os.path.getsize(output_vhd_path) / (1024**3) 
+              file_size_gb = os.path.getsize(output_path) / (1024**3) 
               result = {
                   'message': f"VM '{vmname}' successfully downloaded from '{source}'!",
                   'exportdisktype' : exportdisktype,
-                  'output_path' : output_vhd_path,
+                  'output_path' : output_path,
                   }
               return result
 
