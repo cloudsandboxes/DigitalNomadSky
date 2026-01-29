@@ -35,7 +35,7 @@ else:
             if importdisktype == "vhd":
                 importdisktype = "vpc"
                 subformat = "subformat=fixed"   
-            subprocess.run([qemu_path, "convert", "-O", importdisktype, subformat, input_path, output_path], check=True)
+            subprocess.run([qemu_path, "convert", "-O", importdisktype, "-o", subformat, input_path, output_path], check=True)
 
             #subprocess.run([qemu_path, "convert", "-O", importdisktype, output_path, output_disk_path], check=True)
             #(result add = new_diskpath = output_disk_path)
