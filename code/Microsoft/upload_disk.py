@@ -16,7 +16,7 @@ def upload_disk(shared_data):
     storage_account_name = config.storage_account_name 
     location = config.location 
     container_name = config.container_name
-    vhd_path = shared_data.get('output_vhd_path', '')
+    vhd_path = shared_data.get('output_path', '')
     blob_name = config.blob_name
     account_url = f"https://{storage_account_name}.blob.core.windows.net"
 
