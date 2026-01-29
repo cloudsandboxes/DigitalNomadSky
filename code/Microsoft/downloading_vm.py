@@ -77,7 +77,7 @@ def download_vm(shared_data):
               # -------------------------------
 
               chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
-              max_retries = 20
+              max_retries = 200
 
               # Resume if file exists
               start_byte = os.path.getsize(output_vhd_path) if os.path.exists(output_vhd_path) else 0
@@ -97,7 +97,7 @@ def download_vm(shared_data):
                        break  # finished successfully
                     except (requests.ConnectionError, requests.exceptions.ChunkedEncodingError) as e:
                        #print(f"\nConnection error, retrying... ({e})")
-                       sleep(5)  # wait a few seconds
+                       sleep(10)  # wait a few seconds
                        max_retries -= 1
                        if max_retries <= 0:
                            raise Exception("Max retries exceeded")
