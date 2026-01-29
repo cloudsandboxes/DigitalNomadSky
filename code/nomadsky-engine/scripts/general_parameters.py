@@ -39,7 +39,7 @@ VM_SIZES = {
 
 preferred_type = {
     "azure": {
-        "import": ("vhdx", "vhd"),
+        "import": ("vhd", "azurein"),
         "export": ("vhd", "azureuit")
     },
     "aws": {
