@@ -1,17 +1,10 @@
-# Nomadsky Digital Sovereignty
+# NomadSky Digital Sovereignty
 
- ## Scope
- In this project you can migrate VMs with the following characteristics: 
- * Only single disk support,
- * Max size of the VM depends on the size of the Nomadsky Engine
- * No licences are transfered (for example Windows, SQL or Redhat licenses)
- * Check hardware limits for example GPU's work different between providers.
+To install the migration tool NomadSky follow these instructions
 
-## Get started:
-1) Have a Windows Server, with a least 300 GB of storage on the C:/ drive. This will be used for storing intermediate VM-disks.  
-2) Install Python and GIT on the VM. 
-3) Clone the repo, 
-4) run ./start-NomadSky.py
-5) open local browser.  
-
+1) Create a new virtual machine connected to the internet based on Windows.  
+2) To install prerequisites, run the following powershell script: code/first-installation/fresh-install.ps1
+3) To clone the repo, run the following powershell script:
+4) To install libraries run the following script: 
+5) To launch the application, navigate to nomadsky/code/nomadsky-engine/ui and run py app2.py    
 
