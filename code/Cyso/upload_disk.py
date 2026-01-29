@@ -29,7 +29,6 @@ def uploading_disk(vm_name):
     import config
     
     chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
-    file_path=output_path
     shared_data_json = sys.argv[4]  # 4th argument
     shared_data = json.loads(shared_data_json)
     # Extract specific value
@@ -86,10 +85,10 @@ def uploading_disk(vm_name):
     
     # Upload in chunks
     chunk_size = 8192
-    file_size = os.path.getsize(file_path)
+    file_size = os.path.getsize(output_path)
     uploaded = 0
    
-    with open(file_path, 'rb') as f:
+    with open(output_path, 'rb') as f:
         glance.images.upload(image.id, f)
     
     # Wait for image to become active (check every 5 seconds, max 30 minutes)
