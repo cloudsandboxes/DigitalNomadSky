@@ -13,7 +13,7 @@ if not os.path.exists(qemu_path):
         # Windows download link example (adjust version)
         # Option 2: Download latest from official source
         download_path = "C:/temp/qemu-setup.exe"
-        qemu_installer = "https://qemu.weilnetz.de/w64/qemu-w64-setup-20240423.exe"
+        qemu_installer = "https://qemu.weilnetz.de/w64/qemu-w64-setup-2051224.exe"
         subprocess.run(["curl", "-L", "-o", download_path, qemu_installer], check=True)
         print ("i work tilll here")
         subprocess.run(["start", "/wait", download_path, "/S"], check=True)
