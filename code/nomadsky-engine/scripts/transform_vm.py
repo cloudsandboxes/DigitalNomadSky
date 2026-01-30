@@ -42,7 +42,7 @@ else:
             if destination == "azure":
                     ossize= os.path.getsize(output_path)
                     newsize = math.ceil(ossize/ (1024 * 1024))
-                    subprocess.run([qemu_path, "resize", output_path, f"{newsize}MB"], check=True)
+                    subprocess.run([qemu_path, "resize", output_path, f"{newsize}M"], check=True)
                     
         
             #subprocess.run([qemu_path, "convert", "-O", importdisktype, output_path, output_disk_path], check=True)
