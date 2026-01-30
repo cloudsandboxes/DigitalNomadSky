@@ -1,9 +1,11 @@
 import sys
+import os
 import subprocess
 import json
 from datetime import datetime, timezone
 from opencensus.ext.azure.log_exporter import AzureLogHandler
 import logging
+import math
 
 
 # Get arguments
@@ -19,6 +21,7 @@ unique_id = sys.argv[5]
 qemu_path = r"C:\Program Files\qemu\qemu-img.exe"
 output_path = fr"C:\temp\osdisk-{vmname}.{importdisktype}"
 subformat="subformat=dynamic"
+
 
 if exportdisktype == importdisktype:
         result = {
@@ -36,7 +39,12 @@ else:
                 importdisktype = "vpc"
                 subformat = "subformat=fixed"   
             subprocess.run([qemu_path, "convert", "-O", importdisktype, "-o", subformat, input_path, output_path], check=True)
-
+            if destination == "azure":
+                    ossize= os.path.getsize(output_path)
+                    newsize = math.ceil(ossize/ (1024 * 1024))
+                    subprocess.run([qemu_path, "resize", output_path, "--expend", f"{newsize}MB"], check=True)
+                    
+        
             #subprocess.run([qemu_path, "convert", "-O", importdisktype, output_path, output_disk_path], check=True)
             #(result add = new_diskpath = output_disk_path)
             result = {
