@@ -37,12 +37,13 @@ else:
         
             if importdisktype == "vhd":
                 importdisktype = "vpc"
-                subformat = "subformat=fixed"   
+                subformat = "subformat=fixed"  
+                subprocess.run([qemu_path, "resize", input_path, "+1M"], check=True)
             subprocess.run([qemu_path, "convert", "-O", importdisktype, "-o", subformat, input_path, output_path], check=True)
             if destination == "azure":
                     ossize= os.path.getsize(output_path)
                     newsize = math.ceil(ossize/ (1024 * 1024))
-                    subprocess.run([qemu_path, "resize", output_path, "+1M"], check=True)
+                    #subprocess.run([qemu_path, "resize", output_path, "+1M"], check=True)
                     #f"{newsize}M"
         
             #subprocess.run([qemu_path, "convert", "-O", importdisktype, output_path, output_disk_path], check=True)
