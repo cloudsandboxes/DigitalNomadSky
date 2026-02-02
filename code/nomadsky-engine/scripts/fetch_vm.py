@@ -90,7 +90,7 @@ def find_best_format(source_platform, destination_platform):
 
 try:
     import general_parameters
-    print(f"preferred_type value: {general_parameters.preferred_type}")
+    raise Exception(f"preferred_type value: {general_parameters.preferred_type}")
 except ImportError as e:
     print(f"Import failed: {e}")
 except AttributeError as e:
