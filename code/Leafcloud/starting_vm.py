@@ -68,7 +68,7 @@ def create_vm_from_image(shared_data):
     server = nova.servers.create(
         name=vm_name,
         image=image_id,
-        flavor="3bc4833f-dc05-4633-a6b1-8c764c4ce857",
+        flavor="cc1.xsmall",
         nics=config.nics
     )
     
