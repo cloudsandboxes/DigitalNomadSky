@@ -82,14 +82,10 @@ def find_best_format(source_platform, destination_platform):
     # Try to find a matching format
     for fmt in source_exports:
         if fmt in destination_imports:
-            #return fmt, fmt
-            raise Exception(f'something went wrong, {source_exports}, {destination_imports}!')  
-
-
+            return fmt, fmt
     # Fallback: first export + first impor
-    #return source_exports[0], destination_imports[0]
-    raise Exception(f'something went wrong, {source_exports}, {destination_imports}!')  
-
+    return source_exports[0], destination_imports[0]
+    
 exportdisktype,importdisktype = find_best_format(source,destination)
 result["exportdisktype"]= exportdisktype
 result["importdisktype"]= importdisktype 
