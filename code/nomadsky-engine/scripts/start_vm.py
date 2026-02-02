@@ -40,6 +40,19 @@ elif destination == 'cyso':
       except IndexError:
         raise Exception(f" something went wrong the vm is not created.")
 
+elif destination == 'leaf':
+      # leaf SDK code to find VM
+      sys.path.append(r"C:/projects/nomadsky/code/Leafcloud")
+      import config
+      from starting_vm import create_vm_from_image
+          
+      try:
+            nic = create_vm_from_image(shared_data)
+            print(json.dumps(nic))
+      except IndexError:
+        raise Exception(f" something went wrong the vm is not created.")
+
+
 elif destination == 'aws':
    a='empty'
    #     # AWS boto3 code to find VM
