@@ -76,8 +76,8 @@ sys.path.append(r"C:/projects/nomadsky/code/nomadsky-engine/scripts")
 from general_parameters import preferred_type
 
 def find_best_format(source_platform, destination_platform):
-    source_exports = preferred_type[source_platform]["export"]
-    destination_imports = preferred_type[destination_platform]["import"]
+    source_exports = general_parameters.preferred_type[source_platform]["export"]
+    destination_imports = general_parameters.preferred_type[destination_platform]["import"]
 
     # Try to find a matching format
     for fmt in source_exports:
@@ -89,8 +89,7 @@ def find_best_format(source_platform, destination_platform):
 
 
 try:
-    import general_parameters
-    raise Exception(f"preferred_type value: {general_parameters.preferred_type}")
+    raise Exception(f"preferred_type value: {general_parameters.preferred_type[leaf]["export"]}")
 except ImportError as e:
     print(f"Import failed: {e}")
 except AttributeError as e:
