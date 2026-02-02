@@ -1,4 +1,5 @@
 import sys
+import os
 import json
 from datetime import datetime, timezone
 from opencensus.ext.azure.log_exporter import AzureLogHandler
@@ -92,8 +93,8 @@ print(f"File exists: {os.path.exists(path)}")
 try:
     import general_parameters
     print(f"Module imported: {general_parameters}")
-    print(f"Module file location: {general_parameters.__file__}")
-    print(f"preferred_type value: {general_parameters.preferred_type}")
+    #print(f"Module file location: {general_parameters.__file__}")
+    #print(f"preferred_type value: {general_parameters.preferred_type}")
 except ImportError as e:
     print(f"Import failed: {e}")
 except AttributeError as e:
