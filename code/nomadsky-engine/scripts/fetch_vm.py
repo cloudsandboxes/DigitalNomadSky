@@ -100,9 +100,9 @@ except ImportError as e:
 except AttributeError as e:
     print(f"Attribute not found: {e}")
 
-exportdisktype,importdisktype = find_best_format(source,destination)
-result["exportdisktype"]= exportdisktype
-result["importdisktype"]= importdisktype 
+#exportdisktype,importdisktype = find_best_format(source,destination)
+#result["exportdisktype"]= exportdisktype
+#result["importdisktype"]= importdisktype 
 print(json.dumps(result)) 
 
 #---------------------
