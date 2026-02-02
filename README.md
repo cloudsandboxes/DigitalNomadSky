@@ -12,11 +12,11 @@ Check our demo, [here](https://htmlpreview.github.io/?https://github.com/cloudsa
 ### Key Benefits
 
 
-* **Eliminate Vendor Lock-In:** Move workloads freely as costs, performance, or policies change.
-* **Full Data Sovereignty:** Decide exactly where your data resides — by country, region, or provider.
-* **Flexible Cloud Ecosystem:** Combine public clouds, European providers, and your own data centers.
-* **Seamless Migration:** One platform that makes cloud switching predictable, manageable, and low-risk.
-* **Environment friendly:** Chose the cloud with the lowest CO2 emission rates.
+* **Eliminate Vendor Lock-In:** Move workloads freely when pricing changes or conditions shift.
+* **Data Sovereignty by Design::** Decide where your data lives — without compromise.
+* **Composable Cloud Strategy:**  Mix public clouds, regional providers, and on-premise infrastructure.
+* **Seamless Migration:** Switch clouds with control, confidence, and minimal risk.
+* **Environmental friendly:** Prefer cloud platforms with the lowest CO₂ footprint.
 
 
 # How to start
@@ -34,7 +34,7 @@ Check our demo, [here](https://htmlpreview.github.io/?https://github.com/cloudsa
  * No licences are transfered (for example Windows, SQL or Redhat licenses)
  * Check hardware limits for example GPU's work different between providers.
 
-## For initial install check out this readme:  [here](https://github.com/cloudsandboxes/nomadsky/edit/main/installation-readme.md)
+## For initial installation check out this readme:  [here](https://github.com/cloudsandboxes/nomadsky/edit/main/installation-readme.md)
 ## For development check out this readme: [here](https://github.com/cloudsandboxes/nomadsky/edit/main/developer-readme.md)
 
 
