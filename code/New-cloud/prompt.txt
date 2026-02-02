@@ -1,37 +1,61 @@
-create the following files:
+Create the following files for a new cloudprovider:
+
 --------------------
 For fetching_vm.py:
 ----------
-create a def in python without input parameters. With interactive login to Amazon. Based on VM name, search over all accounts available.
-when found return details about id, size, os, and disk details. store this in parameter result, similar to this:
+Create a def in Python without input parameters. With interactive login to {cloudprovidername}. 
+Based on VM name, search over all accounts and projects available.
+When found return details about id, size, os, and disk details. Store this in parameter result, similar to this:
  result = {
               'message': f"VM '{vmname}' found successfully in {source}!",
               'vm_size': vm_size,
               'resource_id': resource_id} 
-and return result
+And return result
 when not found raise an error.
+
 put everything in one def.
 
-And use all input parameters as:
+include any needed input parameters as:
 import sys 
-sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+sys.path.append(r"C:/projects/nomadsky/code/{cloudprovidername}")
 import config
 variable=config.variable
 
-and list all pip statements as py -m pip 
+and list all pip statements as py -m pip install {name} 
 
 -----------------
-for create_networking
-----------------
-for create_vm
+for stopping a VM:
+-----------------
+
+Create a def in Python without input parameters. With interactive login to {cloudprovidername}. 
+Based on resourcid stop the VM. Wait till the VM is really stopped.
+When stopped return details about status. Store this in parameter result, similar to this:
+ result = {
+              'message': f"VM '{vmname}' stopped successfully in {source}!",
+              'vm_status': vm_status} 
+And return result
+when not found raise an error.
+
+put everything in one def.
+
+include any needed input parameters as:
+import sys 
+sys.path.append(r"C:/projects/nomadsky/code/{cloudprovidername}")
+import config
+variable=config.variable
+
+and list all pip statements as py -m pip install {name} 
+
 ---------------------
-for downloading_vm
+For downloading_vm
 ---------------------
-create a def in python without input parameters. With interactive login to Amazon. Based on given resourcid and other info. download the osdisk from the deallocated vm to a C:/.
+create a def in python without input parameters. With interactive login to {cloudprovidername}. 
+Based on given resourcid and other info. Download the osdisk from the deallocated vm to a C:/.
+Do the download in chunck and add a retry mechanism
 Then return details about storage location, similar to this:
  result = {
-              'message': f"VM '{vmname}' found successfully in {source}!",
-              'vm_size': vm_size,
+              'message': f"VM '{vmname}' successfully downloaded to !",
+              'output_path': output_path,
               'resource_id': resource_id} 
 and return result
 when not found raise an error.
@@ -46,19 +70,18 @@ variable=config.variable
 and list all pip statements as py -m pip 
 
 include an if statement to check if the vm has already been downloaded
-if os.path.exists(output_vhd_path):
-
-
-
+if os.path.exists(output_path):
 
 ---------------------
-for stopping_vm
----------------------------------
-create a def in python without input parameters. With interactive login to Amazon. Based on VM name, stop the VM.
-when found return a message. Store this in parameter result, similar to this:
+for upload_disk
+---------------------
+create a def in python without input parameters. With interactive login to {cloudprovidername}. 
+Based on given resourcid and other info. upload the osdisk to the {cloudprovidername}.
+Do the upload in chuncks and add a retry mechanism
+Then return details about storage location, similar to this:
  result = {
-              'message': f"VM '{vmname}' found successfully in {source}!",
-              'vm_size': vm_size,
+              'message': f"VM '{vmname}' successfully uploaded to !",
+              'image_id': image_id,
               'resource_id': resource_id} 
 and return result
 when not found raise an error.
@@ -73,7 +96,60 @@ variable=config.variable
 and list all pip statements as py -m pip 
 
 
+----------------
+create_networking
+----------------
+---------------------
+create a def in python without input parameters. With interactive login to {cloudprovidername}. 
+Based on needed resources for creating a vm. create for example a network, subnet, etc given resourcid and other info to the {cloudprovidername}.
+Do create the resources and wait till they are finished.
+Then return details about storage location, similar to this:
+ result = {
+              'message': f"VM '{vmname}' has the needed resources successfully created!",
+              'network_id': network_id,
+              'resource_id': resource_id} 
+and return result
+when not found raise an error.
+put everything in one def.
 
-for upload_disk
+And use all input parameters as:
+import sys 
+sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+import config
+variable=config.variable
+
+and list all pip statements as py -m pip 
+
+-----------
+create/start the vm
+-----------
+
+Create a def in Python without input parameters. With interactive login to {cloudprovidername}. 
+Based on VM name, disk and network create the VM.
+When created and running return details about id, size, os, and disk details. Store this in parameter result, similar to this:
+ result = {
+              'message': f"VM '{vmname}' successfully migrated to {destination}!",
+              'resource_id': resource_id} 
+And return result
+when not found raise an error.
+
+put everything in one def.
+
+include any needed input parameters as:
+import sys 
+sys.path.append(r"C:/projects/nomadsky/code/{cloudprovidername}")
+import config
+variable=config.variable
+
+and list all pip statements as py -m pip install {name} 
+
+
+
+----------------
+Append the if-loops in the nomadsky-engine/scripts.
+Append the parameterfile in the nomadsky-engine/scripts.generalparameters.
+Append the User interface form option in the nomadsky-engine/UI/frontend.
+Start trying.
+----------------
 
 
