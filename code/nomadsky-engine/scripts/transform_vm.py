@@ -36,7 +36,7 @@ else:
             if os.path.exists(qemu_path):
                 subprocess.run([qemu_path, "convert", "-O", importdisktype, "-o", subformat, input_path, output_path], check=True)
                 result = {
-                        'message': f"the import diskfile type has been converted to the export type '{exportdisktype}'!",
+                        'message': f"the diskfiletype has been converted to a format accepted by your destination cloud provider: '{exportdisktype}'!",
                         'output_path' : output_path
                         }
             else: 
