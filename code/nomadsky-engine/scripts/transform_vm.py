@@ -29,22 +29,28 @@ if exportdisktype == importdisktype:
              }
 else:
             #do qemu to convert the current disk(export) to the outputformat (importdisktype).
-            #add extra logic for qemu vhd= vpc  subformat=fixed
-            #for cyso  import vhd=raw
-        
-
-
-        
             if importdisktype == "vhd":
                 importdisktype = "vpc"
                 subformat = "subformat=fixed"  
-                
-            subprocess.run([qemu_path, "convert", "-O", importdisktype, "-o", subformat, input_path, output_path], check=True)
-            if destination == "azure":
-                    ossize= os.path.getsize(output_path)
-                    newsize = math.ceil(ossize/ (1024 * 1024))
-                    #subprocess.run([qemu_path, "resize", output_path, "+1M"], check=True)   fail in qemu windows
-                    #f"{newsize}M"
+
+            if os.path.exists(qemu_path):
+                subprocess.run([qemu_path, "convert", "-O", importdisktype, "-o", subformat, input_path, output_path], check=True)
+                result = {
+                        'message': f"the import diskfile type has been converted to the export type '{exportdisktype}'!",
+                        'output_path' : output_path
+                        }
+            else: 
+              
+
+
+        
+                            
+            
+            #if destination == "azure":
+            #        ossize= os.path.getsize(output_path)
+            #        newsize = math.ceil(ossize/ (1024 * 1024))
+            #        #subprocess.run([qemu_path, "resize", output_path, "+1M"], check=True)   fail in qemu windows
+            #        #f"{newsize}M"
         
             #subprocess.run([qemu_path, "convert", "-O", importdisktype, output_path, output_disk_path], check=True)
             #(result add = new_diskpath = output_disk_path)
