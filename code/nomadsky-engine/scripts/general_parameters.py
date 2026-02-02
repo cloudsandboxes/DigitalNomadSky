@@ -85,5 +85,9 @@ preferred_type = {
     "cyso": {
         "import": ("qcow2", "iso" ,"ova", "raw", "vmdk", "vdi", "ami", "ari", "aki", "docker"),
         "export": ("qcow2", "cysouit")
+    },
+    "leaf": {
+        "import": ("qcow2", "iso" ,"ova", "raw", "vmdk", "vdi", "ami", "ari", "aki", "docker"),
+        "export": ("qcow2", "leafuit")
     }
 }
