@@ -30,8 +30,6 @@ def create_vm_from_image(shared_data):
     shared_data = json.loads(shared_data_json)
     # Extract specific value
     image_id = shared_data.get('image_id', '')
-    flavor = shared_data.get('flavor', '')
-    networks = shared_data.get('networks', '')
 
     from keystoneauth1.identity.v3 import ApplicationCredential
 
@@ -59,7 +57,7 @@ def create_vm_from_image(shared_data):
     root.destroy()
 
     auth = ApplicationCredential(
-     auth_url=os.environ.get('OS_AUTH_URL', 'https://core.fuga.cloud:5000/v3'),
+     auth_url=os.environ.get('OS_AUTH_URL', config.destinationcloudurl),
      application_credential_id=config.OS_APPLICATION_CREDENTIAL_ID,
      application_credential_secret= password
     )
