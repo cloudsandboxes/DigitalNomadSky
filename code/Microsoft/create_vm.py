@@ -1,6 +1,6 @@
 def start_vm (shared_data):
   import sys
-  sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
+  sys.path.append(r"C:/projects/digitalnomadsky/code/Microsoft")
   from azure.identity import InteractiveBrowserCredential
   from azure.mgmt.compute import ComputeManagementClient
   from azure.mgmt.network import NetworkManagementClient
