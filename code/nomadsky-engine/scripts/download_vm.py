@@ -15,7 +15,7 @@ unique_id = sys.argv[5]
 
 if source == 'azure':
       # Azure SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Microsoft")
       import config
       from downloading_vm import download_vm
       try:
@@ -26,7 +26,7 @@ if source == 'azure':
 
 elif source == 'cyso':
       # cyso SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Cyso")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Cyso")
       import config
       from downloading_vm import export_os_disk
       try:
@@ -37,7 +37,7 @@ elif source == 'cyso':
 
 elif source == 'leaf':
       # leaf SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Leafcloud")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Leafcloud")
       import config
       from downloading_vm import export_os_disk
       try:
@@ -48,7 +48,7 @@ elif source == 'leaf':
 
 elif source == 'aws':
       # AWS SDK code to download VM
-      sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Amazon")
       import config
       from downloading_vm import  download_aws_osdisk
       try:
@@ -58,7 +58,7 @@ elif source == 'aws':
         raise Exception(f" VM could not be downloaded: '{shared_data}' ")
 elif source == 'huawei':
       # huawei SDK code to download VM
-      sys.path.append(r"C:/projects/nomadsky/code/Huawei")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Huawei")
       import config
       from downloading_image import  download_huawei_vm
       try:
