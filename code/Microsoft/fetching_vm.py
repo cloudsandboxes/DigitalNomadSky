@@ -9,7 +9,7 @@
 def fetch_vm(vmname):
         import sys
         import json
-        sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
+        sys.path.append(r"C:/projects/digitalnomadsky/code/Microsoft")
         from azure.identity import InteractiveBrowserCredential
         from azure.mgmt.resource import ResourceManagementClient
         from azure.mgmt.compute import ComputeManagementClient
