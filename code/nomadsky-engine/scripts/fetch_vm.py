@@ -14,7 +14,7 @@ unique_id = sys.argv[5]
 
 if source == 'azure':
       # Azure SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Microsoft")
       import config
       from fetching_vm import fetch_vm
           
@@ -25,7 +25,7 @@ if source == 'azure':
 
 elif source == 'cyso':
       # cyso openstack SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Cyso")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Cyso")
       import config
       from fetching_vm import fetch_vm
       try:
@@ -35,7 +35,7 @@ elif source == 'cyso':
 
 elif source == 'leaf':
       # leaf openstack SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Leafcloud")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Leafcloud")
       import config
       from fetching_vm import fetch_vm
       try:
@@ -45,7 +45,7 @@ elif source == 'leaf':
 
 elif source == 'aws':
       # Amazon SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Amazon")
       import config
       from fetching_vm import search_ec2_instance
           
@@ -56,7 +56,7 @@ elif source == 'aws':
 
 elif source == 'huawei':
       # huawei SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Huawei")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Huawei")
       import config
       from fetching_vm import search_huawei_vm
           
@@ -72,7 +72,7 @@ else:
 #Find optimal disktypeformat
 # ------
 
-sys.path.append(r"C:/projects/nomadsky/code/nomadsky-engine/scripts")
+sys.path.append(r"C:/projects/digitalnomadsky/code/nomadsky-engine/scripts")
 import general_parameters 
 
 def find_best_format(source_platform, destination_platform):
