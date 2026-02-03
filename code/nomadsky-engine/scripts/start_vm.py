@@ -15,7 +15,7 @@ unique_id = sys.argv[5]
 
 if destination == 'azure':
       # Azure SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Microsoft")
       import config
       from create_vm import start_vm
           
@@ -30,7 +30,7 @@ if destination == 'azure':
 
 elif destination == 'cyso':
       # cyso SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Cyso")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Cyso")
       import config
       from starting_vm import create_vm_from_image
           
@@ -42,7 +42,7 @@ elif destination == 'cyso':
 
 elif destination == 'leaf':
       # leaf SDK code to find VM
-      sys.path.append(r"C:/projects/nomadsky/code/Leafcloud")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Leafcloud")
       import config
       from starting_vm import create_vm_from_image
           
