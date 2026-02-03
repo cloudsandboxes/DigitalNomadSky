@@ -34,7 +34,7 @@ Check our demo, [here](https://htmlpreview.github.io/?https://github.com/cloudsa
  * No licences are transfered (for example Windows, SQL or Redhat licenses)
  * Check hardware limits for example GPU's work different between providers.
 
-## For initial installation check out this readme:  [here](https://github.com/cloudsandboxes/nomadsky/edit/main/installation-readme.md)
-## For development check out this readme: [here](https://github.com/cloudsandboxes/nomadsky/edit/main/developer-readme.md)
+## For initial installation check out this readme:  [here](https://github.com/cloudsandboxes/nomadsky/blob/main/installation-readme.md)
+## For development check out this readme: [here](https://github.com/cloudsandboxes/nomadsky/blob/main/developer-readme.md)
 
 
