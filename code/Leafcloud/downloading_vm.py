@@ -15,7 +15,7 @@ def export_os_disk(vm_name):
     from keystoneauth1.identity import v3
     import getpass
     import json
-    sys.path.append(r"C:/projects/nomadsky/code/Leafcloud")
+    sys.path.append(r"C:/projects/digitalnomadsky/code/Leafcloud")
     import tkinter as tk
     from tkinter import simpledialog
     import time
