@@ -15,7 +15,7 @@ unique_id = sys.argv[5]
 
 if source == 'azure':
       # Azure SDK code to stop VM
-      sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Microsoft")
       import config
       from stopping_vm import stop_vm
           
@@ -27,7 +27,7 @@ if source == 'azure':
 
 elif source == 'cyso':
       # cyso SDK code to stop VM
-      sys.path.append(r"C:/projects/nomadsky/code/Cyso")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Cyso")
       import config
       from stopping_vm import stop_vm
           
@@ -39,7 +39,7 @@ elif source == 'cyso':
 
 elif source == 'leaf':
       # leaf SDK code to stop VM
-      sys.path.append(r"C:/projects/nomadsky/code/Leafcloud")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Leafcloud")
       import config
       from stopping_vm import stop_vm
           
@@ -51,7 +51,7 @@ elif source == 'leaf':
    
 elif source == 'aws':
       # AWS SDK code to stop VM
-      sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Amazon")
       import config
       from stopping_vm import stop_aws_vm
           
@@ -63,7 +63,7 @@ elif source == 'aws':
 
 elif source == 'huawei':
       # Huawei SDK code to stop VM
-      sys.path.append(r"C:/projects/nomadsky/code/Huawei")
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Huawei")
       import config
       from stopping_vm import stop_huawei_vm
           
