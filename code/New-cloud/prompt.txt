@@ -17,7 +17,7 @@ put everything in one def.
 
 include any needed input parameters as:
 import sys 
-sys.path.append(r"C:/projects/nomadsky/code/{cloudprovidername}")
+sys.path.append(r"C:/projects/digitalnomadsky/code/{cloudprovidername}")
 import config
 variable=config.variable
 
@@ -40,7 +40,7 @@ put everything in one def.
 
 include any needed input parameters as:
 import sys 
-sys.path.append(r"C:/projects/nomadsky/code/{cloudprovidername}")
+sys.path.append(r"C:/projects/digitalnomadsky/code/{cloudprovidername}")
 import config
 variable=config.variable
 
@@ -63,7 +63,7 @@ put everything in one def.
 
 And use all input parameters as:
 import sys 
-sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+sys.path.append(r"C:/projects/digitalnomadsky/code/Amazon")
 import config
 variable=config.variable
 
@@ -89,7 +89,7 @@ put everything in one def.
 
 And use all input parameters as:
 import sys 
-sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+sys.path.append(r"C:/projects/digitalnomadsky/code/Amazon")
 import config
 variable=config.variable
 
@@ -114,7 +114,7 @@ put everything in one def.
 
 And use all input parameters as:
 import sys 
-sys.path.append(r"C:/projects/nomadsky/code/Amazon")
+sys.path.append(r"C:/projects/digitalnomadsky/code/Amazon")
 import config
 variable=config.variable
 
@@ -137,7 +137,7 @@ put everything in one def.
 
 include any needed input parameters as:
 import sys 
-sys.path.append(r"C:/projects/nomadsky/code/{cloudprovidername}")
+sys.path.append(r"C:/projects/digitalnomadsky/code/{cloudprovidername}")
 import config
 variable=config.variable
 
