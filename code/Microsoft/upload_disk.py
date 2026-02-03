@@ -1,7 +1,7 @@
 def upload_disk(shared_data):
     
     import sys
-    sys.path.append(r"C:/projects/nomadsky/code/Microsoft")
+    sys.path.append(r"C:/projects/digitalnomadsky/code/Microsoft")
     from azure.mgmt.storage import StorageManagementClient
     from azure.storage.blob import BlobServiceClient, BlobClient
     import os
