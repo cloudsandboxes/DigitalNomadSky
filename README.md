@@ -7,6 +7,8 @@ Check our demo, [here](https://htmlpreview.github.io/?https://github.com/cloudsa
 
 <img width="797" height="726" alt="image" src="https://github.com/user-attachments/assets/531bf9a1-bfb7-49d0-b480-3defb8bcde74" />
 
+<img width="894" height="906" alt="image" src="https://github.com/user-attachments/assets/a4b794f9-fed5-45a5-8dad-e00cc0593fa9" />
+
 
 ### Key Benefits
 
