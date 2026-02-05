@@ -5,8 +5,7 @@
 Take full control over where your applications run. No vendor lock-in. No friction. Complete oversight of location, costs, and compliance — from Azure to ZeroCloud and everything in between.
 Check our demo, [here](https://htmlpreview.github.io/?https://github.com/cloudsandboxes/digitalnomadsky/blob/main/code/nomadsky-engine/UI/demo/interface.html)
 
-
-<img width="692" height="650" alt="image" src="https://github.com/user-attachments/assets/cfa9563c-5a51-4435-985d-66e4021b1282" />
+<img width="797" height="726" alt="image" src="https://github.com/user-attachments/assets/531bf9a1-bfb7-49d0-b480-3defb8bcde74" />
 
 
 ### Key Benefits
