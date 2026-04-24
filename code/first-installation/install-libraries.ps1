@@ -31,3 +31,11 @@ py -m pip install boto3
 
 py -m pip install python-novaclient
 py -m pip install python-glanceclient
+
+# running Stackit
+pip install stackit-core
+pip install stackit-iaas
+
+
+
+
