@@ -4,23 +4,21 @@ def uploading_disk(vm_name):
     Stackit.cloud OpenStack VM Access Script
     This script authenticates to Stackit.cloud OpenStack and uploads the image
     """
-    
     import os
     import sys
     import webbrowser
-    from novaclient import client as nova_client
-    from glanceclient import client as glance_client
-    from keystoneauth1 import session
-    from keystoneauth1.identity import v3
+    from stackit.core.configuration import Configuration
+    from stackit.iaas.api.default_api import DefaultApi
+    from stackit.sdk.configuration import Configuration
+    
     import getpass
     import json
-    sys.path.append(r"C:/projects/digitalnomadsky/code/Stackit.cloud")
+    sys.path.append(r"C:/projects/digitalnomadsky/code/Stackit")
     import tkinter as tk
-    from tkinter import simpledialog
+    from tkinter import filedialog
     import time
     import requests
     from requests.exceptions import ConnectionError, ChunkedEncodingError
-    
 
     # Get arguments
     source = sys.argv[1]
@@ -28,79 +26,82 @@ def uploading_disk(vm_name):
     vm_name = sys.argv[3].lower()
     import config
     
-    chunk_size = 50 * 1024 * 1024  # 50 MB per chunk
-    shared_data_json = sys.argv[4]  # 4th argument
-    shared_data = json.loads(shared_data_json)
-    # Extract specific value
-    disktype = shared_data.get('importdisktype', '')
-    output_path = shared_data.get('output_path', '')
-    
+    shared_data = json.loads(sys.argv[4])
+    disktype = shared_data.get("importdisktype", "")
+    output_path = shared_data.get("output_path", "")
 
-
-    from keystoneauth1.identity.v3 import ApplicationCredential
-
+     
+    # Step 1: Get credentials
+    #print("\n[1/4] Getting credentials...")
+    # Use ApplicationCredential instead of Password
+    # ── Step 1: File picker UI ────────────────────────────────────────────────
     root = tk.Tk()
-    root.title("Application secret required")
-    root.geometry("300x120")
-    tk.Label(root, text="Enter secret:").pack(pady=10)
-    password_var = tk.StringVar()
-    done_var = tk.BooleanVar(value=False)
+    root.withdraw()  # Hide main window
 
-    password_entry = tk.Entry(root, show="*", textvariable=password_var)
-    password_entry.pack()
-
-    tk.Button(
-     root,
-     text="OK",
-     command=lambda: done_var.set(True)
-    ).pack(pady=10)
-
-   
-    # Wait until the button is pressed
-    root.wait_variable(done_var)
-
-    password = password_var.get()
-    root.destroy()
-
-    auth = ApplicationCredential(
-     auth_url=os.environ.get('OS_AUTH_URL', config.destinationcloudurl),
-     application_credential_id=config.OS_APPLICATION_CREDENTIAL_ID,
-     application_credential_secret= password
+    sa_key_path = filedialog.askopenfilename(
+     title="Select Service Account Key JSON",
+     filetypes=[("JSON files", "*.json")],
     )
-    sess = session.Session(auth=auth)
-    glance = glance_client.Client("2", session=sess)
 
+    if not sa_key_path:
+     raise ValueError("No file selected")
+
+    # ── Step 2: Build STACKIT SDK client ─────────────────────────────────────
+    stackit_config = Configuration(
+     service_account_key_path=sa_key_path,
+     custom_endpoint='https://iaas.api.eu01.stackit.cloud',
+    )
+
+    client = DefaultApi(stackit_config)
+    project_id = config.STACKIT_PROJECT_ID
+    
+    
     image_name= f"osdisk-{vm_name}"
     disk_format=disktype
-    container_format='bare'
     if source == "azure":
         disk_format="raw"
  
-    # Create image metadata
-    image = glance.images.create(
-        name=image_name,
-        disk_format=disk_format,
-        container_format=container_format,
-        visibility='private'
+    # ── Create image in STACKIT ─────────────────────────────────────────────
+    image = client.create_image(
+        project_id=project_id,
+        body={
+            "name": image_name,
+            "diskFormat": disk_format,
+            "containerFormat": "bare",
+            "visibility": "private",
+        },
     )
 
-    
-    # Upload in chunks
-    chunk_size = 8192
-    file_size = os.path.getsize(output_path)
-    uploaded = 0
-   
-    with open(output_path, 'rb') as f:
-        glance.images.upload(image.id, f)
-    
-    # Wait for image to become active (check every 5 seconds, max 30 minutes)
-    for _ in range(360):
-        img = glance.images.get(image.id)
-        if img.status == 'active':
-            return {'message' : f"Image {image_name} uploaded (ID: {image.id})",
-                   'image_id' : image.id}
-        elif img.status == 'error':
-            raise IndexError(f"VM '{vmname}' upload failed in {destination}")
-        time.sleep(20)
-    
-    raise IndexError(f"VM '{vmname}' image creation timeout in {destination}")
+    image_id = image.id
+
+    # ── Trigger upload/import (STACKIT-managed) ─────────────────────────────
+    with open(output_path, "rb") as f:
+        client.upload_image(
+            project_id=project_id,
+            image_id=image_id,
+            body=f,
+        )
+
+    # ── Wait for ACTIVE state ───────────────────────────────────────────────
+    for _ in range(360):  # ~30 minutes
+        img = client.get_image(
+            project_id=project_id,
+            image_id=image_id,
+        )
+
+        if img.status == "ACTIVE":
+            return {
+                "message": f"Image {image_name} uploaded successfully",
+                "image_id": image_id,
+            }
+
+        if img.status == "ERROR":
+            raise RuntimeError(
+                f"Image upload failed for {image_name} in {destination}"
+            )
+
+        time.sleep(5)
+
+    raise TimeoutError(
+        f"Image upload timeout for {image_name} in {destination}"
+    )
