@@ -28,51 +28,62 @@ def stop_vm():
     # Step 1: Get credentials
     #print("\n[1/4] Getting credentials...")
     # Use ApplicationCredential instead of Password
-    from keystoneauth1.identity.v3 import ApplicationCredential
-
+    # ── Step 1: File picker UI ────────────────────────────────────────────────
     root = tk.Tk()
-    root.title("Application secret required")
-    root.geometry("300x120")
-    tk.Label(root, text="Enter secret:").pack(pady=10)
-    password_var = tk.StringVar()
-    done_var = tk.BooleanVar(value=False)
+    root.withdraw()  # Hide main window
 
-    password_entry = tk.Entry(root, show="*", textvariable=password_var)
-    password_entry.pack()
-
-    tk.Button(
-     root,
-     text="OK",
-     command=lambda: done_var.set(True)
-    ).pack(pady=10)
-
-   
-    # Wait until the button is pressed
-    root.wait_variable(done_var)
-
-    password = password_var.get()
-    root.destroy()
-
-    auth = ApplicationCredential(
-     auth_url=os.environ.get('OS_AUTH_URL', config.sourcecloudurl),
-     application_credential_id=config.OS_APPLICATION_CREDENTIAL_ID,
-     application_credential_secret= password
+    sa_key_path = filedialog.askopenfilename(
+     title="Select Service Account Key JSON",
+     filetypes=[("JSON files", "*.json")],
     )
-    sess = session.Session(auth=auth)
-    nova = nova_client.Client("2.1", session=sess)
 
-    # Find VM by name
-    servers = nova.servers.list(search_opts={'name': vm_name})
-    if not servers:
-        raise IndexError(f"VM '{vmname}' not found in {source}")
+    if not sa_key_path:
+     raise ValueError("No file selected")
+
+    # ── Step 2: Build STACKIT SDK client ─────────────────────────────────────
+    stackit_config = Configuration(
+     service_account_key_path=sa_key_path,
+     custom_endpoint='https://iaas.api.eu01.stackit.cloud',
+    )
+
+    client = DefaultApi(stackit_config)
+    project_id = config.STACKIT_PROJECT_ID
+
     
-    server = servers[0]
+   
+    # ── Step 3: Find the server by name ──────────────────────────────────────
+    servers_response = client.list_servers(project_id=project_id)
+    servers = [
+        s for s in (servers_response.items or [])
+        if s.name and s.name.lower() == vm_name
+    ]
+    if not servers:
+        raise IndexError(f"VM '{vm_name}' not found in project {project_id}")
+
+    server      = servers[0]
+    server_id   = server.id
+
+    # ── Suspend VM ───────────────────────────────────────────────────────────
     if server.status != "SUSPENDED":
-        server.suspend()  # Graceful shutdown
-        for _ in range(30):
-            server = nova.servers.get(server.id)
-            if server.status == 'SUSPENDED':
-                return {'message' : f"VM {vm_name} stopped"}
-            time.sleep(15)
-    else:         
-        return {'message' : f"VM {vm_name} was already stopped"}
+     client.suspend_server(
+        project_id=project_id,
+        server_id=server.id
+     )
+
+     # ── Wait for state change ────────────────────────────────────────────
+     for _ in range(30):
+        updated = client.get_server(
+            project_id=project_id,
+            server_id=server.id
+        )
+
+        if updated.status == "SUSPENDED":
+            return {"message": f"VM {vm_name} suspended"}
+
+        time.sleep(5)
+
+     raise TimeoutError(f"Timeout while suspending VM '{vm_name}'")
+
+    else:
+     return {"message": f"VM {vm_name} is already suspended"}
+
