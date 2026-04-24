@@ -47,6 +47,17 @@ elif destination == 'leaf':
             print(json.dumps(url))
       except IndexError:
         raise Exception(f" Invalid format: '{shared_data}' ")
+elif destination == 'stackit':
+      # stackit SDK code to find VM
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Stackit")
+      import config
+      from upload_disk import uploading_disk
+          
+      try:
+            url = uploading_disk(shared_data)
+            print(json.dumps(url))
+      except IndexError:
+        raise Exception(f" Invalid format: '{shared_data}' ")
                                  
 
 elif destination == 'aws':
