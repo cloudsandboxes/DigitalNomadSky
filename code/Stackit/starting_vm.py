@@ -7,15 +7,15 @@ def create_vm_from_image(shared_data):
     import os
     import sys
     import webbrowser
-    from novaclient import client as nova_client
-    from glanceclient import client as glance_client
-    #from neutronclient import client as neutron_client
-    from keystoneauth1 import session
-    from keystoneauth1.identity import v3
+    from stackit.core.configuration import Configuration
+    from stackit.iaas.api.default_api import DefaultApi
+    from stackit.sdk.configuration import Configuration
+    
+    import getpass
     import json
     sys.path.append(r"C:/projects/digitalnomadsky/code/Stackit")
     import tkinter as tk
-    from tkinter import simpledialog
+    from tkinter import filedialog
     import time
     import requests
     from requests.exceptions import ConnectionError, ChunkedEncodingError
@@ -30,55 +30,64 @@ def create_vm_from_image(shared_data):
     shared_data = json.loads(shared_data_json)
     # Extract specific value
     image_id = shared_data.get('image_id', '')
-
-    from keystoneauth1.identity.v3 import ApplicationCredential
-
+     
+    # Step 1: Get credentials
+    #print("\n[1/4] Getting credentials...")
+    # Use ApplicationCredential instead of Password
+    # ── Step 1: File picker UI ────────────────────────────────────────────────
     root = tk.Tk()
-    root.title("Application secret required")
-    root.geometry("300x120")
-    tk.Label(root, text="Enter secret:").pack(pady=10)
-    password_var = tk.StringVar()
-    done_var = tk.BooleanVar(value=False)
+    root.withdraw()  # Hide main window
 
-    password_entry = tk.Entry(root, show="*", textvariable=password_var)
-    password_entry.pack()
-
-    tk.Button(
-     root,
-     text="OK",
-     command=lambda: done_var.set(True)
-    ).pack(pady=10)
-
-   
-    # Wait until the button is pressed
-    root.wait_variable(done_var)
-
-    password = password_var.get()
-    root.destroy()
-
-    auth = ApplicationCredential(
-     auth_url=os.environ.get('OS_AUTH_URL', config.destinationcloudurl),
-     application_credential_id=config.OS_APPLICATION_CREDENTIAL_ID,
-     application_credential_secret= password
+    sa_key_path = filedialog.askopenfilename(
+     title="Select Service Account Key JSON",
+     filetypes=[("JSON files", "*.json")],
     )
-    sess = session.Session(auth=auth)
-    nova = nova_client.Client("2.1", session=sess)
+
+    if not sa_key_path:
+     raise ValueError("No file selected")
+
+    # ── Step 2: Build STACKIT SDK client ─────────────────────────────────────
+    stackit_config = Configuration(
+     service_account_key_path=sa_key_path,
+     custom_endpoint='https://iaas.api.eu01.stackit.cloud',
+    )
+
+    client = DefaultApi(stackit_config)
+    project_id = config.STACKIT_PROJECT_ID
+    
         
-    # Create server
-    server = nova.servers.create(
-        name=vm_name,
-        image=image_id,
-        flavor="cc1.xsmall",
-        nics=config.nics
+    server = client.create_server(
+        project_id=project_id,
+        body={
+            "name": vmname,
+            "imageId": image_id,
+            "flavor": "cc1.xsmall",
+            "networks": config.nics,
+        },
     )
-    
-    # Wait for VM to become active (check every 5 seconds, max 10 minutes)
-    for _ in range(120):
-        srv = nova.servers.get(server.id)
-        if srv.status == 'ACTIVE':
-            return {'message': f"VM {vm_name} created (ID: {server.id})"}
-        elif srv.status == 'ERROR':
-            raise IndexError(f"VM '{vmname}' creation timeout in {destination}")
-        time.sleep(20)
-    
-    raise IndexError(f"VM '{vmname}' cration timeout in {destination}") 
+
+    server_id = server.id
+
+    # ── Wait for ACTIVE state ───────────────────────────────────────────────
+    for _ in range(120):  # ~10 minutes
+        srv = client.get_server(
+            project_id=project_id,
+            server_id=server_id,
+        )
+
+        if srv.status == "ACTIVE":
+            return {
+                "message": f"VM {vmname} created successfully",
+                "server_id": server_id,
+            }
+
+        if srv.status == "ERROR":
+            raise RuntimeError(
+                f"VM creation failed for {vmname} in {destination}"
+            )
+
+        time.sleep(5)
+
+    raise TimeoutError(
+        f"VM creation timeout for {vmname} in {destination}"
+    )
