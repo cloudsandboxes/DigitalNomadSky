@@ -51,7 +51,17 @@ elif destination == 'leaf':
             print(json.dumps(nic))
       except IndexError:
         raise Exception(f" something went wrong the vm is not created.")
-
+elif destination == 'stackit':
+      # stackit SDK code to find VM
+      sys.path.append(r"C:/projects/digitalnomadsky/code/Stackit")
+      import config
+      from starting_vm import create_vm_from_image
+          
+      try:
+            nic = create_vm_from_image(shared_data)
+            print(json.dumps(nic))
+      except IndexError:
+        raise Exception(f" something went wrong the vm is not created.")
 
 elif destination == 'aws':
    a='empty'
