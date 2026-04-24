@@ -42,6 +42,15 @@ elif source == 'leaf':
             result = fetch_vm(vmname)
       except IndexError:
         raise Exception('something went wrong, the vm is not found in Leaf.Cloud!')  
+elif source == 'stackit':
+      # openstack SDK code to find VM
+      sys.path.append(r"C:/projects/digitalnomadsky/code/stackit")
+      import config
+      from fetching_vm import fetch_vm
+      try:
+            result = fetch_vm(vmname)
+      except IndexError:
+        raise Exception('something went wrong, the vm is not found in Stackit.Cloud!')  
 
 elif source == 'aws':
       # Amazon SDK code to find VM
