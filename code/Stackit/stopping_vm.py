@@ -4,27 +4,27 @@ def stop_vm():
     Stackit.cloud OpenStack VM Access Script
     This script authenticates to Stackit.cloud OpenStack
     """
-    
     import os
     import sys
     import webbrowser
-    from novaclient import client as nova_client
-    from keystoneauth1 import session
-    from keystoneauth1.identity import v3
+    from stackit.core.configuration import Configuration
+    from stackit.iaas.api.default_api import DefaultApi
+    from stackit.sdk.configuration import Configuration
     import getpass
     import json
     sys.path.append(r"C:/projects/digitalnomadsky/code/Stackit")
     import tkinter as tk
-    from tkinter import simpledialog
+    from tkinter import filedialog
     import time
-
+    import requests
+    from requests.exceptions import ConnectionError, ChunkedEncodingError
 
     # Get arguments
     source = sys.argv[1]
     destination = sys.argv[2]
     vm_name = sys.argv[3].lower()
     import config
-   
+    
     # Step 1: Get credentials
     #print("\n[1/4] Getting credentials...")
     # Use ApplicationCredential instead of Password
