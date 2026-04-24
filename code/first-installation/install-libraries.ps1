@@ -33,8 +33,8 @@ py -m pip install python-novaclient
 py -m pip install python-glanceclient
 
 # running Stackit
-pip install stackit-core
-pip install stackit-iaas
+py -m pip install stackit-core
+py -m pip install stackit-iaas
 
 
 
