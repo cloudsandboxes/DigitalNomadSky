@@ -33,6 +33,11 @@ VM_SIZES = {
         "small": "ecs.g6.large",
         "medium": "ecs.g6.xlarge",
         "large": "ecs.r6.2xlarge"
+    },
+    "stackit": {
+    "small": "g2a.2d",
+    "medium": "g2a.4d",
+    "large": "g2a.8d"
     }
 }
 #VM_SIZE["azure"]["small"]
