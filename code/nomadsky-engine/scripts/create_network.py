@@ -38,6 +38,11 @@ elif destination == 'leaf':
          result = {
              'message': "no need to create anything"  }
          print(json.dumps(result))
+elif destination == 'stackit':
+         result = {
+             'message': "no need to create anything"  }
+         print(json.dumps(result))
+
 
 
 elif destination == 'aws':
