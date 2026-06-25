@@ -42,6 +42,10 @@ elif destination == 'stackit':
          result = {
              'message': "no need to create anything"  }
          print(json.dumps(result))
+elif destination == 'tsystems':
+         result = {
+             'message': "no need to create anything"  }
+         print(json.dumps(result))
 
 
 
