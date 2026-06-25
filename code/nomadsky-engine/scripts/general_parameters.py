@@ -38,6 +38,11 @@ VM_SIZES = {
     "small": "g2a.2d",
     "medium": "g2a.4d",
     "large": "g2a.8d"
+    },
+    "tsystems": {
+        "small": "s3.large.4",
+        "medium": "s3.xlarge.4",
+        "large": "s3.2xlarge.4"
     }
 }
 #VM_SIZE["azure"]["small"]
@@ -94,5 +99,9 @@ preferred_type = {
     "leaf": {
         "import": ("qcow2", "iso" ,"ova", "raw", "vmdk", "vdi", "ami", "ari", "aki", "docker"),
         "export": ("qcow2", "leafuit")
+    },
+    "tsystems": {
+        "import": ("qcow2", "iso" ,"ova", "raw", "vmdk", "vdi", "ami", "ari", "aki", "docker"),
+        "export": ("qcow2", "tsysuit")
     }
 }
