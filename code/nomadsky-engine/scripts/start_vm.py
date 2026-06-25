@@ -63,6 +63,18 @@ elif destination == 'stackit':
       except IndexError:
         raise Exception(f" something went wrong the vm is not created.")
 
+elif destination == 'tsystems':
+      # tsystems SDK code to find VM
+      sys.path.append(r"C:/projects/digitalnomadsky/code/T-systems")
+      import config
+      from starting_vm import create_vm_from_image
+          
+      try:
+            nic = create_vm_from_image(shared_data)
+            print(json.dumps(nic))
+      except IndexError:
+        raise Exception(f" something went wrong the vm is not created.")
+
 elif destination == 'aws':
    a='empty'
    #     # AWS boto3 code to find VM
