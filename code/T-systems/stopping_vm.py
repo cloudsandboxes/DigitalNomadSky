@@ -13,7 +13,7 @@ def stop_vm():
     from keystoneauth1.identity import v3
     import getpass
     import json
-    sys.path.append(r"C:/projects/digitalnomadsky/code/Tcloud")
+    sys.path.append(r"C:/projects/digitalnomadsky/code/T-systems")
     import tkinter as tk
     from tkinter import simpledialog
     import time
