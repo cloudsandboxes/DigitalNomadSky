@@ -1,109 +1,89 @@
 #!/usr/bin/env python3
 """
-T Cloud Public (T-Systems) OpenStack VM Access Script
-This script authenticates to T Cloud Public OpenStack
+T.cloud OpenStack VM Access Script
+This script authenticates to T.cloud OpenStack
 """
-def fetch_vm(vmname):
-    import os
-    import sys
-    import requests
-    import json
-    import tkinter as tk
-    from tkinter import filedialog
 
-    sys.path.append(r"C:/projects/digitalnomadsky/code/T-systems")
-    import config
+def fetch_vm (vmname):
+   """
+   Get OpenStack credentials from environment variables or user input.
+   You can download your OpenStack RC file from T.cloud dashboard.
+   """
+   import os
+   import sys
+   import webbrowser
+   from novaclient import client as nova_client
+   from keystoneauth1 import session
+   from keystoneauth1.identity import v3
+   import getpass
+   import json
+   sys.path.append(r"C:/projects/digitalnomadsky/code/T-systems")
+   import tkinter as tk
+   from tkinter import simpledialog
 
-    source = sys.argv[1]
-    destination = sys.argv[2]
-    vm_name = sys.argv[3].lower()
 
-    sourcelocation = source  # e.g. 'eu-nl'
-    sourcecloudurl = f"https://iam.{sourcelocation}.otc.t-systems.com:443/v3"
+   # Get arguments
+   source = sys.argv[1]
+   destination = sys.argv[2]
+   vm_name = sys.argv[3].lower()
+   import config
+   
+   # Step 1: Get credentials
+   #print("\n[1/4] Getting credentials...")
+   # Use ApplicationCredential instead of Password
+   from keystoneauth1.identity.v3 import ApplicationCredential
 
-    # ── Step 1: File picker for clouds.yaml or JSON credentials ──────────────
-    root = tk.Tk()
-    root.withdraw()
-    creds_path = filedialog.askopenfilename(
-        title="Select credentials JSON file",
-        filetypes=[("JSON files", "*.json")],
-    )
-    if not creds_path:
-        raise ValueError("No file selected")
+   root = tk.Tk()
+   root.title("Application secret required")
+   root.geometry("300x120")
+   tk.Label(root, text="Enter secret:").pack(pady=10)
+   password_var = tk.StringVar()
+   done_var = tk.BooleanVar(value=False)
 
-    with open(creds_path) as f:
-        creds = json.load(f)
+   password_entry = tk.Entry(root, show="*", textvariable=password_var)
+   password_entry.pack()
 
-    username        = creds["username"]
-    password        = creds["password"]
-    project_name    = creds["project_name"]
-    user_domain_name = creds["user_domain_name"]
+   tk.Button(
+     root,
+     text="OK",
+     command=lambda: done_var.set(True)
+   ).pack(pady=10)
 
-    # ── Step 2: Authenticate and get token ───────────────────────────────────
-    auth_payload = {
-        "auth": {
-            "identity": {
-                "methods": ["password"],
-                "password": {
-                    "user": {
-                        "name": username,
-                        "password": password,
-                        "domain": {"name": user_domain_name}
-                    }
-                }
-            },
-            "scope": {
-                "project": {"name": project_name}
-            }
-        }
-    }
+   
+   # Wait until the button is pressed
+   root.wait_variable(done_var)
 
-    auth_response = requests.post(
-        f"{sourcecloudurl}/auth/tokens",
-        json=auth_payload
-    )
-    auth_response.raise_for_status()
-    token = auth_response.headers["X-Subject-Token"]
+   password = password_var.get()
+   root.destroy()
 
-    # Get compute endpoint from service catalog
-    catalog = auth_response.json()["token"]["catalog"]
-    compute_endpoint = next(
-        e["url"]
-        for svc in catalog if svc["type"] == "compute"
-        for e in svc["endpoints"] if e["interface"] == "public"
-    )
-
-    # ── Step 3: Find server by name ──────────────────────────────────────────
-    headers = {"X-Auth-Token": token}
-    servers_response = requests.get(
-        f"{compute_endpoint}/servers/detail",
-        headers=headers
-    )
-    servers_response.raise_for_status()
-
-    servers = [
-        s for s in servers_response.json().get("servers", [])
-        if s.get("name", "").lower() == vm_name
-    ]
-
-    if not servers:
-        raise IndexError(f"VM '{vm_name}' not found in project {project_name}")
-
-    server = servers[0]
-    boot_vol_id = next(
-        (v["id"] for v in server.get("os-extended-volumes:volumes_attached", [])),
-        None
-    )
-    if not boot_vol_id:
-        raise ValueError(f"Server '{vm_name}' has no boot volume attached.")
-
-    result = {
+   
+   auth = ApplicationCredential(
+    auth_url=os.environ.get('OS_AUTH_URL', config.sourcecloudurl),
+    application_credential_id=config.OS_APPLICATION_CREDENTIAL_ID,
+    application_credential_secret= password
+   )
+   sess = session.Session(auth=auth)
+   nova = nova_client.Client("2.1", session=sess)
+    
+   #servers = nova.servers.list()
+   servers = nova.servers.list(search_opts={'name': vm_name})
+    
+   if not servers:
+        raise IndexError(f"VM '{vmname}' not found {source}")
+    
+   # Return first match (names can be duplicate)
+   server = servers[0]
+    
+   # Get all properties
+   result = {
         'message': f"VM '{vm_name}' found successfully in {source}!",
-        'id': server["id"],
-        'vm_name': server["name"],
-        'status': server["status"],
-        'flavor': server.get("flavor"),
-        'networks': server.get("addresses"),
-    }
-
-    return result
+        'id': server.id,
+        'vm_name': server.name,
+        'status': server.status,
+        'flavor': server.flavor,
+        'networks': server.networks
+            }
+   #'created': server.created
+   #'image': server.image
+   
+   return result 
